@@ -1,7 +1,7 @@
 import { UserDTO } from '../../domain/dto';
 import { HttpRequest, HttpResponse } from '../contracts/http';
 import { UserService } from '../contracts/services';
-import { UserAlreadyExistsError } from '../errors';
+import { PasswordDoesNotMatchError, UserAlreadyExistsError } from '../errors';
 import { TemplateController } from './base';
 import { ok } from './utils';
 import { CreatedSessionViewModel } from './view-models';
@@ -23,7 +23,7 @@ export class SignInController extends TemplateController {
       request.body.password,
       user.password,
     );
-    if (!passwordDoesMatch) throw new Error('password does not match');
+    if (!passwordDoesMatch) throw new PasswordDoesNotMatchError();
     const accessToken = await this.userService.createSession(
       user.id,
       request.body.email,

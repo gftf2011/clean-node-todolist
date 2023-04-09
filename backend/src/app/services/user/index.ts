@@ -3,6 +3,7 @@ import { UserModel } from '../../../domain/models';
 import {
   CreateAccessTokenAction,
   CreateUserAction,
+  FindUserAction,
   FindUserByEmailAction,
   PasswordMatchAction,
 } from '../../actions';
@@ -31,6 +32,15 @@ export class UserServiceImpl implements UserService {
   public async getUserByEmail(email: string): Promise<UserModel> {
     const action = new FindUserByEmailAction({
       email,
+    });
+    const response = await this.bus.execute(action);
+
+    return response as UserModel;
+  }
+
+  public async getUser(id: string): Promise<UserModel> {
+    const action = new FindUserAction({
+      id,
     });
     const response = await this.bus.execute(action);
 

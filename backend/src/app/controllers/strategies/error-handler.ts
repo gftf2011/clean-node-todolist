@@ -15,6 +15,7 @@ import {
   MissingBodyParamsError,
   UserAlreadyExistsError,
   UserDoesNotExistsError,
+  PasswordDoesNotMatchError,
 } from '../../errors';
 import { HttpResponse } from '../../contracts/http';
 
@@ -50,7 +51,10 @@ class ApplicationErrorHandlerStrategy implements ErrorHandlerStrategy {
     if (error instanceof MissingBodyParamsError) {
       return badRequest(error);
     }
-    if (error instanceof UserAlreadyExistsError) {
+    if (
+      error instanceof UserAlreadyExistsError ||
+      error instanceof PasswordDoesNotMatchError
+    ) {
       return forbidden(error);
     }
     if (error instanceof UserDoesNotExistsError) {

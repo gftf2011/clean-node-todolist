@@ -1,6 +1,6 @@
 import { Handler } from '../contracts/handlers';
 import { FindUserByEmailAction } from '../actions';
-import { EncryptionProvider } from '../contracts/providers';
+import { DecryptionProvider, EncryptionProvider } from '../contracts/providers';
 import { UserRepository } from '../../domain/repositories';
 import { UserModel } from '../../domain/models';
 
@@ -9,6 +9,7 @@ export class FindUserByEmailHandler implements Handler<UserModel> {
 
   constructor(
     private readonly encryption: EncryptionProvider,
+    private readonly decryption: DecryptionProvider,
     private readonly userRepository: UserRepository,
   ) {}
 
@@ -16,7 +17,11 @@ export class FindUserByEmailHandler implements Handler<UserModel> {
     const { email } = action.data;
     const encryptedEmail = this.encryption.encrypt(email);
     const user = await this.userRepository.findByEmail(encryptedEmail);
+    const decryptedUser = {
+      ...user,
+      email: this.decryption.decrypt(user.email),
+    };
 
-    return user;
+    return decryptedUser;
   }
 }
