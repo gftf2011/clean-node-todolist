@@ -6,11 +6,30 @@ import { TemplateController } from './base';
 import { ok } from './utils';
 import { CreatedSessionViewModel } from './view-models';
 
-export class SignInController extends TemplateController {
-  protected override requiredParams: string[] = ['email', 'password'];
+import { Validator } from '../contracts/validation';
+import { ValidationBuilder, FieldOrigin } from '../validation';
 
+export class SignInController extends TemplateController {
   constructor(private readonly userService: UserService) {
     super();
+  }
+
+  public override buildBodyValidators(request: HttpRequest): Validator[] {
+    return [
+      ...ValidationBuilder.of()
+        .and({
+          value: request.body.email,
+          fieldName: 'email',
+          fieldOrigin: FieldOrigin.BODY,
+        })
+        .and({
+          value: request.body.password,
+          fieldName: 'password',
+          fieldOrigin: FieldOrigin.BODY,
+        })
+        .required()
+        .build(),
+    ];
   }
 
   public async perform(
@@ -26,7 +45,7 @@ export class SignInController extends TemplateController {
     if (!passwordDoesMatch) throw new PasswordDoesNotMatchError();
     const accessToken = await this.userService.createSession(
       user.id,
-      request.body.email,
+      user.email,
     );
     const createdSession = CreatedSessionViewModel.map(accessToken);
     return ok(createdSession);

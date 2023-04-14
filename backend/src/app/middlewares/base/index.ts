@@ -6,12 +6,8 @@ import { Validator } from '../../contracts/validation';
 import { ValidationComposite } from '../../validation';
 
 // It uses the template-method design pattern
-export abstract class TemplateController {
+export abstract class TemplateMiddleware {
   constructor() {}
-
-  public buildBodyValidators(_request: HttpRequest): Validator[] {
-    return [];
-  }
 
   public buildHeaderValidators(_request: HttpRequest): Validator[] {
     return [];
@@ -23,12 +19,11 @@ export abstract class TemplateController {
 
   public async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
-      this.validateBodyParams(request);
       this.validateHeaderParams(request);
       const response = await this.perform(request);
       return response;
     } catch (error) {
-      return TemplateController.handleError(error as Error);
+      return TemplateMiddleware.handleError(error as Error);
     }
   }
 
@@ -36,11 +31,6 @@ export abstract class TemplateController {
 
   private validateHeaderParams(request: HttpRequest): void {
     const validators = this.buildHeaderValidators(request);
-    new ValidationComposite(validators).validate();
-  }
-
-  private validateBodyParams(request: HttpRequest): void {
-    const validators = this.buildBodyValidators(request);
     new ValidationComposite(validators).validate();
   }
 }

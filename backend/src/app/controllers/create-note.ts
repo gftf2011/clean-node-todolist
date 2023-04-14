@@ -6,16 +6,46 @@ import { TemplateController } from './base';
 import { created } from './utils';
 import { CreatedNoteViewModel } from './view-models';
 
+import { Validator } from '../contracts/validation';
+import { ValidationBuilder, FieldOrigin } from '../validation';
+
 export class CreateNoteController extends TemplateController {
-  protected override requiredParams: string[] = ['title', 'description'];
-
-  protected override requiredHeaderParams: string[] = ['userId'];
-
   constructor(
     private readonly noteService: NoteService,
     private readonly userService: UserService,
   ) {
     super();
+  }
+
+  public override buildBodyValidators(request: HttpRequest): Validator[] {
+    return [
+      ...ValidationBuilder.of()
+        .and({
+          value: request.body.title,
+          fieldName: 'title',
+          fieldOrigin: FieldOrigin.BODY,
+        })
+        .and({
+          value: request.body.description,
+          fieldName: 'description',
+          fieldOrigin: FieldOrigin.BODY,
+        })
+        .required()
+        .build(),
+    ];
+  }
+
+  public override buildHeaderValidators(request: HttpRequest): Validator[] {
+    return [
+      ...ValidationBuilder.of()
+        .and({
+          value: request.headers.userId,
+          fieldName: 'userId',
+          fieldOrigin: FieldOrigin.HEADER,
+        })
+        .required()
+        .build(),
+    ];
   }
 
   public async perform(

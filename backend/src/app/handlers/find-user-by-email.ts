@@ -3,8 +3,9 @@ import { FindUserByEmailAction } from '../actions';
 import { DecryptionProvider, EncryptionProvider } from '../contracts/providers';
 import { UserRepository } from '../../domain/repositories';
 import { UserModel } from '../../domain/models';
+import { UserDTO } from '../../domain/dto';
 
-export class FindUserByEmailHandler implements Handler<UserModel> {
+export class FindUserByEmailHandler implements Handler<UserDTO> {
   readonly operation: string = 'find-user-by-email';
 
   constructor(

@@ -6,16 +6,40 @@ import { TemplateController } from './base';
 import { created } from './utils';
 import { CreatedSessionViewModel } from './view-models';
 
-export class SignUpController extends TemplateController {
-  protected override requiredParams: string[] = [
-    'name',
-    'lastname',
-    'email',
-    'password',
-  ];
+import { Validator } from '../contracts/validation';
+import { ValidationBuilder, FieldOrigin } from '../validation';
 
+export class SignUpController extends TemplateController {
   constructor(private readonly userService: UserService) {
     super();
+  }
+
+  public override buildBodyValidators(request: HttpRequest): Validator[] {
+    return [
+      ...ValidationBuilder.of()
+        .and({
+          value: request.body.name,
+          fieldName: 'name',
+          fieldOrigin: FieldOrigin.BODY,
+        })
+        .and({
+          value: request.body.lastname,
+          fieldName: 'lastname',
+          fieldOrigin: FieldOrigin.BODY,
+        })
+        .and({
+          value: request.body.email,
+          fieldName: 'email',
+          fieldOrigin: FieldOrigin.BODY,
+        })
+        .and({
+          value: request.body.password,
+          fieldName: 'password',
+          fieldOrigin: FieldOrigin.BODY,
+        })
+        .required()
+        .build(),
+    ];
   }
 
   public async perform(
@@ -29,7 +53,7 @@ export class SignUpController extends TemplateController {
     const user = await this.userService.getUserByEmail(request.body.email);
     const accessToken = await this.userService.createSession(
       user.id,
-      request.body.email,
+      user.email,
     );
     const createdSession = CreatedSessionViewModel.map(accessToken);
     return created(createdSession);

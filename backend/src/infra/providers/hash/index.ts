@@ -24,11 +24,16 @@ class HashSha512ProviderProduct extends HashProviderProduct {
 }
 
 abstract class HashProviderCreator implements HashProvider {
+  private product: HashProviderProduct;
+
+  constructor() {
+    this.product = this.factoryMethod();
+  }
+
   protected abstract factoryMethod(): HashProviderProduct;
 
   public async encode(value: string, salt: string): Promise<string> {
-    const hashProvider = this.factoryMethod();
-    const response = await hashProvider.encode(value, salt);
+    const response = await this.product.encode(value, salt);
     return response;
   }
 }

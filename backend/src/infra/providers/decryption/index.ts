@@ -33,7 +33,11 @@ class Aes256CBCDecryptionProviderProduct extends DecryptionProviderProduct {
 }
 
 abstract class DecryptionProviderCreator implements DecryptionProvider {
-  constructor(private readonly key: string, private readonly iv: string) {}
+  private product: DecryptionProvider;
+
+  constructor(private readonly key: string, private readonly iv: string) {
+    this.product = this.factoryMethod(key, iv);
+  }
 
   protected abstract factoryMethod(
     key: string,
@@ -41,8 +45,7 @@ abstract class DecryptionProviderCreator implements DecryptionProvider {
   ): DecryptionProviderProduct;
 
   public decrypt(value: string): string {
-    const encryptionProvider = this.factoryMethod(this.key, this.iv);
-    const response = encryptionProvider.decrypt(value);
+    const response = this.product.decrypt(value);
     return response;
   }
 }

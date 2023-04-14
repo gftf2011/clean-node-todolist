@@ -1,5 +1,4 @@
 import { UserDTO } from '../../../domain/dto';
-import { UserModel } from '../../../domain/models';
 import {
   CreateAccessTokenAction,
   CreateUserAction,
@@ -29,22 +28,22 @@ export class UserServiceImpl implements UserService {
     return response as string;
   }
 
-  public async getUserByEmail(email: string): Promise<UserModel> {
+  public async getUserByEmail(email: string): Promise<UserDTO> {
     const action = new FindUserByEmailAction({
       email,
     });
     const response = await this.bus.execute(action);
 
-    return response as UserModel;
+    return response as UserDTO;
   }
 
-  public async getUser(id: string): Promise<UserModel> {
+  public async getUser(id: string): Promise<UserDTO> {
     const action = new FindUserAction({
       id,
     });
     const response = await this.bus.execute(action);
 
-    return response as UserModel;
+    return response as UserDTO;
   }
 
   public async matchPassword(

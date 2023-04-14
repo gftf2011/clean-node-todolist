@@ -2,9 +2,7 @@
 import { UserRepository } from '../../../domain/repositories';
 import { UserModel } from '../../../domain/models';
 
-type UserRepositoryAbstractProduct = UserRepository;
-
-class FakeLocalUserRepositoryProduct implements UserRepositoryAbstractProduct {
+class FakeLocalUserRepositoryProduct implements UserRepository {
   private users: UserModel[] = [];
 
   async find(id: string): Promise<UserModel> {
@@ -37,14 +35,71 @@ class FakeLocalUserRepositoryProduct implements UserRepositoryAbstractProduct {
   }
 }
 
-interface UserRepositoryAbstractFactory {
-  createRepository: () => UserRepositoryAbstractProduct;
+abstract class UserRepositoryCreator implements UserRepository {
+  private product: UserRepository;
+
+  protected abstract factoryMethod(): UserRepository;
+
+  constructor() {
+    this.product = this.factoryMethod();
+  }
+
+  public async findByEmail(email: string): Promise<UserModel> {
+    return this.product.findByEmail(email);
+  }
+
+  public async save(value: UserModel): Promise<void> {
+    await this.product.save(value);
+  }
+
+  public async update(value: UserModel): Promise<void> {
+    await this.product.update(value);
+  }
+
+  public async delete(id: string): Promise<void> {
+    await this.product.delete(id);
+  }
+
+  public async find(id: string): Promise<UserModel> {
+    return this.product.find(id);
+  }
+
+  findAll(page: number, limit: number): Promise<UserModel[]> {
+    return this.product.findAll(page, limit);
+  }
 }
 
-export class LocalUserRepositoryFactory
-  implements UserRepositoryAbstractFactory
-{
-  public createRepository(): UserRepositoryAbstractProduct {
+class FakeLocalUserRepositoryCreator extends UserRepositoryCreator {
+  protected factoryMethod(): UserRepository {
     return new FakeLocalUserRepositoryProduct();
+  }
+}
+
+export enum USER_REPOSITORIES_FACTORIES {
+  USER_FAKE_LOCAL = 'USER_FAKE_LOCAL',
+}
+
+export class UserRepositoryFactory {
+  private fakeLocalRepository: FakeLocalUserRepositoryCreator;
+
+  private static instance: UserRepositoryFactory;
+
+  private constructor() {}
+
+  public static initialize(): UserRepositoryFactory {
+    if (!this.instance) {
+      this.instance = new UserRepositoryFactory();
+    }
+    return this.instance;
+  }
+
+  // eslint-disable-next-line consistent-return
+  public make(factoryType: USER_REPOSITORIES_FACTORIES): UserRepository {
+    if (factoryType === USER_REPOSITORIES_FACTORIES.USER_FAKE_LOCAL) {
+      if (!this.fakeLocalRepository) {
+        this.fakeLocalRepository = new FakeLocalUserRepositoryCreator();
+      }
+      return this.fakeLocalRepository;
+    }
   }
 }

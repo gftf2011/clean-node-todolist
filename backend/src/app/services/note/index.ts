@@ -1,4 +1,4 @@
-import { NoteModel } from '../../../domain/models';
+import { NoteDTO } from '../../../domain/dto';
 import { CreateNoteAction, FindNoteAction } from '../../actions';
 import { Bus } from '../../contracts/bus';
 import { NoteService } from '../../contracts/services';
@@ -16,9 +16,9 @@ export class NoteServiceImpl implements NoteService {
     return response as string;
   }
 
-  public async getNote(id: string): Promise<NoteModel> {
+  public async getNote(id: string): Promise<NoteDTO> {
     const action = new FindNoteAction({ id });
     const response = await this.bus.execute(action);
-    return response as NoteModel;
+    return response as NoteDTO;
   }
 }

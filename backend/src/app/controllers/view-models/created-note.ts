@@ -1,4 +1,4 @@
-import { NoteModel } from '../../../domain/models';
+import { NoteDTO } from '../../../domain/dto';
 
 export class CreatedNoteViewModel {
   private constructor(
@@ -9,7 +9,7 @@ export class CreatedNoteViewModel {
     public readonly timestamp: string,
   ) {}
 
-  public static map(note: NoteModel): CreatedNoteViewModel {
+  public static map(note: NoteDTO): CreatedNoteViewModel {
     return new CreatedNoteViewModel(
       note.id,
       note.finished,

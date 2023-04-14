@@ -1,4 +1,4 @@
-import { NoteModel } from '../../../domain/models';
+import { NoteDTO } from '../../../domain/dto';
 
 export interface NoteService {
   saveNote: (
@@ -6,5 +6,5 @@ export interface NoteService {
     description: string,
     userId: string,
   ) => Promise<string>;
-  getNote: (id: string) => Promise<NoteModel>;
+  getNote: (id: string) => Promise<NoteDTO>;
 }
