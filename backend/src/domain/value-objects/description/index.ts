@@ -18,12 +18,9 @@ export class Description {
   }
 
   public static create(description: string): Either<Error, Description> {
-    if (
-      !description ||
-      !this.validate(description.trim().replace(/(\s)/gm, ' '))
-    ) {
+    if (!description || !this.validate(description.trim())) {
       return left(new InvalidDescriptionError(description));
     }
-    return right(new Description(description.trim().replace(/(\s)/gm, ' ')));
+    return right(new Description(description.trim()));
   }
 }
