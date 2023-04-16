@@ -18,9 +18,9 @@ export class Title {
   }
 
   public static create(title: string): Either<Error, Title> {
-    if (!title || !this.validate(title.trim().replace(/(\s)/gm, ' '))) {
+    if (!title || !this.validate(title.trim())) {
       return left(new InvalidTitleError(title));
     }
-    return right(new Title(title.trim().replace(/(\s)/gm, ' ')));
+    return right(new Title(title.trim()));
   }
 }
