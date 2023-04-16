@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/src/main/server/index.js",
-  "scripts": {},
+  "scripts": {
+    "test:unit": "jest --clearCache ; jest --colors --coverage --verbose --detectOpenHandles --config jest-unit.config.js"
+  },
   "keywords": [],
   "author": "Gabriel Ferrari Tarallo Ferraz",
   "devDependencies": {
