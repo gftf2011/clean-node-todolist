@@ -2,6 +2,10 @@ import {
   makeCreateAccessTokenHandler,
   makeCreateUserHandler,
   makeFindUserByEmailHandler,
+  makeFindUserHandler,
+  makePasswordMatchHandler,
+  makeCreateNoteHandler,
+  makeFindNoteHandler,
 } from '../../app/handlers';
 
 import { BusMediator } from '../../../../infra/bus';
@@ -11,6 +15,10 @@ export const makeBus = (): BusMediator => {
     makeCreateAccessTokenHandler(),
     makeCreateUserHandler(),
     makeFindUserByEmailHandler(),
+    makeFindUserHandler(),
+    makePasswordMatchHandler(),
+    makeCreateNoteHandler(),
+    makeFindNoteHandler(),
   ];
   const bus = new BusMediator(handlers);
   return bus;

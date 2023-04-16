@@ -2,45 +2,36 @@ import { HttpRequest, HttpResponse } from '../../contracts/http';
 import { ErrorHandlerInvoker } from '../strategies';
 
 import { Validator } from '../../contracts/validation';
+import { Middleware } from '../../contracts/middlewares';
 
 import { ValidationComposite } from '../../validation';
 
 // It uses the template-method design pattern
-export abstract class TemplateController {
+export abstract class TemplateMiddleware implements Middleware {
   constructor() {}
 
-  public buildBodyValidators(_request: HttpRequest): Validator[] {
+  protected buildHeaderValidators(_request: HttpRequest): Validator[] {
     return [];
   }
 
-  public buildHeaderValidators(_request: HttpRequest): Validator[] {
-    return [];
-  }
-
-  public static handleError(error: Error): HttpResponse {
+  private static handleError(error: Error): HttpResponse {
     return new ErrorHandlerInvoker().handle(error);
   }
 
   public async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
-      this.validateBodyParams(request);
       this.validateHeaderParams(request);
       const response = await this.perform(request);
       return response;
     } catch (error) {
-      return TemplateController.handleError(error as Error);
+      return TemplateMiddleware.handleError(error as Error);
     }
   }
 
-  public abstract perform(request: HttpRequest): Promise<HttpResponse>;
+  protected abstract perform(request: HttpRequest): Promise<HttpResponse>;
 
   private validateHeaderParams(request: HttpRequest): void {
     const validators = this.buildHeaderValidators(request);
-    new ValidationComposite(validators).validate();
-  }
-
-  private validateBodyParams(request: HttpRequest): void {
-    const validators = this.buildBodyValidators(request);
     new ValidationComposite(validators).validate();
   }
 }

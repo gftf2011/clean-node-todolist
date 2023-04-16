@@ -1,6 +1,6 @@
 import { DecryptionProvider, TokenProvider } from '../contracts/providers';
 import { HttpRequest, HttpResponse } from '../contracts/http';
-import { TemplateMiddleware } from './base';
+import { TemplateMiddleware } from './template';
 import { UserRepository } from '../../domain/repositories';
 import { Either, left, right } from '../../shared';
 import {
@@ -22,7 +22,7 @@ export class AuthMiddleware extends TemplateMiddleware {
     super();
   }
 
-  public override buildHeaderValidators(
+  protected override buildHeaderValidators(
     request: HttpRequest<any>,
   ): Validator[] {
     return [
@@ -51,9 +51,9 @@ export class AuthMiddleware extends TemplateMiddleware {
     }
   }
 
-  public async perform(
+  protected async perform(
     request: HttpRequest<any>,
-  ): Promise<HttpResponse<{ id: string }>> {
+  ): Promise<HttpResponse<{ userId: string }>> {
     const jwt = request.headers.authorization.split('Bearer ')[1];
     const tokenOrError = this.verifyTokenExpiration(jwt);
 
@@ -68,6 +68,6 @@ export class AuthMiddleware extends TemplateMiddleware {
 
     if (decryptedSubject !== user.email) throw new InvalidTokenSubjectError();
 
-    return ok({ id: jwtToken.id });
+    return ok({ userId: jwtToken.id });
   }
 }

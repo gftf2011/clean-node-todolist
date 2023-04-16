@@ -1,13 +1,20 @@
 /* eslint-disable max-classes-per-file */
-import { TokenExpiredError } from 'jsonwebtoken';
 import {
   ApplicationError,
   AccessDeniedError,
   InvalidTokenSubjectError,
+  DatabaseError,
+  TokenExpiredError,
+  ServiceUnavailableError,
 } from '../../errors';
 import { HttpResponse } from '../../contracts/http';
 
-import { unauthorized, unknown } from '../utils';
+import {
+  serverError,
+  serviceUnavailableError,
+  unauthorized,
+  unknown,
+} from '../utils';
 import { forbidden } from '../../controllers/utils';
 
 interface ErrorHandlerStrategy {
@@ -24,6 +31,12 @@ class ApplicationErrorHandlerStrategy implements ErrorHandlerStrategy {
     }
     if (error instanceof TokenExpiredError) {
       return unauthorized(error);
+    }
+    if (error instanceof DatabaseError) {
+      return serverError(error);
+    }
+    if (error instanceof ServiceUnavailableError) {
+      return serviceUnavailableError(error);
     }
     return unknown(error);
   }

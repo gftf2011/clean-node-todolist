@@ -38,8 +38,21 @@ abstract class HashProviderCreator implements HashProvider {
   }
 }
 
-export class HashSha512ProviderCreator extends HashProviderCreator {
+class HashSha512ProviderCreator extends HashProviderCreator {
   protected factoryMethod(): HashProviderProduct {
     return new HashSha512ProviderProduct();
+  }
+}
+
+export enum HASH_FACTORIES {
+  SHA_521 = 'SHA_521',
+}
+
+export class HashFactory {
+  // eslint-disable-next-line consistent-return
+  public make(factoryType: HASH_FACTORIES): HashProvider {
+    if (factoryType === HASH_FACTORIES.SHA_521) {
+      return new HashSha512ProviderCreator();
+    }
   }
 }

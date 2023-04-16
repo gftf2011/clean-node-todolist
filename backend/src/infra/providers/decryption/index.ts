@@ -50,8 +50,23 @@ abstract class DecryptionProviderCreator implements DecryptionProvider {
   }
 }
 
-export class Aes256CBCDecryptionProviderCreator extends DecryptionProviderCreator {
+class Aes256CBCDecryptionProviderCreator extends DecryptionProviderCreator {
   protected factoryMethod(key: string, iv: string): DecryptionProviderProduct {
     return new Aes256CBCDecryptionProviderProduct(key, iv);
+  }
+}
+
+export enum DECRYPTION_FACTORIES {
+  AES_256_CBC = 'AES_256_CBC',
+}
+
+export class DecryptionFactory {
+  constructor(private readonly key: string, private readonly iv: string) {}
+
+  // eslint-disable-next-line consistent-return
+  public make(factoryType: DECRYPTION_FACTORIES): DecryptionProvider {
+    if (factoryType === DECRYPTION_FACTORIES.AES_256_CBC) {
+      return new Aes256CBCDecryptionProviderCreator(this.key, this.iv);
+    }
   }
 }

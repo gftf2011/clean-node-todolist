@@ -5,6 +5,6 @@ export interface NoteService {
     title: string,
     description: string,
     userId: string,
-  ) => Promise<string>;
+  ) => Promise<void>;
   getNote: (id: string) => Promise<NoteDTO>;
 }

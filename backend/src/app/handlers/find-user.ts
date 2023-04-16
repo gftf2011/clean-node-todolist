@@ -2,9 +2,9 @@ import { Handler } from '../contracts/handlers';
 import { FindUserAction } from '../actions';
 import { DecryptionProvider } from '../contracts/providers';
 import { UserRepository } from '../../domain/repositories';
-import { UserModel } from '../../domain/models';
+import { UserDTO } from '../../domain/dto';
 
-export class FindUserHandler implements Handler<UserModel> {
+export class FindUserHandler implements Handler<UserDTO> {
   readonly operation: string = 'find-user';
 
   constructor(
@@ -12,7 +12,7 @@ export class FindUserHandler implements Handler<UserModel> {
     private readonly userRepository: UserRepository,
   ) {}
 
-  public async handle(action: FindUserAction): Promise<UserModel> {
+  public async handle(action: FindUserAction): Promise<UserDTO> {
     const { id } = action.data;
     const user = await this.userRepository.find(id);
     const decryptedUser = {

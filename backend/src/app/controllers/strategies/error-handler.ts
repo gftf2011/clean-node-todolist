@@ -16,6 +16,10 @@ import {
   UserAlreadyExistsError,
   UserDoesNotExistsError,
   PasswordDoesNotMatchError,
+  DatabaseError,
+  ServiceUnavailableError,
+  MissingUrlParamsError,
+  MissingHeaderParamsError,
 } from '../../errors';
 import { HttpResponse } from '../../contracts/http';
 
@@ -25,6 +29,7 @@ import {
   serverError,
   forbidden,
   unauthorized,
+  serviceUnavailableError,
 } from '../utils';
 
 interface ErrorHandlerStrategy {
@@ -48,7 +53,11 @@ class DomainErrorHandlerStrategy implements ErrorHandlerStrategy {
 
 class ApplicationErrorHandlerStrategy implements ErrorHandlerStrategy {
   public handle(error: ApplicationError): HttpResponse {
-    if (error instanceof MissingBodyParamsError) {
+    if (
+      error instanceof MissingBodyParamsError ||
+      error instanceof MissingUrlParamsError ||
+      error instanceof MissingHeaderParamsError
+    ) {
       return badRequest(error);
     }
     if (
@@ -61,10 +70,14 @@ class ApplicationErrorHandlerStrategy implements ErrorHandlerStrategy {
       return unauthorized(error);
     }
     if (
+      error instanceof DatabaseError ||
       error instanceof ActionNotRegisteredError ||
       error instanceof InvalidSequencingDomainError
     ) {
       return serverError(error);
+    }
+    if (error instanceof ServiceUnavailableError) {
+      return serviceUnavailableError(error);
     }
     return unknown(error);
   }

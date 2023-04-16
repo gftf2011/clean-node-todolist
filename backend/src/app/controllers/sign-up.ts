@@ -2,7 +2,7 @@ import { UserDTO } from '../../domain/dto';
 import { HttpRequest, HttpResponse } from '../contracts/http';
 import { UserService } from '../contracts/services';
 import { UserAlreadyExistsError } from '../errors';
-import { TemplateController } from './base';
+import { TemplateController } from './template';
 import { created } from './utils';
 import { CreatedSessionViewModel } from './view-models';
 
@@ -14,7 +14,7 @@ export class SignUpController extends TemplateController {
     super();
   }
 
-  public override buildBodyValidators(request: HttpRequest): Validator[] {
+  protected override buildBodyValidators(request: HttpRequest): Validator[] {
     return [
       ...ValidationBuilder.of()
         .and({
@@ -42,7 +42,7 @@ export class SignUpController extends TemplateController {
     ];
   }
 
-  public async perform(
+  protected async perform(
     request: HttpRequest<UserDTO>,
   ): Promise<HttpResponse<CreatedSessionViewModel>> {
     const userExists = await this.userService.getUserByEmail(

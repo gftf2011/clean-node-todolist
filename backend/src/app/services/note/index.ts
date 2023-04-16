@@ -10,10 +10,9 @@ export class NoteServiceImpl implements NoteService {
     title: string,
     description: string,
     userId: string,
-  ): Promise<string> {
+  ): Promise<void> {
     const action = new CreateNoteAction({ description, title, userId });
-    const response = await this.bus.execute(action);
-    return response as string;
+    await this.bus.execute(action);
   }
 
   public async getNote(id: string): Promise<NoteDTO> {

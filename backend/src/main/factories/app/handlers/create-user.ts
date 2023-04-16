@@ -1,24 +1,36 @@
 import { CreateUserHandler } from '../../../../app/handlers';
+import { PostgresTransaction } from '../../../../infra/database/postgres';
+import { DatabaseCircuitBreakerProxy } from '../../../../infra/database/postgres/proxies';
 import {
+  EncryptionFactory,
+  ENCRYPTION_FACTORIES,
+  HashFactory,
+  HASH_FACTORIES,
   SequencingProviderImpl,
-  Aes256CBCEncryptionProviderCreator,
-  HashSha512ProviderCreator,
 } from '../../../../infra/providers';
-import { LocalUserRepositoryFactory } from '../../../../infra/repositories';
+import {
+  REPOSITORIES_FACTORIES,
+  RepositoriesConcreteFactory,
+} from '../../../../infra/repositories';
 
 export const makeCreateUserHandler = (): CreateUserHandler => {
-  const aes256EncryptionProvider = new Aes256CBCEncryptionProviderCreator(
+  const encryption = new EncryptionFactory(
     process.env.ENCRYPTION_KEY,
     process.env.ENCRYPTION_IV,
-  );
-  const hashSha512Provider = new HashSha512ProviderCreator();
+  ).make(ENCRYPTION_FACTORIES.AES_256_CBC);
+  const hash = new HashFactory().make(HASH_FACTORIES.SHA_521);
   const sequencingProvider = new SequencingProviderImpl();
-  const userRepository = new LocalUserRepositoryFactory().createRepository();
+
+  const postgres = new DatabaseCircuitBreakerProxy(new PostgresTransaction());
+  const repositoryFactory = new RepositoriesConcreteFactory(postgres).make(
+    REPOSITORIES_FACTORIES.REMOTE,
+  );
+  const userRepository = repositoryFactory.createUserRepository();
 
   const handler = new CreateUserHandler(
     sequencingProvider,
-    aes256EncryptionProvider,
-    hashSha512Provider,
+    encryption,
+    hash,
     userRepository,
   );
 

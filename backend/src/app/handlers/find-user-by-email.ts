@@ -2,7 +2,6 @@ import { Handler } from '../contracts/handlers';
 import { FindUserByEmailAction } from '../actions';
 import { DecryptionProvider, EncryptionProvider } from '../contracts/providers';
 import { UserRepository } from '../../domain/repositories';
-import { UserModel } from '../../domain/models';
 import { UserDTO } from '../../domain/dto';
 
 export class FindUserByEmailHandler implements Handler<UserDTO> {
@@ -14,7 +13,7 @@ export class FindUserByEmailHandler implements Handler<UserDTO> {
     private readonly userRepository: UserRepository,
   ) {}
 
-  public async handle(action: FindUserByEmailAction): Promise<UserModel> {
+  public async handle(action: FindUserByEmailAction): Promise<UserDTO> {
     const { email } = action.data;
     const encryptedEmail = this.encryption.encrypt(email);
     const user = await this.userRepository.findByEmail(encryptedEmail);

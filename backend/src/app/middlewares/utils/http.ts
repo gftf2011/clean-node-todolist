@@ -10,6 +10,16 @@ export const unauthorized = (error: Error): HttpResponse => ({
   body: error,
 });
 
+export const serverError = (error: Error): HttpResponse => ({
+  statusCode: 500,
+  body: error,
+});
+
+export const serviceUnavailableError = (error: Error): HttpResponse => ({
+  statusCode: 503,
+  body: error,
+});
+
 export const unknown = (error: Error): HttpResponse => ({
   statusCode: 599,
   body: error,
