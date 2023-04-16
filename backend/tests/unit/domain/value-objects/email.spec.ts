@@ -4,7 +4,7 @@ import { Email } from '../../../../src/domain/value-objects';
 
 import { InvalidEmailError } from '../../../../src/domain/errors';
 
-describe('Email', () => {
+describe('Email - Value Object', () => {
   it('should return "InvalidEmailError" if email is "null"', () => {
     const response = Email.create(null as any);
     expect(response.isLeft()).toBeTruthy();

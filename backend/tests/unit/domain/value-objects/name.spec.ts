@@ -3,7 +3,7 @@ import faker from 'faker';
 import { InvalidNameError } from '../../../../src/domain/errors';
 import { Name } from '../../../../src/domain/value-objects';
 
-describe('Name', () => {
+describe('Name - Value Object', () => {
   it('should return "InvalidNameError" if name is "null"', () => {
     const response = Name.create(null as any);
     expect(response.isLeft()).toBeTruthy();
