@@ -1,15 +1,16 @@
 import { Controller } from '../../../../app/contracts/controllers';
-import { SignInController } from '../../../../app/controllers';
-import { UserServiceImpl } from '../../../../app/services';
+import { GetNoteController } from '../../../../app/controllers';
+import { NoteServiceImpl, UserServiceImpl } from '../../../../app/services';
 import { makeBus } from '../../infra/bus';
 import { TransactionControllerDecorator } from '../../../../app/controllers/decorators';
 import { PostgresTransaction } from '../../../../infra/database/postgres';
 
-export const makeSignInController = (): Controller => {
+export const makeGetNoteController = (): Controller => {
   const postgres = new PostgresTransaction();
   const bus = makeBus();
   const userService = new UserServiceImpl(bus);
-  const controller = new SignInController(userService);
+  const noteService = new NoteServiceImpl(bus);
+  const controller = new GetNoteController(noteService, userService);
 
   const transaction = new TransactionControllerDecorator(controller, postgres);
 

@@ -18,6 +18,10 @@ export abstract class TemplateController implements Controller {
     return [];
   }
 
+  protected buildUrlValidators(_request: HttpRequest): Validator[] {
+    return [];
+  }
+
   private static handleError(error: Error): HttpResponse {
     return new ErrorHandlerInvoker().handle(error);
   }
