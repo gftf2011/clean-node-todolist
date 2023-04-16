@@ -1,5 +1,9 @@
 import { NoteDTO } from '../../../domain/dto';
-import { CreateNoteAction, FindNoteAction } from '../../actions';
+import {
+  CreateNoteAction,
+  FindNoteAction,
+  FindNotesByUserIdAction,
+} from '../../actions';
 import { Bus } from '../../contracts/bus';
 import { NoteService } from '../../contracts/services';
 
@@ -19,5 +23,15 @@ export class NoteServiceImpl implements NoteService {
     const action = new FindNoteAction({ id });
     const response = await this.bus.execute(action);
     return response as NoteDTO;
+  }
+
+  public async getNotesByUserId(
+    userId: string,
+    page: number,
+    limit: number,
+  ): Promise<NoteDTO[]> {
+    const action = new FindNotesByUserIdAction({ userId, page, limit });
+    const response = await this.bus.execute(action);
+    return response as NoteDTO[];
   }
 }

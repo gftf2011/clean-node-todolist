@@ -7,4 +7,9 @@ export interface NoteService {
     userId: string,
   ) => Promise<void>;
   getNote: (id: string) => Promise<NoteDTO>;
+  getNotesByUserId: (
+    userId: string,
+    page: number,
+    limit: number,
+  ) => Promise<NoteDTO[]>;
 }

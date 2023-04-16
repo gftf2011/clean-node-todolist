@@ -3,30 +3,17 @@ import { NoteService, UserService } from '../contracts/services';
 import { UserDoesNotExistsError } from '../errors';
 import { TemplateController } from './template';
 import { created } from './utils';
-import { NoteViewModel } from './view-models';
+import { NotesViewModel } from './view-models';
 
 import { Validator } from '../contracts/validation';
 import { ValidationBuilder, FieldOrigin } from '../validation';
 
-export class GetNoteController extends TemplateController {
+export class GetNotesByUserIdController extends TemplateController {
   constructor(
     private readonly noteService: NoteService,
     private readonly userService: UserService,
   ) {
     super();
-  }
-
-  protected override buildUrlValidators(request: HttpRequest): Validator[] {
-    return [
-      ...ValidationBuilder.of()
-        .and({
-          value: request.params.id,
-          fieldName: 'id',
-          fieldOrigin: FieldOrigin.URL,
-        })
-        .required()
-        .build(),
-    ];
   }
 
   protected override buildHeaderValidators(request: HttpRequest): Validator[] {
@@ -37,6 +24,16 @@ export class GetNoteController extends TemplateController {
           fieldName: 'userId',
           fieldOrigin: FieldOrigin.HEADER,
         })
+        .and({
+          value: request.headers.page,
+          fieldName: 'page',
+          fieldOrigin: FieldOrigin.HEADER,
+        })
+        .and({
+          value: request.headers.limit,
+          fieldName: 'limit',
+          fieldOrigin: FieldOrigin.HEADER,
+        })
         .required()
         .build(),
     ];
@@ -44,10 +41,14 @@ export class GetNoteController extends TemplateController {
 
   protected async perform(
     request: HttpRequest<any>,
-  ): Promise<HttpResponse<NoteViewModel>> {
+  ): Promise<HttpResponse<NotesViewModel>> {
     const user = await this.userService.getUser(request.headers.userId);
     if (!user) throw new UserDoesNotExistsError();
-    const note = await this.noteService.getNote(request.params.id);
-    return created(NoteViewModel.map(note));
+    const notes = await this.noteService.getNotesByUserId(
+      request.headers.userId,
+      request.headers.page,
+      request.headers.limit,
+    );
+    return created(NotesViewModel.map(notes));
   }
 }
