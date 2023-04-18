@@ -3,12 +3,12 @@ import { HttpRequest, HttpResponse } from '../contracts/http';
 import { NoteService, UserService } from '../contracts/services';
 import { UserDoesNotExistsError } from '../errors';
 import { TemplateController } from './template';
-import { created } from './utils';
+import { noContent } from './utils';
 
 import { Validator } from '../contracts/validation';
 import { ValidationBuilder, FieldOrigin } from '../validation';
 
-export class CreateNoteController extends TemplateController {
+export class UpdateNoteController extends TemplateController {
   constructor(
     private readonly noteService: NoteService,
     private readonly userService: UserService,
@@ -19,6 +19,11 @@ export class CreateNoteController extends TemplateController {
   protected override buildBodyValidators(request: HttpRequest): Validator[] {
     return [
       ...ValidationBuilder.of()
+        .and({
+          value: request.body.id,
+          fieldName: 'id',
+          fieldOrigin: FieldOrigin.BODY,
+        })
         .and({
           value: request.body.title,
           fieldName: 'title',
@@ -49,14 +54,10 @@ export class CreateNoteController extends TemplateController {
 
   protected async perform(
     request: HttpRequest<NoteDTO>,
-  ): Promise<HttpResponse<{ created: boolean }>> {
+  ): Promise<HttpResponse<any>> {
     const user = await this.userService.getUser(request.headers.userId);
     if (!user) throw new UserDoesNotExistsError();
-    await this.noteService.saveNote(
-      request.body.title,
-      request.body.description,
-      request.headers.userId,
-    );
-    return created({ created: true });
+    await this.noteService.updateNote(request.body);
+    return noContent();
   }
 }

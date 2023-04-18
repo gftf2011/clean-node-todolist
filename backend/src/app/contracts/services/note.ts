@@ -12,4 +12,5 @@ export interface NoteService {
     page: number,
     limit: number,
   ) => Promise<NoteDTO[]>;
+  updateNote: (note: NoteDTO) => Promise<void>;
 }

@@ -7,6 +7,7 @@ import {
   makeCreateNoteHandler,
   makeFindNoteHandler,
   makeFindNotesByUserIdHandler,
+  makeUpdateNoteHandler,
 } from '../../app/handlers';
 
 import { BusMediator } from '../../../../infra/bus';
@@ -21,6 +22,7 @@ export const makeBus = (): BusMediator => {
     makeCreateNoteHandler(),
     makeFindNoteHandler(),
     makeFindNotesByUserIdHandler(),
+    makeUpdateNoteHandler(),
   ];
   const bus = new BusMediator(handlers);
   return bus;

@@ -6,3 +6,4 @@ export * from './find-notes-by-user-id';
 export * from './find-user-by-email';
 export * from './find-user';
 export * from './password-match';
+export * from './update-note';

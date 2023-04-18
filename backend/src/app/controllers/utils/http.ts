@@ -10,6 +10,10 @@ export const created = (data: any): HttpResponse => ({
   body: data,
 });
 
+export const noContent = (): HttpResponse => ({
+  statusCode: 204,
+});
+
 export const unauthorized = (error: Error): HttpResponse => ({
   statusCode: 401,
   body: error,

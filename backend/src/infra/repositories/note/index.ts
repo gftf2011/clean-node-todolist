@@ -118,15 +118,32 @@ class RemoteNoteRepositoryProduct implements NoteRepository {
 
   async update(noteUpdated: NoteModel): Promise<void> {
     const queryText =
-      'UPDATE notes_schema.notes SET id = $1, title = $2, description = $3, finished = $4, updatedAt = $5 WHERE id = $1';
+      'UPDATE notes_schema.notes SET title = $2, description = $3, updatedAt = $4 WHERE id = $1';
 
     const values: any[] = [
       noteUpdated.id,
       noteUpdated.title,
       noteUpdated.description,
-      noteUpdated.finished,
       noteUpdated.updatedAt,
     ];
+
+    const input = {
+      queryText,
+      values,
+    };
+
+    await this.query.query(input);
+  }
+
+  async updateFinishedNote(
+    id: string,
+    finished: boolean,
+    updatedAt: string,
+  ): Promise<void> {
+    const queryText =
+      'UPDATE notes_schema.notes SET finished = $2, updatedAt = $3 WHERE id = $1';
+
+    const values: any[] = [id, finished, updatedAt];
 
     const input = {
       queryText,
@@ -179,7 +196,26 @@ class FakeLocalNoteRepositoryProduct implements NoteRepository {
     this.notes.forEach((note: NoteModel, index: number, array: NoteModel[]) => {
       if (note.id === noteUpdated.id) {
         // eslint-disable-next-line no-param-reassign
-        array[index] = noteUpdated;
+        array[index].updatedAt = noteUpdated.updatedAt;
+        // eslint-disable-next-line no-param-reassign
+        array[index].description = noteUpdated.description;
+        // eslint-disable-next-line no-param-reassign
+        array[index].title = noteUpdated.title;
+      }
+    });
+  }
+
+  async updateFinishedNote(
+    id: string,
+    finished: boolean,
+    updatedAt: string,
+  ): Promise<void> {
+    this.notes.forEach((note: NoteModel, index: number, array: NoteModel[]) => {
+      if (note.id === id) {
+        // eslint-disable-next-line no-param-reassign
+        array[index].updatedAt = updatedAt;
+        // eslint-disable-next-line no-param-reassign
+        array[index].finished = finished;
       }
     });
   }
@@ -212,6 +248,14 @@ abstract class NoteRepositoryCreator implements NoteRepository {
 
   public async update(value: NoteModel): Promise<void> {
     await this.product.update(value);
+  }
+
+  public async updateFinishedNote(
+    id: string,
+    finished: boolean,
+    updatedAt: string,
+  ): Promise<void> {
+    await this.product.updateFinishedNote(id, finished, updatedAt);
   }
 
   public async delete(id: string): Promise<void> {

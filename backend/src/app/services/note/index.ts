@@ -3,6 +3,7 @@ import {
   CreateNoteAction,
   FindNoteAction,
   FindNotesByUserIdAction,
+  UpdateNoteAction,
 } from '../../actions';
 import { Bus } from '../../contracts/bus';
 import { NoteService } from '../../contracts/services';
@@ -33,5 +34,14 @@ export class NoteServiceImpl implements NoteService {
     const action = new FindNotesByUserIdAction({ userId, page, limit });
     const response = await this.bus.execute(action);
     return response as NoteDTO[];
+  }
+
+  public async updateNote(note: NoteDTO): Promise<void> {
+    const action = new UpdateNoteAction({
+      description: note.description,
+      id: note.id,
+      title: note.title,
+    });
+    await this.bus.execute(action);
   }
 }
