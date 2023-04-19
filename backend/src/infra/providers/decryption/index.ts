@@ -32,6 +32,17 @@ class Aes256CBCDecryptionProviderProduct extends DecryptionProviderProduct {
   }
 }
 
+class Aes256GCMDecryptionProviderProduct extends DecryptionProviderProduct {
+  protected decryption = 'aes-256-gcm';
+
+  constructor(
+    protected override readonly key: string,
+    protected override readonly iv: string,
+  ) {
+    super(key, iv);
+  }
+}
+
 abstract class DecryptionProviderCreator implements DecryptionProvider {
   private product: DecryptionProvider;
 
@@ -56,8 +67,15 @@ class Aes256CBCDecryptionProviderCreator extends DecryptionProviderCreator {
   }
 }
 
+class Aes256GCMDecryptionProviderCreator extends DecryptionProviderCreator {
+  protected factoryMethod(key: string, iv: string): DecryptionProviderProduct {
+    return new Aes256GCMDecryptionProviderProduct(key, iv);
+  }
+}
+
 export enum DECRYPTION_FACTORIES {
   AES_256_CBC = 'AES_256_CBC',
+  AES_256_GCM = 'AES_256_GCM',
 }
 
 export class DecryptionFactory {
@@ -67,6 +85,9 @@ export class DecryptionFactory {
   public make(factoryType: DECRYPTION_FACTORIES): DecryptionProvider {
     if (factoryType === DECRYPTION_FACTORIES.AES_256_CBC) {
       return new Aes256CBCDecryptionProviderCreator(this.key, this.iv);
+    }
+    if (factoryType === DECRYPTION_FACTORIES.AES_256_GCM) {
+      return new Aes256GCMDecryptionProviderCreator(this.key, this.iv);
     }
   }
 }

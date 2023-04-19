@@ -20,8 +20,8 @@ export const makeAuthMiddleware = (): Middleware => {
     Number(process.env.JWT_EXPIRATION_TIME),
   );
   const decryptionProvider = new DecryptionFactory(
-    process.env.ENCRYPTION_KEY,
-    process.env.ENCRYPTION_IV,
+    process.env.ENCRYPTION_KEY_AES_256_CBC,
+    process.env.ENCRYPTION_IV_AES_256_CBC,
   ).make(DECRYPTION_FACTORIES.AES_256_CBC);
   const repositoryFactory = new RepositoriesConcreteFactory(proxy).make(
     REPOSITORIES_FACTORIES.REMOTE,

@@ -17,9 +17,9 @@ export const makeFindNotesByUserIdHandler = (): FindNotesByUserIdHandler => {
   );
   const noteRepository = repositoryFactory.createNoteRepository();
   const decryption = new DecryptionFactory(
-    process.env.ENCRYPTION_KEY,
-    process.env.ENCRYPTION_IV,
-  ).make(DECRYPTION_FACTORIES.AES_256_CBC);
+    process.env.ENCRYPTION_KEY_AES_256_GCM,
+    process.env.ENCRYPTION_IV_AES_256_GCM,
+  ).make(DECRYPTION_FACTORIES.AES_256_GCM);
   const handler = new FindNotesByUserIdHandler(decryption, noteRepository);
   return handler;
 };

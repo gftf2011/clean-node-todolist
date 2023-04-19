@@ -13,9 +13,9 @@ import {
 
 export const makeCreateNoteHandler = (): CreateNoteHandler => {
   const encryption = new EncryptionFactory(
-    process.env.ENCRYPTION_KEY,
-    process.env.ENCRYPTION_IV,
-  ).make(ENCRYPTION_FACTORIES.AES_256_CBC);
+    process.env.ENCRYPTION_KEY_AES_256_GCM,
+    process.env.ENCRYPTION_IV_AES_256_GCM,
+  ).make(ENCRYPTION_FACTORIES.AES_256_GCM);
   const sequencingProvider = new SequencingProviderImpl();
 
   const postgres = new DatabaseCircuitBreakerProxy(new PostgresTransaction());

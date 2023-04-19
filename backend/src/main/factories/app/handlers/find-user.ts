@@ -17,8 +17,8 @@ export const makeFindUserHandler = (): FindUserHandler => {
   );
   const userRepository = repositoryFactory.createUserRepository();
   const decryption = new DecryptionFactory(
-    process.env.ENCRYPTION_KEY,
-    process.env.ENCRYPTION_IV,
+    process.env.ENCRYPTION_KEY_AES_256_CBC,
+    process.env.ENCRYPTION_IV_AES_256_CBC,
   ).make(DECRYPTION_FACTORIES.AES_256_CBC);
   const handler = new FindUserHandler(decryption, userRepository);
   return handler;
