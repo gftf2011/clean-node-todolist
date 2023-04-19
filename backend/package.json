@@ -34,8 +34,6 @@
     "faker": "5.5.3",
     "jest": "~27.5.1",
     "prettier": "^2.7.1",
-    "puppeteer": "18.1.0",
-    "ssn": "^1.0.3",
     "supertest": "^6.3.2",
     "ts-jest": "~27.1.4",
     "typescript": "^4.6.2"
@@ -48,7 +46,6 @@
     "handlebars": "^4.7.7",
     "helmet": "^6.0.0",
     "jsonwebtoken": "^9.0.0",
-    "nodemailer": "^6.8.0",
     "pg": "^8.8.0",
     "uuid": "^9.0.0"
   },

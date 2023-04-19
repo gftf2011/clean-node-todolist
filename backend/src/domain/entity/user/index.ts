@@ -45,7 +45,7 @@ export class User {
 
     const idOrError = ID.create(id);
     const nameOrError = Name.create(name);
-    const lastnameOrError = Lastname.create(name);
+    const lastnameOrError = Lastname.create(lastname);
     const emailOrError = Email.create(email);
     const passwordOrError = Password.create(password);
 
