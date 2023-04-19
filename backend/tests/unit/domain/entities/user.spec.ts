@@ -9,7 +9,7 @@ import {
   WeakPasswordError,
 } from '../../../../src/domain/errors';
 
-describe('User Entity', () => {
+describe('User - Entity', () => {
   it('should return "InvalidIdError" if id is invalid', () => {
     const response = User.create('', {
       email: faker.internet.email().toLowerCase(),
