@@ -3,6 +3,7 @@ import {
   CreateNoteAction,
   FindNoteAction,
   FindNotesByUserIdAction,
+  IsNoteFinishedAction,
   UpdateNoteAction,
 } from '../../actions';
 import { Bus } from '../../contracts/bus';
@@ -41,6 +42,17 @@ export class NoteServiceImpl implements NoteService {
       description: note.description,
       id: note.id,
       title: note.title,
+    });
+    await this.bus.execute(action);
+  }
+
+  public async updateFinishedNote(
+    id: string,
+    finished: boolean,
+  ): Promise<void> {
+    const action = new IsNoteFinishedAction({
+      id,
+      finished,
     });
     await this.bus.execute(action);
   }

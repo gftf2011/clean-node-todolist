@@ -1,4 +1,3 @@
-import { NoteDTO } from '../../domain/dto';
 import { HttpRequest, HttpResponse } from '../contracts/http';
 import { NoteService, UserService } from '../contracts/services';
 import { UserDoesNotExistsError } from '../errors';
@@ -8,7 +7,7 @@ import { noContent } from './utils';
 import { Validator } from '../contracts/validation';
 import { ValidationBuilder, FieldOrigin } from '../validation';
 
-export class UpdateNoteController extends TemplateController {
+export class UpdateFinishedNoteController extends TemplateController {
   constructor(
     private readonly noteService: NoteService,
     private readonly userService: UserService,
@@ -25,13 +24,8 @@ export class UpdateNoteController extends TemplateController {
           fieldOrigin: FieldOrigin.BODY,
         })
         .and({
-          value: request.body.title,
-          fieldName: 'title',
-          fieldOrigin: FieldOrigin.BODY,
-        })
-        .and({
-          value: request.body.description,
-          fieldName: 'description',
+          value: request.body.finished,
+          fieldName: 'finished',
           fieldOrigin: FieldOrigin.BODY,
         })
         .required()
@@ -53,11 +47,14 @@ export class UpdateNoteController extends TemplateController {
   }
 
   protected async perform(
-    request: HttpRequest<NoteDTO>,
+    request: HttpRequest<{ id: string; finished: boolean }>,
   ): Promise<HttpResponse<void>> {
     const user = await this.userService.getUser(request.headers.userId);
     if (!user) throw new UserDoesNotExistsError();
-    await this.noteService.updateNote(request.body);
+    await this.noteService.updateFinishedNote(
+      request.body.id,
+      request.body.finished,
+    );
     return noContent();
   }
 }
