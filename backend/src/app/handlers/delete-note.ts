@@ -10,9 +10,9 @@ export class DeleteNoteHandler implements Handler<boolean> {
   public async handle(action: DeleteNoteAction): Promise<boolean> {
     const { id } = action.data;
 
-    const { finished } = await this.noteRepository.find(id);
+    const note = await this.noteRepository.find(id);
 
-    if (!finished) return false;
+    if (!note || note.finished === false) return false;
 
     await this.noteRepository.delete(id);
 

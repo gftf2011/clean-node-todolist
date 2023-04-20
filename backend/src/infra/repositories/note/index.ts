@@ -221,7 +221,7 @@ class FakeLocalNoteRepositoryProduct implements NoteRepository {
   }
 
   async delete(id: string): Promise<void> {
-    this.notes = this.notes.filter(note => note.id === id);
+    this.notes = this.notes.filter(note => note.id !== id);
   }
 }
 
