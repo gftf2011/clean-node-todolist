@@ -17,11 +17,13 @@ export class FindNoteHandler implements Handler<NoteDTO> {
 
     const note = await this.noteRepository.find(id);
 
-    const decryptedNote: NoteDTO = {
-      ...note,
-      description: this.decryption.decrypt(note.description),
-      title: this.decryption.decrypt(note.title),
-    };
+    const decryptedNote: NoteDTO = note
+      ? {
+          ...note,
+          description: this.decryption.decrypt(note.description),
+          title: this.decryption.decrypt(note.title),
+        }
+      : null;
 
     return decryptedNote;
   }

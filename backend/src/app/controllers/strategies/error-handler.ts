@@ -21,6 +21,7 @@ import {
   MissingUrlParamsError,
   MissingHeaderParamsError,
   UnfinishedNoteError,
+  NoteNotFoundError,
 } from '../../errors';
 import { HttpResponse } from '../../contracts/http';
 
@@ -58,7 +59,8 @@ class ApplicationErrorHandlerStrategy implements ErrorHandlerStrategy {
       error instanceof MissingBodyParamsError ||
       error instanceof MissingUrlParamsError ||
       error instanceof MissingHeaderParamsError ||
-      error instanceof UnfinishedNoteError
+      error instanceof UnfinishedNoteError ||
+      error instanceof NoteNotFoundError
     ) {
       return badRequest(error);
     }

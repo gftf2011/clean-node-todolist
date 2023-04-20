@@ -1,8 +1,8 @@
 import { HttpRequest, HttpResponse } from '../contracts/http';
 import { NoteService, UserService } from '../contracts/services';
-import { UserDoesNotExistsError } from '../errors';
+import { NoteNotFoundError, UserDoesNotExistsError } from '../errors';
 import { TemplateController } from './template';
-import { created } from './utils';
+import { ok } from './utils';
 import { NoteViewModel } from './view-models';
 
 import { Validator } from '../contracts/validation';
@@ -48,6 +48,7 @@ export class GetNoteController extends TemplateController {
     const user = await this.userService.getUser(request.headers.userId);
     if (!user) throw new UserDoesNotExistsError();
     const note = await this.noteService.getNote(request.params.id);
-    return created(NoteViewModel.map(note));
+    if (!note) throw new NoteNotFoundError(request.params.id);
+    return ok(NoteViewModel.map(note));
   }
 }
