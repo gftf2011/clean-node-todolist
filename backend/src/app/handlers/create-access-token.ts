@@ -14,9 +14,7 @@ export class CreateAccessTokenHandler implements Handler<string> {
     const { id, email } = action.data;
 
     const token = this.token.sign({
-      payload: {
-        id,
-      },
+      payload: { id },
       secret: this.secret,
       subject: email,
     });
