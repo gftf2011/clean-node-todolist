@@ -1,6 +1,7 @@
 import { NoteDTO } from '../../../domain/dto';
 import {
   CreateNoteAction,
+  DeleteNoteAction,
   FindNoteAction,
   FindNotesByUserIdAction,
   IsNoteFinishedAction,
@@ -55,5 +56,13 @@ export class NoteServiceImpl implements NoteService {
       finished,
     });
     await this.bus.execute(action);
+  }
+
+  public async deleteNote(id: string): Promise<boolean> {
+    const action = new DeleteNoteAction({
+      id,
+    });
+    const response = await this.bus.execute(action);
+    return response as boolean;
   }
 }

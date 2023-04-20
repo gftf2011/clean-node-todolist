@@ -20,6 +20,7 @@ import {
   ServiceUnavailableError,
   MissingUrlParamsError,
   MissingHeaderParamsError,
+  UnfinishedNoteError,
 } from '../../errors';
 import { HttpResponse } from '../../contracts/http';
 
@@ -56,7 +57,8 @@ class ApplicationErrorHandlerStrategy implements ErrorHandlerStrategy {
     if (
       error instanceof MissingBodyParamsError ||
       error instanceof MissingUrlParamsError ||
-      error instanceof MissingHeaderParamsError
+      error instanceof MissingHeaderParamsError ||
+      error instanceof UnfinishedNoteError
     ) {
       return badRequest(error);
     }

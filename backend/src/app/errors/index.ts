@@ -10,5 +10,6 @@ export * from './missing-url-params';
 export * from './password-does-not-match';
 export * from './service-unavailable';
 export * from './token-expired';
+export * from './unfinished-note';
 export * from './user-already-exists';
 export * from './user-does-not-exists';

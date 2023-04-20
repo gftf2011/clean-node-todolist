@@ -14,4 +14,5 @@ export interface NoteService {
   ) => Promise<NoteDTO[]>;
   updateNote: (note: NoteDTO) => Promise<void>;
   updateFinishedNote: (id: string, finished: boolean) => Promise<void>;
+  deleteNote: (id: string) => Promise<boolean>;
 }
