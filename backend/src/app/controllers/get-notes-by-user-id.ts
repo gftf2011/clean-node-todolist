@@ -2,7 +2,7 @@ import { HttpRequest, HttpResponse } from '../contracts/http';
 import { NoteService, UserService } from '../contracts/services';
 import { UserDoesNotExistsError } from '../errors';
 import { TemplateController } from './template';
-import { created } from './utils';
+import { ok } from './utils';
 import { NotesViewModel } from './view-models';
 
 import { Validator } from '../contracts/validation';
@@ -49,6 +49,6 @@ export class GetNotesByUserIdController extends TemplateController {
       request.headers.page,
       request.headers.limit,
     );
-    return created(NotesViewModel.map(notes));
+    return ok(NotesViewModel.map(notes));
   }
 }
