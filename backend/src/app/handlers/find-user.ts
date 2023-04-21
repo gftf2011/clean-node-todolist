@@ -15,10 +15,12 @@ export class FindUserHandler implements Handler<UserDTO> {
   public async handle(action: FindUserAction): Promise<UserDTO> {
     const { id } = action.data;
     const user = await this.userRepository.find(id);
-    const decryptedUser = {
-      ...user,
-      email: this.decryption.decrypt(user.email),
-    };
+    const decryptedUser = user
+      ? {
+          ...user,
+          email: this.decryption.decrypt(user.email),
+        }
+      : null;
 
     return decryptedUser;
   }
