@@ -37,13 +37,13 @@ describe('Create User - Handler', () => {
     const sequencingProvider = new SequencingProviderDummy();
     const encryptionProvider = new EncryptionProviderDummy();
     const hashProvider = new HashProviderDummy();
-    const noteRepositoryDummy = new UserRepositoryDummy();
+    const userRepositoryDummy = new UserRepositoryDummy();
 
     const handler = new CreateUserHandler(
       sequencingProvider,
       encryptionProvider,
       hashProvider,
-      noteRepositoryDummy,
+      userRepositoryDummy,
     );
 
     expect(handler.operation).toBe('create-user');
@@ -55,13 +55,13 @@ describe('Create User - Handler', () => {
     });
     const encryptionProvider = new EncryptionProviderDummy();
     const hashProvider = new HashProviderDummy();
-    const noteRepositoryDummy = new UserRepositoryDummy();
+    const userRepositoryDummy = new UserRepositoryDummy();
 
     const handler = new CreateUserHandler(
       sequencingProvider,
       encryptionProvider,
       hashProvider,
-      noteRepositoryDummy,
+      userRepositoryDummy,
     );
 
     const action = new CreateUserAction({
@@ -82,13 +82,13 @@ describe('Create User - Handler', () => {
     });
     const encryptionProvider = new EncryptionProviderDummy();
     const hashProvider = new HashProviderDummy();
-    const noteRepositoryDummy = new UserRepositoryDummy();
+    const userRepositoryDummy = new UserRepositoryDummy();
 
     const handler = new CreateUserHandler(
       sequencingProvider,
       encryptionProvider,
       hashProvider,
-      noteRepositoryDummy,
+      userRepositoryDummy,
     );
 
     const action = new CreateUserAction({
@@ -109,13 +109,13 @@ describe('Create User - Handler', () => {
     });
     const encryptionProvider = new EncryptionProviderDummy();
     const hashProvider = new HashProviderDummy();
-    const noteRepositoryDummy = new UserRepositoryDummy();
+    const userRepositoryDummy = new UserRepositoryDummy();
 
     const handler = new CreateUserHandler(
       sequencingProvider,
       encryptionProvider,
       hashProvider,
-      noteRepositoryDummy,
+      userRepositoryDummy,
     );
 
     const action = new CreateUserAction({
@@ -136,13 +136,13 @@ describe('Create User - Handler', () => {
     });
     const encryptionProvider = new EncryptionProviderDummy();
     const hashProvider = new HashProviderDummy();
-    const noteRepositoryDummy = new UserRepositoryDummy();
+    const userRepositoryDummy = new UserRepositoryDummy();
 
     const handler = new CreateUserHandler(
       sequencingProvider,
       encryptionProvider,
       hashProvider,
-      noteRepositoryDummy,
+      userRepositoryDummy,
     );
 
     const action = new CreateUserAction({

@@ -17,10 +17,12 @@ export class FindUserByEmailHandler implements Handler<UserDTO> {
     const { email } = action.data;
     const encryptedEmail = this.encryption.encrypt(email);
     const user = await this.userRepository.findByEmail(encryptedEmail);
-    const decryptedUser = {
-      ...user,
-      email: this.decryption.decrypt(user.email),
-    };
+    const decryptedUser = user
+      ? {
+          ...user,
+          email: this.decryption.decrypt(user.email),
+        }
+      : null;
 
     return decryptedUser;
   }
