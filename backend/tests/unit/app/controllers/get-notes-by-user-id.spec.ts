@@ -20,7 +20,7 @@ import { NoteServiceStub } from '../../../doubles/stubs/app/services/note';
 import { UserServiceStub } from '../../../doubles/stubs/app/services/user';
 
 describe('Get Notes By User Id - Controller', () => {
-  it('should throw "MissingHeaderParamsError" if userId do not exists', async () => {
+  it('should throw "MissingHeaderParamsError" if userId is "undefined"', async () => {
     const userService = new UserServiceDummy();
     const noteService = new NoteServiceDummy();
     const controller = new GetNotesByUserIdController(noteService, userService);
@@ -39,7 +39,47 @@ describe('Get Notes By User Id - Controller', () => {
     );
   });
 
-  it('should throw "MissingHeaderParamsError" if limit do not exists', async () => {
+  it('should throw "MissingHeaderParamsError" if userId is "null"', async () => {
+    const userService = new UserServiceDummy();
+    const noteService = new NoteServiceDummy();
+    const controller = new GetNotesByUserIdController(noteService, userService);
+
+    const request: HttpRequest = {
+      headers: {
+        userId: null,
+        limit: 0,
+        page: 0,
+      },
+    };
+
+    const response = await controller.handle(request);
+
+    expect(response).toStrictEqual(
+      badRequest(new MissingHeaderParamsError(['userId'])),
+    );
+  });
+
+  it('should throw "MissingHeaderParamsError" if userId is empty string', async () => {
+    const userService = new UserServiceDummy();
+    const noteService = new NoteServiceDummy();
+    const controller = new GetNotesByUserIdController(noteService, userService);
+
+    const request: HttpRequest = {
+      headers: {
+        userId: '',
+        limit: 0,
+        page: 0,
+      },
+    };
+
+    const response = await controller.handle(request);
+
+    expect(response).toStrictEqual(
+      badRequest(new MissingHeaderParamsError(['userId'])),
+    );
+  });
+
+  it('should throw "MissingHeaderParamsError" if limit is "undefined"', async () => {
     const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
 
     const userService = new UserServiceDummy();
@@ -60,7 +100,29 @@ describe('Get Notes By User Id - Controller', () => {
     );
   });
 
-  it('should throw "MissingHeaderParamsError" if page do not exists', async () => {
+  it('should throw "MissingHeaderParamsError" if limit is "null"', async () => {
+    const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
+
+    const userService = new UserServiceDummy();
+    const noteService = new NoteServiceDummy();
+    const controller = new GetNotesByUserIdController(noteService, userService);
+
+    const request: HttpRequest = {
+      headers: {
+        userId: userID,
+        limit: null,
+        page: 0,
+      },
+    };
+
+    const response = await controller.handle(request);
+
+    expect(response).toStrictEqual(
+      badRequest(new MissingHeaderParamsError(['limit'])),
+    );
+  });
+
+  it('should throw "MissingHeaderParamsError" if page is "undefined"', async () => {
     const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
 
     const userService = new UserServiceDummy();
@@ -71,6 +133,28 @@ describe('Get Notes By User Id - Controller', () => {
       headers: {
         userId: userID,
         limit: 0,
+      },
+    };
+
+    const response = await controller.handle(request);
+
+    expect(response).toStrictEqual(
+      badRequest(new MissingHeaderParamsError(['page'])),
+    );
+  });
+
+  it('should throw "MissingHeaderParamsError" if page is "null"', async () => {
+    const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
+
+    const userService = new UserServiceDummy();
+    const noteService = new NoteServiceDummy();
+    const controller = new GetNotesByUserIdController(noteService, userService);
+
+    const request: HttpRequest = {
+      headers: {
+        userId: userID,
+        limit: 0,
+        page: null,
       },
     };
 

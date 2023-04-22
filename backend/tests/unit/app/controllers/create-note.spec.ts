@@ -20,7 +20,7 @@ import { NoteServiceStub } from '../../../doubles/stubs/app/services/note';
 import { UserServiceStub } from '../../../doubles/stubs/app/services/user';
 
 describe('Create Note - Controller', () => {
-  it('should throw "MissingBodyParamsError" if title do not exists', async () => {
+  it('should throw "MissingBodyParamsError" if title is "undefined"', async () => {
     const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
 
     const userService = new UserServiceDummy();
@@ -43,7 +43,55 @@ describe('Create Note - Controller', () => {
     );
   });
 
-  it('should throw "MissingBodyParamsError" if description do not exists', async () => {
+  it('should throw "MissingBodyParamsError" if title is "null"', async () => {
+    const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
+
+    const userService = new UserServiceDummy();
+    const noteService = new NoteServiceDummy();
+    const controller = new CreateNoteController(noteService, userService);
+
+    const note: NoteDTO = {
+      title: null,
+      description: 'description_mock',
+    };
+
+    const request: HttpRequest<NoteDTO> = {
+      body: note as NoteDTO,
+      headers: { userId: userID },
+    };
+
+    const response = await controller.handle(request);
+
+    expect(response).toStrictEqual(
+      badRequest(new MissingBodyParamsError(['title'])),
+    );
+  });
+
+  it('should throw "MissingBodyParamsError" if title is empty string', async () => {
+    const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
+
+    const userService = new UserServiceDummy();
+    const noteService = new NoteServiceDummy();
+    const controller = new CreateNoteController(noteService, userService);
+
+    const note: NoteDTO = {
+      title: '',
+      description: 'description_mock',
+    };
+
+    const request: HttpRequest<NoteDTO> = {
+      body: note as NoteDTO,
+      headers: { userId: userID },
+    };
+
+    const response = await controller.handle(request);
+
+    expect(response).toStrictEqual(
+      badRequest(new MissingBodyParamsError(['title'])),
+    );
+  });
+
+  it('should throw "MissingBodyParamsError" if description is "undefined"', async () => {
     const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
 
     const userService = new UserServiceDummy();
@@ -66,7 +114,55 @@ describe('Create Note - Controller', () => {
     );
   });
 
-  it('should throw "MissingHeaderParamsError" if userId do not exists', async () => {
+  it('should throw "MissingBodyParamsError" if description is "null"', async () => {
+    const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
+
+    const userService = new UserServiceDummy();
+    const noteService = new NoteServiceDummy();
+    const controller = new CreateNoteController(noteService, userService);
+
+    const note: NoteDTO = {
+      title: 'title_mock',
+      description: null,
+    };
+
+    const request: HttpRequest<NoteDTO> = {
+      body: note as NoteDTO,
+      headers: { userId: userID },
+    };
+
+    const response = await controller.handle(request);
+
+    expect(response).toStrictEqual(
+      badRequest(new MissingBodyParamsError(['description'])),
+    );
+  });
+
+  it('should throw "MissingBodyParamsError" if description is empty string', async () => {
+    const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
+
+    const userService = new UserServiceDummy();
+    const noteService = new NoteServiceDummy();
+    const controller = new CreateNoteController(noteService, userService);
+
+    const note: NoteDTO = {
+      title: 'title_mock',
+      description: '',
+    };
+
+    const request: HttpRequest<NoteDTO> = {
+      body: note as NoteDTO,
+      headers: { userId: userID },
+    };
+
+    const response = await controller.handle(request);
+
+    expect(response).toStrictEqual(
+      badRequest(new MissingBodyParamsError(['description'])),
+    );
+  });
+
+  it('should throw "MissingHeaderParamsError" if userId is "undefined"', async () => {
     const userService = new UserServiceDummy();
     const noteService = new NoteServiceDummy();
     const controller = new CreateNoteController(noteService, userService);
@@ -79,6 +175,54 @@ describe('Create Note - Controller', () => {
     const request: HttpRequest<NoteDTO> = {
       body: note,
       headers: {},
+    };
+
+    const response = await controller.handle(request);
+
+    expect(response).toStrictEqual(
+      badRequest(new MissingHeaderParamsError(['userId'])),
+    );
+  });
+
+  it('should throw "MissingHeaderParamsError" if userId is "null"', async () => {
+    const userService = new UserServiceDummy();
+    const noteService = new NoteServiceDummy();
+    const controller = new CreateNoteController(noteService, userService);
+
+    const note: NoteDTO = {
+      title: 'title_mock',
+      description: 'description_mock',
+    };
+
+    const request: HttpRequest<NoteDTO> = {
+      body: note,
+      headers: {
+        userId: null,
+      },
+    };
+
+    const response = await controller.handle(request);
+
+    expect(response).toStrictEqual(
+      badRequest(new MissingHeaderParamsError(['userId'])),
+    );
+  });
+
+  it('should throw "MissingHeaderParamsError" if userId is empty string', async () => {
+    const userService = new UserServiceDummy();
+    const noteService = new NoteServiceDummy();
+    const controller = new CreateNoteController(noteService, userService);
+
+    const note: NoteDTO = {
+      title: 'title_mock',
+      description: 'description_mock',
+    };
+
+    const request: HttpRequest<NoteDTO> = {
+      body: note,
+      headers: {
+        userId: '',
+      },
     };
 
     const response = await controller.handle(request);

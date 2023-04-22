@@ -20,7 +20,7 @@ import { UserServiceDummy } from '../../../doubles/dummies/app/services/user';
 import { UserServiceStub } from '../../../doubles/stubs/app/services/user';
 
 describe('Sign In - Controller', () => {
-  it('should throw "MissingBodyParamsError" if email do not exists', async () => {
+  it('should throw "MissingBodyParamsError" if email is "undefined"', async () => {
     const user: Omit<{ email: string; password: string }, 'email'> = {
       password: 'password_mock',
     };
@@ -40,9 +40,93 @@ describe('Sign In - Controller', () => {
     );
   });
 
-  it('should throw "MissingBodyParamsError" if password do not exists', async () => {
+  it('should throw "MissingBodyParamsError" if email is "null"', async () => {
+    const user: { email: string; password: string } = {
+      email: null,
+      password: 'password_mock',
+    };
+
+    const service = new UserServiceDummy();
+
+    const request: HttpRequest<{ email: string; password: string }> = {
+      body: user as { email: string; password: string },
+    };
+
+    const controller = new SignInController(service);
+
+    const response = await controller.handle(request);
+
+    expect(response).toStrictEqual(
+      badRequest(new MissingBodyParamsError(['email'])),
+    );
+  });
+
+  it('should throw "MissingBodyParamsError" if email is empty string', async () => {
+    const user: { email: string; password: string } = {
+      email: '',
+      password: 'password_mock',
+    };
+
+    const service = new UserServiceDummy();
+
+    const request: HttpRequest<{ email: string; password: string }> = {
+      body: user as { email: string; password: string },
+    };
+
+    const controller = new SignInController(service);
+
+    const response = await controller.handle(request);
+
+    expect(response).toStrictEqual(
+      badRequest(new MissingBodyParamsError(['email'])),
+    );
+  });
+
+  it('should throw "MissingBodyParamsError" if password is "undefined"', async () => {
     const user: Omit<{ email: string; password: string }, 'password'> = {
       email: 'email_mock',
+    };
+
+    const service = new UserServiceDummy();
+
+    const request: HttpRequest<{ email: string; password: string }> = {
+      body: user as { email: string; password: string },
+    };
+
+    const controller = new SignInController(service);
+
+    const response = await controller.handle(request);
+
+    expect(response).toStrictEqual(
+      badRequest(new MissingBodyParamsError(['password'])),
+    );
+  });
+
+  it('should throw "MissingBodyParamsError" if password is "null"', async () => {
+    const user: { email: string; password: string } = {
+      email: 'email_mock',
+      password: null,
+    };
+
+    const service = new UserServiceDummy();
+
+    const request: HttpRequest<{ email: string; password: string }> = {
+      body: user as { email: string; password: string },
+    };
+
+    const controller = new SignInController(service);
+
+    const response = await controller.handle(request);
+
+    expect(response).toStrictEqual(
+      badRequest(new MissingBodyParamsError(['password'])),
+    );
+  });
+
+  it('should throw "MissingBodyParamsError" if password is empty string', async () => {
+    const user: { email: string; password: string } = {
+      email: 'email_mock',
+      password: '',
     };
 
     const service = new UserServiceDummy();
