@@ -60,7 +60,7 @@ describe('Sign In - Controller', () => {
     );
   });
 
-  it('should throw "UserDoesNotExistsError" user already exists in database', async () => {
+  it('should throw "UserDoesNotExistsError" if user do not exists in database', async () => {
     const userRequest: { email: string; password: string } = {
       email: 'email_mock',
       password: 'password_mock',
@@ -132,7 +132,7 @@ describe('Sign In - Controller', () => {
     expect(response).toStrictEqual(unknown(new Error('unknown')));
   });
 
-  it('should return "unknown" status by unpredicted response', async () => {
+  it('should create session', async () => {
     const user: UserDTO = {
       email: 'email_mock',
       lastname: 'lastname_mock',

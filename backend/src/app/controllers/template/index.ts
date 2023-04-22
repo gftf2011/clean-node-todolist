@@ -30,7 +30,7 @@ export abstract class TemplateController implements Controller {
     try {
       this.validateBodyParams(request);
       this.validateHeaderParams(request);
-      this.buildUrlValidators(request);
+      this.validateUrlParams(request);
       const response = await this.perform(request);
       return response;
     } catch (error) {
@@ -47,6 +47,11 @@ export abstract class TemplateController implements Controller {
 
   private validateBodyParams(request: HttpRequest): void {
     const validators = this.buildBodyValidators(request);
+    new ValidationComposite(validators).validate();
+  }
+
+  private validateUrlParams(request: HttpRequest): void {
+    const validators = this.buildUrlValidators(request);
     new ValidationComposite(validators).validate();
   }
 }
