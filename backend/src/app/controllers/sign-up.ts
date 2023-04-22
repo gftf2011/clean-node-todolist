@@ -55,7 +55,6 @@ export class SignUpController extends TemplateController {
       user.id,
       user.email,
     );
-    const createdSession = CreatedSessionViewModel.map(accessToken);
-    return created(createdSession);
+    return created(accessToken);
   }
 }

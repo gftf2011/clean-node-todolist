@@ -30,6 +30,7 @@ export abstract class TemplateController implements Controller {
     try {
       this.validateBodyParams(request);
       this.validateHeaderParams(request);
+      this.buildUrlValidators(request);
       const response = await this.perform(request);
       return response;
     } catch (error) {

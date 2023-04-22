@@ -1,7 +1,6 @@
-import { UserDTO } from '../../domain/dto';
 import { HttpRequest, HttpResponse } from '../contracts/http';
 import { UserService } from '../contracts/services';
-import { PasswordDoesNotMatchError, UserAlreadyExistsError } from '../errors';
+import { PasswordDoesNotMatchError, UserDoesNotExistsError } from '../errors';
 import { TemplateController } from './template';
 import { ok } from './utils';
 import { CreatedSessionViewModel } from './view-models';
@@ -33,10 +32,10 @@ export class SignInController extends TemplateController {
   }
 
   protected async perform(
-    request: HttpRequest<UserDTO>,
+    request: HttpRequest<{ email: string; password: string }>,
   ): Promise<HttpResponse<CreatedSessionViewModel>> {
     const user = await this.userService.getUserByEmail(request.body.email);
-    if (!user) throw new UserAlreadyExistsError();
+    if (!user) throw new UserDoesNotExistsError();
     const passwordDoesMatch = await this.userService.matchPassword(
       request.body.email,
       request.body.password,
@@ -47,7 +46,6 @@ export class SignInController extends TemplateController {
       user.id,
       user.email,
     );
-    const createdSession = CreatedSessionViewModel.map(accessToken);
-    return ok(createdSession);
+    return ok(accessToken);
   }
 }
