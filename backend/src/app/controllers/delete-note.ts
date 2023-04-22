@@ -1,4 +1,3 @@
-import { NoteDTO } from '../../domain/dto';
 import { HttpRequest, HttpResponse } from '../contracts/http';
 import { NoteService, UserService } from '../contracts/services';
 import { UnfinishedNoteError, UserDoesNotExistsError } from '../errors';
