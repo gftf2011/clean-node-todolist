@@ -5,6 +5,7 @@ import {
   FindUserAction,
   FindUserByEmailAction,
   PasswordMatchAction,
+  VerifyTokenAction,
 } from '../../actions';
 import { Bus } from '../../contracts/bus';
 import { UserService } from '../../contracts/services';
@@ -59,5 +60,16 @@ export class UserServiceImpl implements UserService {
     const response = await this.bus.execute(action);
 
     return response as boolean;
+  }
+
+  public async validateToken(
+    token: string,
+  ): Promise<{ id: string; sub: string }> {
+    const action = new VerifyTokenAction({
+      token,
+    });
+    const response = await this.bus.execute(action);
+
+    return response as { id: string; sub: string };
   }
 }

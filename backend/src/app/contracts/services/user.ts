@@ -10,4 +10,5 @@ export interface UserService {
     password: string,
     hashedPassword: string,
   ) => Promise<boolean>;
+  validateToken: (token: string) => Promise<{ id: string; sub: string }>;
 }

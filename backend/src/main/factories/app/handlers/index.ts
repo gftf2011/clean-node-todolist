@@ -8,3 +8,4 @@ export * from './find-user';
 export * from './is-note-finished';
 export * from './password-match';
 export * from './update-note';
+export * from './verify-token';

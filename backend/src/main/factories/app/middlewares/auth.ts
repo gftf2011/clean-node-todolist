@@ -1,38 +1,25 @@
 import { AuthMiddleware } from '../../../../app/middlewares';
 import { Middleware } from '../../../../app/contracts/middlewares';
+import { UserServiceImpl } from '../../../../app/services';
+import { TransactionMiddlewareDecorator } from '../../../../app/middlewares/decorators';
+
 import {
   DecryptionFactory,
   DECRYPTION_FACTORIES,
-  TokenProviderImpl,
 } from '../../../../infra/providers';
+
+import { makeBus } from '../../infra/bus';
 import { PostgresTransaction } from '../../../../infra/database/postgres';
-import { DatabaseCircuitBreakerProxy } from '../../../../infra/database/postgres/proxies';
-import {
-  RepositoriesConcreteFactory,
-  REPOSITORIES_FACTORIES,
-} from '../../../../infra/repositories';
-import { TransactionMiddlewareDecorator } from '../../../../app/middlewares/decorators';
 
 export const makeAuthMiddleware = (): Middleware => {
   const postgres = new PostgresTransaction();
-  const proxy = new DatabaseCircuitBreakerProxy(postgres);
-  const tokenProvider = new TokenProviderImpl(
-    Number(process.env.JWT_EXPIRATION_TIME),
-  );
+  const bus = makeBus();
+  const userService = new UserServiceImpl(bus);
   const decryptionProvider = new DecryptionFactory(
     process.env.ENCRYPTION_KEY_AES_256_CBC,
     process.env.ENCRYPTION_IV_AES_256_CBC,
   ).make(DECRYPTION_FACTORIES.AES_256_CBC);
-  const repositoryFactory = new RepositoriesConcreteFactory(proxy).make(
-    REPOSITORIES_FACTORIES.REMOTE,
-  );
-  const userRepository = repositoryFactory.createUserRepository();
-  const middleware = new AuthMiddleware(
-    tokenProvider,
-    decryptionProvider,
-    userRepository,
-    process.env.JWT_SECRET,
-  );
+  const middleware = new AuthMiddleware(userService, decryptionProvider);
 
   const transaction = new TransactionMiddlewareDecorator(middleware, postgres);
 

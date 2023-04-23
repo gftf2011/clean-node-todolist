@@ -1,23 +1,16 @@
-import { DecryptionProvider, TokenProvider } from '../contracts/providers';
+import { DecryptionProvider } from '../contracts/providers';
 import { HttpRequest, HttpResponse } from '../contracts/http';
 import { TemplateMiddleware } from './template';
-import { UserRepository } from '../../domain/repositories';
-import { Either, left, right } from '../../shared';
-import {
-  InvalidTokenSubjectError,
-  TokenExpiredError,
-  UserDoesNotExistsError,
-} from '../errors';
+import { InvalidTokenSubjectError, UserDoesNotExistsError } from '../errors';
 import { Validator } from '../contracts/validation';
 import { FieldOrigin, ValidationBuilder } from '../validation';
 import { ok } from './utils';
+import { UserService } from '../contracts/services';
 
 export class AuthMiddleware extends TemplateMiddleware {
   constructor(
-    private readonly tokenProvider: TokenProvider,
+    private readonly userService: UserService,
     private readonly decryptionProvider: DecryptionProvider,
-    private readonly userRepository: UserRepository,
-    private readonly secret: string,
   ) {
     super();
   }
@@ -37,37 +30,18 @@ export class AuthMiddleware extends TemplateMiddleware {
     ];
   }
 
-  private verifyTokenExpiration(
-    jwt: string,
-  ): Either<Error, { id: string; sub: string }> {
-    try {
-      const token: { id: string; sub: string } = this.tokenProvider.verify(
-        jwt,
-        this.secret,
-      );
-      return right(token);
-    } catch (err) {
-      return left(new TokenExpiredError());
-    }
-  }
-
   protected async perform(
     request: HttpRequest<any>,
   ): Promise<HttpResponse<{ userId: string }>> {
-    const jwt = request.headers.authorization.split('Bearer ')[1];
-    const tokenOrError = this.verifyTokenExpiration(jwt);
-
-    if (tokenOrError.isLeft()) throw tokenOrError.value;
-
-    const jwtToken = tokenOrError.value;
-    const user = await this.userRepository.find(jwtToken.id);
-
+    const { id, sub } = await this.userService.validateToken(
+      request.headers.authorization,
+    );
+    const user = await this.userService.getUser(id);
     if (!user) throw new UserDoesNotExistsError();
 
-    const decryptedSubject = this.decryptionProvider.decrypt(jwtToken.sub);
-
+    const decryptedSubject = this.decryptionProvider.decrypt(sub);
     if (decryptedSubject !== user.email) throw new InvalidTokenSubjectError();
 
-    return ok({ userId: jwtToken.id });
+    return ok({ userId: id });
   }
 }
