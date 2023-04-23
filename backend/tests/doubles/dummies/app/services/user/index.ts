@@ -2,6 +2,8 @@ import { UserService } from '../../../../../../src/app/contracts/services';
 import { UserDTO } from '../../../../../../src/domain/dto';
 
 export class UserServiceDummy implements UserService {
+  validateToken: (token: string) => Promise<{ id: string; sub: string }>;
+
   saveUser: (user: UserDTO) => Promise<void>;
 
   createSession: (id: string, email: string) => Promise<string>;

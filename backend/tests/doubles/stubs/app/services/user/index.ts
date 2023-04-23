@@ -7,6 +7,7 @@ type Props = {
   getUserByEmail?: Promise<UserDTO>[];
   getUser?: Promise<UserDTO>[];
   matchPassword?: Promise<boolean>[];
+  validateToken?: Promise<{ id: string; sub: string }>[];
 };
 
 export class UserServiceStub implements UserService {
@@ -19,6 +20,8 @@ export class UserServiceStub implements UserService {
   private counter4 = 0;
 
   private counter5 = 0;
+
+  private counter6 = 0;
 
   constructor(private readonly props?: Props) {}
 
@@ -53,6 +56,14 @@ export class UserServiceStub implements UserService {
   ): Promise<boolean> {
     const response = this.props.matchPassword[this.counter5];
     this.counter5++;
+    return response;
+  }
+
+  public async validateToken(
+    _token: string,
+  ): Promise<{ id: string; sub: string }> {
+    const response = this.props.validateToken[this.counter6];
+    this.counter6++;
     return response;
   }
 }
