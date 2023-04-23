@@ -5,7 +5,10 @@ import {
 
 type Props = {
   accessTokenArray?: string[];
-  tokenDataArray?: any[];
+  tokenDataArray?: {
+    data: { id: string; sub: string };
+    throwError: boolean;
+  }[];
 };
 
 export class TokenProviderStub implements TokenProvider {
@@ -22,7 +25,11 @@ export class TokenProviderStub implements TokenProvider {
   }
 
   public verify(_token: string, _secret: string): any {
-    const response = this.props.tokenDataArray[this.counter2];
+    if (this.props.tokenDataArray[this.counter2].throwError) {
+      this.counter2++;
+      throw new Error();
+    }
+    const response = this.props.tokenDataArray[this.counter2].data;
     this.counter2++;
     return response;
   }
