@@ -1,6 +1,6 @@
 import { UserDTO } from '../../../../src/domain/dto';
 import { HttpRequest } from '../../../../src/app/contracts/http';
-import { UpdateFinishedNoteController } from '../../../../src/app/controllers';
+import { UpdateNoteController } from '../../../../src/app/controllers';
 import {
   MissingBodyParamsError,
   MissingHeaderParamsError,
@@ -19,20 +19,21 @@ import { UserServiceDummy } from '../../../doubles/dummies/app/services/user';
 import { NoteServiceStub } from '../../../doubles/stubs/app/services/note';
 import { UserServiceStub } from '../../../doubles/stubs/app/services/user';
 
-describe('Update Finished Note - Controller', () => {
+describe('Update Note - Controller', () => {
   it('should throw "MissingHeaderParamsError" if userId is "undefined"', async () => {
     const noteID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
 
     const userService = new UserServiceDummy();
     const noteService = new NoteServiceDummy();
-    const controller = new UpdateFinishedNoteController(
-      noteService,
-      userService,
-    );
+    const controller = new UpdateNoteController(noteService, userService);
 
     const request: HttpRequest = {
       headers: {},
-      body: { id: noteID, finished: true },
+      body: {
+        id: noteID,
+        title: 'title_mock',
+        description: 'description_mock',
+      },
     };
 
     const response = await controller.handle(request);
@@ -47,14 +48,15 @@ describe('Update Finished Note - Controller', () => {
 
     const userService = new UserServiceDummy();
     const noteService = new NoteServiceDummy();
-    const controller = new UpdateFinishedNoteController(
-      noteService,
-      userService,
-    );
+    const controller = new UpdateNoteController(noteService, userService);
 
     const request: HttpRequest = {
       headers: { userId: null },
-      body: { id: noteID, finished: true },
+      body: {
+        id: noteID,
+        title: 'title_mock',
+        description: 'description_mock',
+      },
     };
 
     const response = await controller.handle(request);
@@ -69,14 +71,15 @@ describe('Update Finished Note - Controller', () => {
 
     const userService = new UserServiceDummy();
     const noteService = new NoteServiceDummy();
-    const controller = new UpdateFinishedNoteController(
-      noteService,
-      userService,
-    );
+    const controller = new UpdateNoteController(noteService, userService);
 
     const request: HttpRequest = {
       headers: { userId: '' },
-      body: { id: noteID, finished: true },
+      body: {
+        id: noteID,
+        title: 'title_mock',
+        description: 'description_mock',
+      },
     };
 
     const response = await controller.handle(request);
@@ -91,14 +94,14 @@ describe('Update Finished Note - Controller', () => {
 
     const userService = new UserServiceDummy();
     const noteService = new NoteServiceDummy();
-    const controller = new UpdateFinishedNoteController(
-      noteService,
-      userService,
-    );
+    const controller = new UpdateNoteController(noteService, userService);
 
     const request: HttpRequest = {
       headers: { userId: userID },
-      body: { finished: true },
+      body: {
+        title: 'title_mock',
+        description: 'description_mock',
+      },
     };
 
     const response = await controller.handle(request);
@@ -113,14 +116,15 @@ describe('Update Finished Note - Controller', () => {
 
     const userService = new UserServiceDummy();
     const noteService = new NoteServiceDummy();
-    const controller = new UpdateFinishedNoteController(
-      noteService,
-      userService,
-    );
+    const controller = new UpdateNoteController(noteService, userService);
 
     const request: HttpRequest = {
       headers: { userId: userID },
-      body: { id: null, finished: true },
+      body: {
+        id: null,
+        title: 'title_mock',
+        description: 'description_mock',
+      },
     };
 
     const response = await controller.handle(request);
@@ -135,14 +139,15 @@ describe('Update Finished Note - Controller', () => {
 
     const userService = new UserServiceDummy();
     const noteService = new NoteServiceDummy();
-    const controller = new UpdateFinishedNoteController(
-      noteService,
-      userService,
-    );
+    const controller = new UpdateNoteController(noteService, userService);
 
     const request: HttpRequest = {
       headers: { userId: userID },
-      body: { id: '', finished: true },
+      body: {
+        id: '',
+        title: 'title_mock',
+        description: 'description_mock',
+      },
     };
 
     const response = await controller.handle(request);
@@ -152,49 +157,145 @@ describe('Update Finished Note - Controller', () => {
     );
   });
 
-  it('should throw "MissingBodyParamsError" if finished is "undefined"', async () => {
+  it('should throw "MissingBodyParamsError" if title is "undefined"', async () => {
     const noteID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
     const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
 
     const userService = new UserServiceDummy();
     const noteService = new NoteServiceDummy();
-    const controller = new UpdateFinishedNoteController(
-      noteService,
-      userService,
-    );
+    const controller = new UpdateNoteController(noteService, userService);
 
     const request: HttpRequest = {
       headers: { userId: userID },
-      body: { id: noteID },
+      body: {
+        id: noteID,
+        description: 'description_mock',
+      },
     };
 
     const response = await controller.handle(request);
 
     expect(response).toStrictEqual(
-      badRequest(new MissingBodyParamsError(['finished'])),
+      badRequest(new MissingBodyParamsError(['title'])),
     );
   });
 
-  it('should throw "MissingBodyParamsError" if finished is "null"', async () => {
+  it('should throw "MissingBodyParamsError" if title is "null"', async () => {
     const noteID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
     const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
 
     const userService = new UserServiceDummy();
     const noteService = new NoteServiceDummy();
-    const controller = new UpdateFinishedNoteController(
-      noteService,
-      userService,
-    );
+    const controller = new UpdateNoteController(noteService, userService);
 
     const request: HttpRequest = {
       headers: { userId: userID },
-      body: { id: noteID, finished: null },
+      body: {
+        id: noteID,
+        title: null,
+        description: 'description_mock',
+      },
     };
 
     const response = await controller.handle(request);
 
     expect(response).toStrictEqual(
-      badRequest(new MissingBodyParamsError(['finished'])),
+      badRequest(new MissingBodyParamsError(['title'])),
+    );
+  });
+
+  it('should throw "MissingBodyParamsError" if title is empty string', async () => {
+    const noteID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
+    const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
+
+    const userService = new UserServiceDummy();
+    const noteService = new NoteServiceDummy();
+    const controller = new UpdateNoteController(noteService, userService);
+
+    const request: HttpRequest = {
+      headers: { userId: userID },
+      body: {
+        id: noteID,
+        title: '',
+        description: 'description_mock',
+      },
+    };
+
+    const response = await controller.handle(request);
+
+    expect(response).toStrictEqual(
+      badRequest(new MissingBodyParamsError(['title'])),
+    );
+  });
+
+  it('should throw "MissingBodyParamsError" if description is "undefined"', async () => {
+    const noteID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
+    const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
+
+    const userService = new UserServiceDummy();
+    const noteService = new NoteServiceDummy();
+    const controller = new UpdateNoteController(noteService, userService);
+
+    const request: HttpRequest = {
+      headers: { userId: userID },
+      body: {
+        id: noteID,
+        title: 'title_mock',
+      },
+    };
+
+    const response = await controller.handle(request);
+
+    expect(response).toStrictEqual(
+      badRequest(new MissingBodyParamsError(['description'])),
+    );
+  });
+
+  it('should throw "MissingBodyParamsError" if description is "null"', async () => {
+    const noteID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
+    const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
+
+    const userService = new UserServiceDummy();
+    const noteService = new NoteServiceDummy();
+    const controller = new UpdateNoteController(noteService, userService);
+
+    const request: HttpRequest = {
+      headers: { userId: userID },
+      body: {
+        id: noteID,
+        title: 'title_mock',
+        description: null,
+      },
+    };
+
+    const response = await controller.handle(request);
+
+    expect(response).toStrictEqual(
+      badRequest(new MissingBodyParamsError(['description'])),
+    );
+  });
+
+  it('should throw "MissingBodyParamsError" if description is empty string', async () => {
+    const noteID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
+    const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
+
+    const userService = new UserServiceDummy();
+    const noteService = new NoteServiceDummy();
+    const controller = new UpdateNoteController(noteService, userService);
+
+    const request: HttpRequest = {
+      headers: { userId: userID },
+      body: {
+        id: noteID,
+        title: 'title_mock',
+        description: '',
+      },
+    };
+
+    const response = await controller.handle(request);
+
+    expect(response).toStrictEqual(
+      badRequest(new MissingBodyParamsError(['description'])),
     );
   });
 
@@ -206,14 +307,15 @@ describe('Update Finished Note - Controller', () => {
       getUser: [Promise.resolve(null)],
     });
     const noteService = new NoteServiceDummy();
-    const controller = new UpdateFinishedNoteController(
-      noteService,
-      userService,
-    );
+    const controller = new UpdateNoteController(noteService, userService);
 
     const request: HttpRequest = {
       headers: { userId: userID },
-      body: { id: noteID, finished: true },
+      body: {
+        id: noteID,
+        title: 'title_mock',
+        description: 'description_mock',
+      },
     };
 
     const response = await controller.handle(request);
@@ -229,14 +331,15 @@ describe('Update Finished Note - Controller', () => {
       getUser: [Promise.reject(new Error('unknown'))],
     });
     const noteService = new NoteServiceDummy();
-    const controller = new UpdateFinishedNoteController(
-      noteService,
-      userService,
-    );
+    const controller = new UpdateNoteController(noteService, userService);
 
     const request: HttpRequest = {
       headers: { userId: userID },
-      body: { id: noteID, finished: true },
+      body: {
+        id: noteID,
+        title: 'title_mock',
+        description: 'description_mock',
+      },
     };
 
     const response = await controller.handle(request);
@@ -244,7 +347,7 @@ describe('Update Finished Note - Controller', () => {
     expect(response).toStrictEqual(unknown(new Error('unknown')));
   });
 
-  it('should update note finished status', async () => {
+  it('should update note', async () => {
     const noteID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
     const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
 
@@ -260,16 +363,17 @@ describe('Update Finished Note - Controller', () => {
       getUser: [Promise.resolve(user)],
     });
     const noteService = new NoteServiceStub({
-      updateFinishedNote: [Promise.resolve()],
+      updateNote: [Promise.resolve()],
     });
-    const controller = new UpdateFinishedNoteController(
-      noteService,
-      userService,
-    );
+    const controller = new UpdateNoteController(noteService, userService);
 
     const request: HttpRequest = {
       headers: { userId: userID },
-      body: { id: noteID, finished: true },
+      body: {
+        id: noteID,
+        title: 'title_mock',
+        description: 'description_mock',
+      },
     };
 
     const response = await controller.handle(request);
