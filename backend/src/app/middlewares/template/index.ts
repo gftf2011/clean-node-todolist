@@ -10,9 +10,7 @@ import { ValidationComposite } from '../../validation';
 export abstract class TemplateMiddleware implements Middleware {
   constructor() {}
 
-  protected buildHeaderValidators(_request: HttpRequest): Validator[] {
-    return [];
-  }
+  protected abstract buildHeaderValidators(_request: HttpRequest): Validator[];
 
   private static handleError(error: Error): HttpResponse {
     return new ErrorHandlerInvoker().handle(error);

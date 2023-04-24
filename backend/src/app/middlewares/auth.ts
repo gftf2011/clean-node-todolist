@@ -15,9 +15,7 @@ export class AuthMiddleware extends TemplateMiddleware {
     super();
   }
 
-  protected override buildHeaderValidators(
-    request: HttpRequest<any>,
-  ): Validator[] {
+  protected buildHeaderValidators(request: HttpRequest<any>): Validator[] {
     return [
       ...ValidationBuilder.of()
         .and({

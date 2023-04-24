@@ -6,6 +6,8 @@ import {
   DatabaseError,
   TokenExpiredError,
   ServiceUnavailableError,
+  MissingHeaderParamsError,
+  UserDoesNotExistsError,
 } from '../../errors';
 import { HttpResponse } from '../../contracts/http';
 
@@ -14,8 +16,9 @@ import {
   serviceUnavailableError,
   unauthorized,
   unknown,
+  forbidden,
+  badRequest,
 } from '../utils';
-import { forbidden } from '../../controllers/utils';
 
 interface ErrorHandlerStrategy {
   handle: (error: Error) => HttpResponse;
@@ -29,8 +32,14 @@ class ApplicationErrorHandlerStrategy implements ErrorHandlerStrategy {
     ) {
       return forbidden(error);
     }
-    if (error instanceof TokenExpiredError) {
+    if (
+      error instanceof TokenExpiredError ||
+      error instanceof UserDoesNotExistsError
+    ) {
       return unauthorized(error);
+    }
+    if (error instanceof MissingHeaderParamsError) {
+      return badRequest(error);
     }
     if (error instanceof DatabaseError) {
       return serverError(error);
