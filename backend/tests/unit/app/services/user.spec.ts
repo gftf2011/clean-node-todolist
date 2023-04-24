@@ -6,6 +6,7 @@ import {
   FindUserAction,
   FindUserByEmailAction,
   PasswordMatchAction,
+  VerifyTokenAction,
 } from '../../../../src/app/actions';
 import { UserServiceImpl } from '../../../../src/app/services';
 
@@ -18,6 +19,7 @@ import {
   FindUserByEmailHandlerSpy,
   PasswordMatchHandlerSpy,
 } from '../../../doubles/spies/app/handlers';
+import { VerifyTokenHandlerSpy } from '../../../doubles/spies/app/handlers/verify-token';
 
 describe('User - Service', () => {
   it('should call "saveUser" method', async () => {
@@ -134,6 +136,24 @@ describe('User - Service', () => {
     const action = new PasswordMatchAction({ email, password, hashedPassword });
 
     expect(response).toBe(true);
+    expect(handler.getInfo().calls).toBe(1);
+    expect(handler.getInfo().data).toStrictEqual([action]);
+  });
+
+  it('should call "validateToken" method', async () => {
+    const handler = new VerifyTokenHandlerSpy({
+      tokensData: [{ id: 'id_mock', sub: 'subject_mock' }],
+    });
+    const bus = new BusMediator([handler]);
+    const service = new UserServiceImpl(bus);
+
+    const token = 'token_mock';
+
+    const response = await service.validateToken(token);
+
+    const action = new VerifyTokenAction({ token });
+
+    expect(response).toStrictEqual({ id: 'id_mock', sub: 'subject_mock' });
     expect(handler.getInfo().calls).toBe(1);
     expect(handler.getInfo().data).toStrictEqual([action]);
   });
