@@ -32,17 +32,6 @@ class Aes256CBCEncryptionProviderProduct extends EncryptionProviderProduct {
   }
 }
 
-class Aes256GCMEncryptionProviderProduct extends EncryptionProviderProduct {
-  protected encryption = 'aes-256-gcm';
-
-  constructor(
-    protected override readonly key: string,
-    protected override readonly iv: string,
-  ) {
-    super(key, iv);
-  }
-}
-
 abstract class EncryptionProviderCreator implements EncryptionProvider {
   private product: EncryptionProviderProduct;
 
@@ -67,15 +56,8 @@ class Aes256CBCEncryptionProviderCreator extends EncryptionProviderCreator {
   }
 }
 
-class Aes256GCMEncryptionProviderCreator extends EncryptionProviderCreator {
-  protected factoryMethod(key: string, iv: string): EncryptionProviderProduct {
-    return new Aes256GCMEncryptionProviderProduct(key, iv);
-  }
-}
-
 export enum ENCRYPTION_FACTORIES {
   AES_256_CBC = 'AES_256_CBC',
-  AES_256_GCM = 'AES_256_GCM',
 }
 
 export class EncryptionFactory {
@@ -85,9 +67,6 @@ export class EncryptionFactory {
   public make(factoryType: ENCRYPTION_FACTORIES): EncryptionProvider {
     if (factoryType === ENCRYPTION_FACTORIES.AES_256_CBC) {
       return new Aes256CBCEncryptionProviderCreator(this.key, this.iv);
-    }
-    if (factoryType === ENCRYPTION_FACTORIES.AES_256_GCM) {
-      return new Aes256GCMEncryptionProviderCreator(this.key, this.iv);
     }
   }
 }

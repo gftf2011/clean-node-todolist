@@ -8,32 +8,22 @@ abstract class DecryptionProviderProduct implements DecryptionProvider {
   constructor(protected readonly key: string, protected readonly iv: string) {}
 
   public decrypt(value: string): string {
-    const encryptedText = Buffer.from(value, 'hex');
+    const encryptedText = value;
     const decipher = crypto.createDecipheriv(
       this.decryption,
-      Buffer.from(this.key),
+      Buffer.from(this.key, 'hex'),
       Buffer.from(this.iv, 'hex'),
-    );
-    let decrypted = decipher.update(encryptedText);
-    decrypted = Buffer.concat([decrypted, decipher.final()]);
+    ) as any;
 
-    return decrypted.toString('hex');
+    let decrypted = decipher.update(encryptedText, 'hex', 'utf-8');
+    decrypted += decipher.final('utf-8');
+
+    return decrypted;
   }
 }
 
 class Aes256CBCDecryptionProviderProduct extends DecryptionProviderProduct {
   protected decryption = 'aes-256-cbc';
-
-  constructor(
-    protected override readonly key: string,
-    protected override readonly iv: string,
-  ) {
-    super(key, iv);
-  }
-}
-
-class Aes256GCMDecryptionProviderProduct extends DecryptionProviderProduct {
-  protected decryption = 'aes-256-gcm';
 
   constructor(
     protected override readonly key: string,
@@ -67,15 +57,8 @@ class Aes256CBCDecryptionProviderCreator extends DecryptionProviderCreator {
   }
 }
 
-class Aes256GCMDecryptionProviderCreator extends DecryptionProviderCreator {
-  protected factoryMethod(key: string, iv: string): DecryptionProviderProduct {
-    return new Aes256GCMDecryptionProviderProduct(key, iv);
-  }
-}
-
 export enum DECRYPTION_FACTORIES {
   AES_256_CBC = 'AES_256_CBC',
-  AES_256_GCM = 'AES_256_GCM',
 }
 
 export class DecryptionFactory {
@@ -85,9 +68,6 @@ export class DecryptionFactory {
   public make(factoryType: DECRYPTION_FACTORIES): DecryptionProvider {
     if (factoryType === DECRYPTION_FACTORIES.AES_256_CBC) {
       return new Aes256CBCDecryptionProviderCreator(this.key, this.iv);
-    }
-    if (factoryType === DECRYPTION_FACTORIES.AES_256_GCM) {
-      return new Aes256GCMDecryptionProviderCreator(this.key, this.iv);
     }
   }
 }

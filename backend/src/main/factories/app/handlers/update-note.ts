@@ -17,9 +17,9 @@ export const makeUpdateNoteHandler = (): UpdateNoteHandler => {
   );
   const noteRepository = repositoryFactory.createNoteRepository();
   const encryption = new EncryptionFactory(
-    process.env.ENCRYPTION_KEY_AES_256_GCM,
-    process.env.ENCRYPTION_IV_AES_256_GCM,
-  ).make(ENCRYPTION_FACTORIES.AES_256_GCM);
+    process.env.ENCRYPTION_KEY_AES_256_CBC,
+    process.env.ENCRYPTION_IV_AES_256_CBC,
+  ).make(ENCRYPTION_FACTORIES.AES_256_CBC);
   const handler = new UpdateNoteHandler(encryption, noteRepository);
   return handler;
 };
