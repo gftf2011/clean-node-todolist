@@ -20,6 +20,8 @@ class RemoteUserRepositoryProduct implements UserRepository {
       values,
     };
 
+    console.log(this.query);
+
     const response = (await this.query.query(input)) as Rows;
 
     const parsedResponse: UserModel = response.rows[0]
@@ -224,16 +226,7 @@ export enum USER_REPOSITORIES_FACTORIES {
 export class UserRepositoryFactory {
   private repository: UserRepositoryCreator;
 
-  private static instance: UserRepositoryFactory;
-
-  private constructor(private readonly query: DatabaseQuery) {}
-
-  public static initialize(query: DatabaseQuery): UserRepositoryFactory {
-    if (!this.instance) {
-      this.instance = new UserRepositoryFactory(query);
-    }
-    return this.instance;
-  }
+  constructor(private readonly query?: DatabaseQuery) {}
 
   // eslint-disable-next-line consistent-return
   public make(factoryType: USER_REPOSITORIES_FACTORIES): UserRepository {

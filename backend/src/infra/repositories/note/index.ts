@@ -291,16 +291,7 @@ export enum NOTE_REPOSITORIES_FACTORIES {
 export class NoteRepositoryFactory {
   private repository: NoteRepositoryCreator;
 
-  private static instance: NoteRepositoryFactory;
-
-  private constructor(private readonly query: DatabaseQuery) {}
-
-  public static initialize(query: DatabaseQuery): NoteRepositoryFactory {
-    if (!this.instance) {
-      this.instance = new NoteRepositoryFactory(query);
-    }
-    return this.instance;
-  }
+  constructor(private readonly query?: DatabaseQuery) {}
 
   // eslint-disable-next-line consistent-return
   public make(factoryType: NOTE_REPOSITORIES_FACTORIES): NoteRepository {
