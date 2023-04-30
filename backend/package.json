@@ -4,6 +4,17 @@
   "description": "",
   "main": "dist/src/main/server/index.js",
   "scripts": {
+    "docker:up": "docker-compose up -d --remove-orphans",
+    "docker:down": "docker-compose down",
+    "docker:clear": "docker-compose down && docker image prune -a -f && docker volume prune -f",
+    "build:docker:test": "rm -rf docker-compose.yml && cat docker/test/docker-compose.yml >> docker-compose.yml",
+    "script:exec:test": "chmod +x ./scripts/test/postgres/init.sh",
+    "prerun:docker:test": "npm run docker:clear || true",
+    "run:docker:test": "npm run script:exec:test && npm run build:docker:test",
+    "postrun:docker:test": "npm run docker:up",
+    "env:test": "rm -rf .env && cat ./env/test/.env >> .env",
+    "pretest": "npm run env:test && npm run run:docker:test",
+    "test": "jest --clearCache ; jest --colors --coverage --verbose --detectOpenHandles --config jest.config.js",
     "test:unit": "jest --clearCache ; jest --colors --coverage --verbose --detectOpenHandles --config jest-unit.config.js"
   },
   "keywords": [],
