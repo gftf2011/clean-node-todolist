@@ -20,8 +20,6 @@ class RemoteUserRepositoryProduct implements UserRepository {
       values,
     };
 
-    console.log(this.query);
-
     const response = (await this.query.query(input)) as Rows;
 
     const parsedResponse: UserModel = response.rows[0]

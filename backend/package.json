@@ -15,6 +15,7 @@
     "env:test": "rm -rf .env && cat ./env/test/.env >> .env",
     "pretest": "npm run env:test && npm run run:docker:test",
     "test": "jest --clearCache ; jest --colors --coverage --verbose --detectOpenHandles --config jest.config.js",
+    "posttest": "npm run docker:clear",
     "test:unit": "jest --clearCache ; jest --colors --coverage --verbose --detectOpenHandles --config jest-unit.config.js"
   },
   "keywords": [],
