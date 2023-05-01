@@ -3,8 +3,18 @@ import { NoteRepository } from '../../../domain/repositories';
 import { NoteModel } from '../../../domain/models';
 import { DatabaseQuery } from '../../../app/contracts/database';
 
+type DataModel = {
+  id: string;
+  user_id: string;
+  finished: boolean;
+  title: string;
+  description: string;
+  created_at: string;
+  updated_at: string;
+};
+
 type Rows = {
-  rows: NoteModel[];
+  rows: DataModel[];
 };
 
 class RemoteNoteRepositoryProduct implements NoteRepository {
@@ -24,13 +34,13 @@ class RemoteNoteRepositoryProduct implements NoteRepository {
 
     const parsedResponse: NoteModel = response.rows[0]
       ? {
-          createdAt: response.rows[0].createdAt,
+          createdAt: response.rows[0].created_at,
           description: response.rows[0].description,
           finished: response.rows[0].finished,
           id: response.rows[0].id,
           title: response.rows[0].title,
-          updatedAt: response.rows[0].updatedAt,
-          userId: response.rows[0].userId,
+          updatedAt: response.rows[0].updated_at,
+          userId: response.rows[0].user_id,
         }
       : undefined;
     return parsedResponse;
@@ -42,7 +52,7 @@ class RemoteNoteRepositoryProduct implements NoteRepository {
     limit: number,
   ): Promise<NoteModel[]> {
     const queryText =
-      'SELECT * FROM notes_schema.notes ORDER BY id LIMIT $1 OFFSET $2 WHERE userId = $3';
+      'SELECT * FROM notes_schema.notes WHERE user_id = $3 ORDER BY id LIMIT $1 OFFSET $2';
 
     const values: any[] = [limit, limit * page, userId];
 
@@ -55,13 +65,13 @@ class RemoteNoteRepositoryProduct implements NoteRepository {
 
     const parsedResponse: NoteModel[] = response.rows[0]
       ? response.rows.map(item => ({
-          createdAt: item.createdAt,
+          createdAt: item.created_at,
           description: item.description,
           finished: item.finished,
           id: item.id,
           title: item.title,
-          updatedAt: item.updatedAt,
-          userId: item.userId,
+          updatedAt: item.updated_at,
+          userId: item.user_id,
         }))
       : [];
     return parsedResponse;
@@ -82,13 +92,13 @@ class RemoteNoteRepositoryProduct implements NoteRepository {
 
     const parsedResponse: NoteModel[] = response.rows[0]
       ? response.rows.map(item => ({
-          createdAt: item.createdAt,
+          createdAt: item.created_at,
           description: item.description,
           finished: item.finished,
           id: item.id,
           title: item.title,
-          updatedAt: item.updatedAt,
-          userId: item.userId,
+          updatedAt: item.updated_at,
+          userId: item.user_id,
         }))
       : [];
     return parsedResponse;
@@ -96,7 +106,7 @@ class RemoteNoteRepositoryProduct implements NoteRepository {
 
   async save(note: NoteModel): Promise<void> {
     const queryText =
-      'INSERT INTO notes_schema.notes(id, title, description, finished, createdAt, updatedAt, userId) VALUES($1, $2, $3, $4, $5, $6, $7)';
+      'INSERT INTO notes_schema.notes(id, title, description, finished, created_at, updated_at, user_id) VALUES($1, $2, $3, $4, $5, $6, $7)';
 
     const values: any[] = [
       note.id,
@@ -118,7 +128,7 @@ class RemoteNoteRepositoryProduct implements NoteRepository {
 
   async update(noteUpdated: NoteModel): Promise<void> {
     const queryText =
-      'UPDATE notes_schema.notes SET title = $2, description = $3, updatedAt = $4 WHERE id = $1';
+      'UPDATE notes_schema.notes SET title = $2, description = $3, updated_at = $4 WHERE id = $1';
 
     const values: any[] = [
       noteUpdated.id,
@@ -141,7 +151,7 @@ class RemoteNoteRepositoryProduct implements NoteRepository {
     updatedAt: string,
   ): Promise<void> {
     const queryText =
-      'UPDATE notes_schema.notes SET finished = $2, updatedAt = $3 WHERE id = $1';
+      'UPDATE notes_schema.notes SET finished = $2, updated_at = $3 WHERE id = $1';
 
     const values: any[] = [id, finished, updatedAt];
 

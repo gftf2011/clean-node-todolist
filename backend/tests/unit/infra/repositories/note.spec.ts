@@ -60,37 +60,49 @@ describe('Note - Repository', () => {
 
     it('should return notes by user id if exists', async () => {
       const userId = `${'1'.repeat(17)}-${'1'.repeat(32)}-${'1'.repeat(32)}`;
-      const notes: NoteModel[] = [
+      const notes = [
         {
           id: `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`,
           title: faker.lorem.word(),
           description: faker.lorem.word(),
           finished: false,
-          userId,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
+          user_id: userId,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
         },
         {
           id: `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`,
           title: faker.lorem.word(),
           description: faker.lorem.word(),
           finished: false,
-          userId,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
+          user_id: userId,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
         },
       ];
 
+      const mappedNotes: NoteModel[] = [];
+
       // eslint-disable-next-line no-restricted-syntax
       for (const note of notes) {
-        await repository.save(note);
+        const mappedNote: NoteModel = {
+          createdAt: note.created_at,
+          description: note.description,
+          finished: note.finished,
+          id: note.id,
+          title: note.title,
+          updatedAt: note.updated_at,
+          userId: note.user_id,
+        };
+        mappedNotes.push(mappedNote);
+        await repository.save(mappedNote);
       }
 
       const limit = 2;
       const page = 1;
       const response = await repository.findNotesByUserId(userId, page, limit);
 
-      expect(response).toStrictEqual(notes);
+      expect(response).toStrictEqual(mappedNotes);
     });
 
     it('should return empty notes array if user id do NOT exists', async () => {
@@ -234,14 +246,14 @@ describe('Note - Repository', () => {
 
   describe('Remote', () => {
     it('should return note if exists', async () => {
-      const note: NoteModel = {
+      const note = {
         id: `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`,
         title: faker.lorem.word(),
         description: faker.lorem.word(),
         finished: false,
-        userId: `${'1'.repeat(17)}-${'1'.repeat(32)}-${'1'.repeat(32)}`,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        user_id: `${'1'.repeat(17)}-${'1'.repeat(32)}-${'1'.repeat(32)}`,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
       };
 
       const spy = new PostgresConnectionSpy([
@@ -255,7 +267,17 @@ describe('Note - Repository', () => {
 
       const response = await repository.find(note.id);
 
-      expect(response).toStrictEqual(note);
+      const mappedNote: NoteModel = {
+        id: note.id,
+        title: note.title,
+        description: note.description,
+        finished: note.finished,
+        userId: note.user_id,
+        createdAt: note.created_at,
+        updatedAt: note.updated_at,
+      };
+
+      expect(response).toStrictEqual(mappedNote);
 
       expect(spy.getQueryInputs()[0].queryText).toBe(
         'SELECT * FROM notes_schema.notes WHERE id = $1',
@@ -293,24 +315,24 @@ describe('Note - Repository', () => {
 
     it('should return notes by user id if exists', async () => {
       const userId = `${'1'.repeat(17)}-${'1'.repeat(32)}-${'1'.repeat(32)}`;
-      const notes: NoteModel[] = [
+      const notes = [
         {
           id: `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`,
           title: faker.lorem.word(),
           description: faker.lorem.word(),
           finished: false,
-          userId,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
+          user_id: userId,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
         },
         {
           id: `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`,
           title: faker.lorem.word(),
           description: faker.lorem.word(),
           finished: false,
-          userId,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
+          user_id: userId,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
         },
       ];
 
@@ -325,10 +347,25 @@ describe('Note - Repository', () => {
       const page = 1;
       const response = await repository.findNotesByUserId(userId, page, limit);
 
-      expect(response).toStrictEqual(notes);
+      const mappedNotes: NoteModel[] = [];
+
+      // eslint-disable-next-line no-restricted-syntax
+      for (const note of notes) {
+        mappedNotes.push({
+          id: note.id,
+          title: note.title,
+          description: note.description,
+          finished: note.finished,
+          userId: note.user_id,
+          createdAt: note.created_at,
+          updatedAt: note.updated_at,
+        });
+      }
+
+      expect(response).toStrictEqual(mappedNotes);
 
       expect(spy.getQueryInputs()[0].queryText).toBe(
-        'SELECT * FROM notes_schema.notes ORDER BY id LIMIT $1 OFFSET $2 WHERE userId = $3',
+        'SELECT * FROM notes_schema.notes WHERE user_id = $3 ORDER BY id LIMIT $1 OFFSET $2',
       );
       expect(spy.getQueryInputs()[0].values).toStrictEqual([
         limit,
@@ -354,7 +391,7 @@ describe('Note - Repository', () => {
       expect(response).toStrictEqual([]);
 
       expect(spy.getQueryInputs()[0].queryText).toBe(
-        'SELECT * FROM notes_schema.notes ORDER BY id LIMIT $1 OFFSET $2 WHERE userId = $3',
+        'SELECT * FROM notes_schema.notes WHERE user_id = $3 ORDER BY id LIMIT $1 OFFSET $2',
       );
       expect(spy.getQueryInputs()[0].values).toStrictEqual([
         limit,
@@ -364,24 +401,24 @@ describe('Note - Repository', () => {
     });
 
     it('should return all notes from pagination', async () => {
-      const notes: NoteModel[] = [
+      const notes = [
         {
           id: `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`,
           title: faker.lorem.word(),
           description: faker.lorem.word(),
           finished: false,
-          userId: `${'1'.repeat(17)}-${'1'.repeat(32)}-${'1'.repeat(32)}`,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
+          user_id: `${'1'.repeat(17)}-${'1'.repeat(32)}-${'1'.repeat(32)}`,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
         },
         {
           id: `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`,
           title: faker.lorem.word(),
           description: faker.lorem.word(),
           finished: false,
-          userId: `${'1'.repeat(17)}-${'1'.repeat(32)}-${'1'.repeat(32)}`,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
+          user_id: `${'1'.repeat(17)}-${'1'.repeat(32)}-${'1'.repeat(32)}`,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
         },
       ];
 
@@ -396,7 +433,22 @@ describe('Note - Repository', () => {
       const page = 1;
       const response = await repository.findAll(page, limit);
 
-      expect(response).toStrictEqual(notes);
+      const mappedNotes: NoteModel[] = [];
+
+      // eslint-disable-next-line no-restricted-syntax
+      for (const note of notes) {
+        mappedNotes.push({
+          id: note.id,
+          title: note.title,
+          description: note.description,
+          finished: note.finished,
+          userId: note.user_id,
+          createdAt: note.created_at,
+          updatedAt: note.updated_at,
+        });
+      }
+
+      expect(response).toStrictEqual(mappedNotes);
 
       expect(spy.getQueryInputs()[0].queryText).toBe(
         'SELECT * FROM notes_schema.notes ORDER BY id LIMIT $1 OFFSET $2',
@@ -451,7 +503,7 @@ describe('Note - Repository', () => {
       await repository.save(note);
 
       expect(spy.getQueryInputs()[0].queryText).toBe(
-        'INSERT INTO notes_schema.notes(id, title, description, finished, createdAt, updatedAt, userId) VALUES($1, $2, $3, $4, $5, $6, $7)',
+        'INSERT INTO notes_schema.notes(id, title, description, finished, created_at, updated_at, user_id) VALUES($1, $2, $3, $4, $5, $6, $7)',
       );
       expect(spy.getQueryInputs()[0].values).toStrictEqual([
         note.id,
@@ -485,7 +537,7 @@ describe('Note - Repository', () => {
       await repository.update(note);
 
       expect(spy.getQueryInputs()[0].queryText).toBe(
-        'UPDATE notes_schema.notes SET title = $2, description = $3, updatedAt = $4 WHERE id = $1',
+        'UPDATE notes_schema.notes SET title = $2, description = $3, updated_at = $4 WHERE id = $1',
       );
       expect(spy.getQueryInputs()[0].values).toStrictEqual([
         note.id,
@@ -520,7 +572,7 @@ describe('Note - Repository', () => {
       );
 
       expect(spy.getQueryInputs()[0].queryText).toBe(
-        'UPDATE notes_schema.notes SET finished = $2, updatedAt = $3 WHERE id = $1',
+        'UPDATE notes_schema.notes SET finished = $2, updated_at = $3 WHERE id = $1',
       );
       expect(spy.getQueryInputs()[0].values).toStrictEqual([
         note.id,

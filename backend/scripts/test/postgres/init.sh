@@ -26,11 +26,11 @@ psql $DB -c "CREATE TABLE IF NOT EXISTS notes_schema.notes(
   title TEXT NOT NULL,
   description TEXT NOT NULL,
   finished BOOLEAN NOT NULL,
-  userId TEXT NOT NULL,
-  createdAt TEXT NOT NULL,
-  updatedAt TEXT NOT NULL,
+  user_id TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL,
   PRIMARY KEY (id),
-  CONSTRAINT fk_user_id FOREIGN KEY(userId) REFERENCES users_schema.users(id) ON UPDATE CASCADE ON DELETE CASCADE
+  CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users_schema.users(id) ON UPDATE CASCADE ON DELETE CASCADE
 )"
 
 # Grant Privileges

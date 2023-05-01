@@ -3,8 +3,16 @@ import { UserRepository } from '../../../domain/repositories';
 import { UserModel } from '../../../domain/models';
 import { DatabaseQuery } from '../../../app/contracts/database';
 
+type DataModel = {
+  id: string;
+  email: string;
+  password: string;
+  name: string;
+  lastname: string;
+};
+
 type Rows = {
-  rows: UserModel[];
+  rows: DataModel[];
 };
 
 class RemoteUserRepositoryProduct implements UserRepository {

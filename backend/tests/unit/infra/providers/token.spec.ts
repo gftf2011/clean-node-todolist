@@ -41,7 +41,7 @@ describe('Token Provider', () => {
   });
 
   it('should throw error if token expires', async () => {
-    const time = 5; // seconds
+    const time = 1; // seconds
     const provider = new TokenProviderImpl(time);
 
     const secret = 'Start wide, expand further, and never look back';
