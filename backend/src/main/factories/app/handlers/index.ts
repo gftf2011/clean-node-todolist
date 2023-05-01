@@ -1,6 +1,7 @@
 export * from './create-access-token';
 export * from './create-note';
 export * from './create-user';
+export * from './delete-note';
 export * from './find-note';
 export * from './find-notes-by-user-id';
 export * from './find-user-by-email';

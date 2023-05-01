@@ -10,6 +10,7 @@ import {
   makeUpdateNoteHandler,
   makeIsNoteFinishedHandler,
   makeVerifyTokenHandler,
+  makeDeleteNoteHandler,
 } from '../../app/handlers';
 
 import { BusMediator } from '../../../../infra/bus';
@@ -27,6 +28,7 @@ export const makeBus = (): BusMediator => {
     makeUpdateNoteHandler(),
     makeIsNoteFinishedHandler(),
     makeVerifyTokenHandler(),
+    makeDeleteNoteHandler(),
   ];
   const bus = new BusMediator(handlers);
   return bus;

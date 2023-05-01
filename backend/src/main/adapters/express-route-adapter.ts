@@ -13,6 +13,7 @@ export class ExpressRouteAdapter {
       const httpRequest: HttpRequest = {
         body: req.body,
         headers: req.headers,
+        params: req.params,
       };
       const httpResponse = await controller.handle(httpRequest);
       if (httpResponse.statusCode === 204) {
