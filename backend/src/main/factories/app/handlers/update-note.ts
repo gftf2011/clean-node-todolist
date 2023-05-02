@@ -1,5 +1,5 @@
+import { DatabaseTransaction } from '../../../../app/contracts/database';
 import { UpdateNoteHandler } from '../../../../app/handlers';
-import { PostgresTransaction } from '../../../../infra/database/postgres';
 import {
   EncryptionFactory,
   ENCRYPTION_FACTORIES,
@@ -10,8 +10,10 @@ import {
 } from '../../../../infra/repositories';
 import { DatabaseCircuitBreakerProxy } from '../../../../infra/database/postgres/proxies';
 
-export const makeUpdateNoteHandler = (): UpdateNoteHandler => {
-  const postgres = new DatabaseCircuitBreakerProxy(new PostgresTransaction());
+export const makeUpdateNoteHandler = (
+  database?: DatabaseTransaction,
+): UpdateNoteHandler => {
+  const postgres = new DatabaseCircuitBreakerProxy(database);
   const repositoryFactory = new RepositoriesConcreteFactory(postgres).make(
     REPOSITORIES_FACTORIES.REMOTE,
   );

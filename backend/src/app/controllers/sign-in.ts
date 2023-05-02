@@ -46,6 +46,6 @@ export class SignInController extends TemplateController {
       user.id,
       user.email,
     );
-    return ok(accessToken);
+    return ok({ accessToken });
   }
 }

@@ -1,5 +1,5 @@
+import { DatabaseTransaction } from '../../../../app/contracts/database';
 import { FindNotesByUserIdHandler } from '../../../../app/handlers';
-import { PostgresTransaction } from '../../../../infra/database/postgres';
 import {
   DecryptionFactory,
   DECRYPTION_FACTORIES,
@@ -10,8 +10,10 @@ import {
 } from '../../../../infra/repositories';
 import { DatabaseCircuitBreakerProxy } from '../../../../infra/database/postgres/proxies';
 
-export const makeFindNotesByUserIdHandler = (): FindNotesByUserIdHandler => {
-  const postgres = new DatabaseCircuitBreakerProxy(new PostgresTransaction());
+export const makeFindNotesByUserIdHandler = (
+  database?: DatabaseTransaction,
+): FindNotesByUserIdHandler => {
+  const postgres = new DatabaseCircuitBreakerProxy(database);
   const repositoryFactory = new RepositoriesConcreteFactory(postgres).make(
     REPOSITORIES_FACTORIES.REMOTE,
   );

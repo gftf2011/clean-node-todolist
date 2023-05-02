@@ -158,6 +158,7 @@ module.exports = {
   testMatch: [
     '<rootDir>/tests/unit/**/*.spec.ts',
     '<rootDir>/tests/integration/**/*.test.ts',
+    '<rootDir>/tests/e2e/**/*.test.ts',
   ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped

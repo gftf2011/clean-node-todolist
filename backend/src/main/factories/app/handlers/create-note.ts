@@ -1,5 +1,5 @@
+import { DatabaseTransaction } from '../../../../app/contracts/database';
 import { CreateNoteHandler } from '../../../../app/handlers';
-import { PostgresTransaction } from '../../../../infra/database/postgres';
 import { DatabaseCircuitBreakerProxy } from '../../../../infra/database/postgres/proxies';
 import {
   EncryptionFactory,
@@ -11,14 +11,16 @@ import {
   RepositoriesConcreteFactory,
 } from '../../../../infra/repositories';
 
-export const makeCreateNoteHandler = (): CreateNoteHandler => {
+export const makeCreateNoteHandler = (
+  database?: DatabaseTransaction,
+): CreateNoteHandler => {
   const encryption = new EncryptionFactory(
     process.env.ENCRYPTION_KEY_AES_256_CBC,
     process.env.ENCRYPTION_IV_AES_256_CBC,
   ).make(ENCRYPTION_FACTORIES.AES_256_CBC);
   const sequencingProvider = new SequencingProviderImpl();
 
-  const postgres = new DatabaseCircuitBreakerProxy(new PostgresTransaction());
+  const postgres = new DatabaseCircuitBreakerProxy(database);
   const repositoryFactory = new RepositoriesConcreteFactory(postgres).make(
     REPOSITORIES_FACTORIES.REMOTE,
   );

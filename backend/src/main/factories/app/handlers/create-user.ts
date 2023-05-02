@@ -1,5 +1,5 @@
+import { DatabaseTransaction } from '../../../../app/contracts/database';
 import { CreateUserHandler } from '../../../../app/handlers';
-import { PostgresTransaction } from '../../../../infra/database/postgres';
 import { DatabaseCircuitBreakerProxy } from '../../../../infra/database/postgres/proxies';
 import {
   EncryptionFactory,
@@ -13,7 +13,9 @@ import {
   RepositoriesConcreteFactory,
 } from '../../../../infra/repositories';
 
-export const makeCreateUserHandler = (): CreateUserHandler => {
+export const makeCreateUserHandler = (
+  database?: DatabaseTransaction,
+): CreateUserHandler => {
   const encryption = new EncryptionFactory(
     process.env.ENCRYPTION_KEY_AES_256_CBC,
     process.env.ENCRYPTION_IV_AES_256_CBC,
@@ -21,7 +23,7 @@ export const makeCreateUserHandler = (): CreateUserHandler => {
   const hash = new HashFactory().make(HASH_FACTORIES.SHA_521);
   const sequencingProvider = new SequencingProviderImpl();
 
-  const postgres = new DatabaseCircuitBreakerProxy(new PostgresTransaction());
+  const postgres = new DatabaseCircuitBreakerProxy(database);
   const repositoryFactory = new RepositoriesConcreteFactory(postgres).make(
     REPOSITORIES_FACTORIES.REMOTE,
   );

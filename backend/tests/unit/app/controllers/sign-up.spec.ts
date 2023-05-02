@@ -360,6 +360,6 @@ describe('Sign Up - Controller', () => {
 
     const response = await controller.handle(request);
 
-    expect(response).toStrictEqual(created('access_token'));
+    expect(response).toStrictEqual(created({ accessToken: 'access_token' }));
   });
 });

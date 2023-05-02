@@ -25,6 +25,6 @@ describe('Create Access Token - Handler', () => {
 
     const response = await handler.handle(action);
 
-    expect(response).toBe('token');
+    expect(response).toBe('Bearer token');
   });
 });

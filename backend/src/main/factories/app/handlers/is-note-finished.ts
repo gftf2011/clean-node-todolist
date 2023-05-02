@@ -1,13 +1,15 @@
+import { DatabaseTransaction } from '../../../../app/contracts/database';
 import { IsNoteFinishedHandler } from '../../../../app/handlers';
-import { PostgresTransaction } from '../../../../infra/database/postgres';
 import {
   RepositoriesConcreteFactory,
   REPOSITORIES_FACTORIES,
 } from '../../../../infra/repositories';
 import { DatabaseCircuitBreakerProxy } from '../../../../infra/database/postgres/proxies';
 
-export const makeIsNoteFinishedHandler = (): IsNoteFinishedHandler => {
-  const postgres = new DatabaseCircuitBreakerProxy(new PostgresTransaction());
+export const makeIsNoteFinishedHandler = (
+  database?: DatabaseTransaction,
+): IsNoteFinishedHandler => {
+  const postgres = new DatabaseCircuitBreakerProxy(database);
   const repositoryFactory = new RepositoriesConcreteFactory(postgres).make(
     REPOSITORIES_FACTORIES.REMOTE,
   );

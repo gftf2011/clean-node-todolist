@@ -19,6 +19,6 @@ export class CreateAccessTokenHandler implements Handler<string> {
       subject: email,
     });
 
-    return token;
+    return `Bearer ${token}`;
   }
 }

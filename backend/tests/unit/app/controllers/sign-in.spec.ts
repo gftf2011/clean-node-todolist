@@ -244,6 +244,6 @@ describe('Sign In - Controller', () => {
 
     const response = await controller.handle(request);
 
-    expect(response).toStrictEqual(ok('access-token'));
+    expect(response).toStrictEqual(ok({ accessToken: 'access-token' }));
   });
 });

@@ -55,6 +55,6 @@ export class SignUpController extends TemplateController {
       user.id,
       user.email,
     );
-    return created(accessToken);
+    return created({ accessToken });
   }
 }

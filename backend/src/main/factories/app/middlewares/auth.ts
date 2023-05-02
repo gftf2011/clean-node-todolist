@@ -13,7 +13,7 @@ import { PostgresTransaction } from '../../../../infra/database/postgres';
 
 export const makeAuthMiddleware = (): Middleware => {
   const postgres = new PostgresTransaction();
-  const bus = makeBus();
+  const bus = makeBus(postgres);
   const userService = new UserServiceImpl(bus);
   const decryptionProvider = new DecryptionFactory(
     process.env.ENCRYPTION_KEY_AES_256_CBC,

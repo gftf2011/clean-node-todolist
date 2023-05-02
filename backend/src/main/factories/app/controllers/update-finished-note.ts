@@ -7,7 +7,7 @@ import { PostgresTransaction } from '../../../../infra/database/postgres';
 
 export const makeUpdateFinishedNoteController = (): Controller => {
   const postgres = new PostgresTransaction();
-  const bus = makeBus();
+  const bus = makeBus(postgres);
   const userService = new UserServiceImpl(bus);
   const noteService = new NoteServiceImpl(bus);
   const controller = new UpdateFinishedNoteController(noteService, userService);
