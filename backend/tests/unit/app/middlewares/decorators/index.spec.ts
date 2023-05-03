@@ -1,11 +1,11 @@
-import { TransactionControllerDecorator } from '../../../../../src/app/controllers/decorators';
+import { TransactionMiddlewareDecorator } from '../../../../../src/app/middlewares/decorators';
 
-import { ControllerStub } from '../../../../doubles/stubs/app/controllers';
+import { MiddlewareStub } from '../../../../doubles/stubs/app/middlewares';
 import { PostgresTransactionSpy } from '../../../../doubles/spies/infra/database/postgres';
 
-describe('Database Controller - Decorator', () => {
+describe('Database Middleware - Decorator', () => {
   it('should commit decoratee response', async () => {
-    const decoratee = new ControllerStub([Promise.resolve({ is: 'any' })]);
+    const decoratee = new MiddlewareStub([Promise.resolve({ is: 'any' })]);
     const database = new PostgresTransactionSpy({
       createClient: {
         responses: [Promise.resolve()],
@@ -20,7 +20,7 @@ describe('Database Controller - Decorator', () => {
         responses: [Promise.resolve()],
       },
     });
-    const sut = new TransactionControllerDecorator(decoratee, database);
+    const sut = new TransactionMiddlewareDecorator(decoratee, database);
 
     const response = await sut.handle({} as any);
 
@@ -33,7 +33,7 @@ describe('Database Controller - Decorator', () => {
   });
 
   it('should rollback and throw error', async () => {
-    const decoratee = new ControllerStub([Promise.reject(new Error('error'))]);
+    const decoratee = new MiddlewareStub([Promise.reject(new Error('error'))]);
     const database = new PostgresTransactionSpy({
       createClient: {
         responses: [Promise.resolve()],
@@ -48,7 +48,7 @@ describe('Database Controller - Decorator', () => {
         responses: [Promise.resolve()],
       },
     });
-    const sut = new TransactionControllerDecorator(decoratee, database);
+    const sut = new TransactionMiddlewareDecorator(decoratee, database);
 
     const promise = sut.handle({} as any);
 

@@ -1,6 +1,6 @@
-import { Controller } from '../../../../../src/app/contracts/controllers';
+import { Middleware } from '../../../../../src/app/contracts/middlewares';
 
-export class ControllerSpy implements Controller {
+export class MiddlewareStub implements Middleware {
   private counter1 = 0;
 
   constructor(private readonly responses?: Promise<any>[]) {}
