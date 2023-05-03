@@ -1,4 +1,4 @@
-import { DatabaseQuery } from '../../../../../../src/app/contracts/database';
+import { DatabaseQuery } from '../../../../../../../src/app/contracts/database';
 
 export class PostgresConnectionSpy implements DatabaseQuery {
   private counter1 = 0;
