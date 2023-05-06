@@ -5,7 +5,7 @@ export class MiddlewareStub implements Middleware {
 
   constructor(private readonly responses?: Promise<any>[]) {}
 
-  public async handle(request: any): Promise<any> {
+  public async handle(_request: any): Promise<any> {
     const response = this.responses[this.counter1];
     this.counter1++;
     return response;

@@ -66,7 +66,7 @@ export class NoteServiceStub implements NoteService {
     return response;
   }
 
-  public async deleteNote(id: string): Promise<boolean> {
+  public async deleteNote(_id: string): Promise<boolean> {
     const response = this.props.deleteNote[this.counter6];
     this.counter6++;
     return response;

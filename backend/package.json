@@ -22,7 +22,8 @@
     "posttest:integration": "npm run docker:clear",
     "pretest:e2e": "npm run env:test && npm run run:docker:test",
     "test:e2e": "jest --clearCache ; jest --colors --coverage --verbose --detectOpenHandles --config jest-e2e.config.js",
-    "posttest:e2e": "npm run docker:clear"
+    "posttest:e2e": "npm run docker:clear",
+    "linting": "npx eslint --fix . --ext .ts"
   },
   "keywords": [],
   "author": "Gabriel Ferrari Tarallo Ferraz",

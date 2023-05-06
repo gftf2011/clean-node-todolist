@@ -12,7 +12,7 @@ export class SequencingProviderStub implements SequencingProvider {
 
   constructor(private readonly props?: Props) {}
 
-  public generateId(sequencer: Sequencers): string {
+  public generateId(_sequencer: Sequencers): string {
     const response = this.props.idArray[this.counter1];
     this.counter1++;
     return response;

@@ -218,75 +218,71 @@ describe('Note - Repository', () => {
   });
 
   it('should return all notes by user id from pagination', async () => {
-    try {
-      const user: UserModel = {
+    const user: UserModel = {
+      id: faker.datatype.uuid(),
+      email: faker.internet.email().toLowerCase(),
+      name: faker.name.firstName().toLowerCase(),
+      lastname: faker.name.lastName().toLowerCase(),
+      password: faker.internet.password(12),
+    };
+
+    const notes: NoteModel[] = [
+      {
         id: faker.datatype.uuid(),
-        email: faker.internet.email().toLowerCase(),
-        name: faker.name.firstName().toLowerCase(),
-        lastname: faker.name.lastName().toLowerCase(),
-        password: faker.internet.password(12),
-      };
+        title: faker.lorem.word(),
+        description: faker.lorem.word(),
+        finished: false,
+        userId: user.id,
+        updatedAt: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+      },
+      {
+        id: faker.datatype.uuid(),
+        title: faker.lorem.word(),
+        description: faker.lorem.word(),
+        finished: false,
+        userId: user.id,
+        updatedAt: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+      },
+      {
+        id: faker.datatype.uuid(),
+        title: faker.lorem.word(),
+        description: faker.lorem.word(),
+        finished: false,
+        userId: user.id,
+        updatedAt: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+      },
+    ];
 
-      const notes: NoteModel[] = [
-        {
-          id: faker.datatype.uuid(),
-          title: faker.lorem.word(),
-          description: faker.lorem.word(),
-          finished: false,
-          userId: user.id,
-          updatedAt: new Date().toISOString(),
-          createdAt: new Date().toISOString(),
-        },
-        {
-          id: faker.datatype.uuid(),
-          title: faker.lorem.word(),
-          description: faker.lorem.word(),
-          finished: false,
-          userId: user.id,
-          updatedAt: new Date().toISOString(),
-          createdAt: new Date().toISOString(),
-        },
-        {
-          id: faker.datatype.uuid(),
-          title: faker.lorem.word(),
-          description: faker.lorem.word(),
-          finished: false,
-          userId: user.id,
-          updatedAt: new Date().toISOString(),
-          createdAt: new Date().toISOString(),
-        },
-      ];
+    const factory = new RepositoriesConcreteFactory(postgres).make(
+      REPOSITORIES_FACTORIES.REMOTE,
+    );
+    const noteRepository = factory.createNoteRepository();
+    const userRepository = factory.createUserRepository();
 
-      const factory = new RepositoriesConcreteFactory(postgres).make(
-        REPOSITORIES_FACTORIES.REMOTE,
-      );
-      const noteRepository = factory.createNoteRepository();
-      const userRepository = factory.createUserRepository();
+    await postgres.createClient();
+    await postgres.openTransaction();
 
-      await postgres.createClient();
-      await postgres.openTransaction();
-
-      await userRepository.save(user);
-      // eslint-disable-next-line no-restricted-syntax
-      for (const note of notes) {
-        await noteRepository.save(note);
-      }
-
-      const limit = notes.length;
-      const page = 0;
-      const response = await noteRepository.findNotesByUserId(
-        user.id,
-        page,
-        limit,
-      );
-
-      await postgres.commit();
-      await postgres.closeTransaction();
-
-      expect(response.length).toEqual(notes.length);
-    } catch (error) {
-      console.log(error);
+    await userRepository.save(user);
+    // eslint-disable-next-line no-restricted-syntax
+    for (const note of notes) {
+      await noteRepository.save(note);
     }
+
+    const limit = notes.length;
+    const page = 0;
+    const response = await noteRepository.findNotesByUserId(
+      user.id,
+      page,
+      limit,
+    );
+
+    await postgres.commit();
+    await postgres.closeTransaction();
+
+    expect(response.length).toEqual(notes.length);
   });
 
   it('should return updated note', async () => {

@@ -2,7 +2,6 @@ import {
   AccessDeniedError,
   MissingHeaderParamsError,
   TokenExpiredError,
-  UserAlreadyExistsError,
   UserDoesNotExistsError,
   DatabaseError,
   ActionNotRegisteredError,
