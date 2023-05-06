@@ -24,7 +24,7 @@ import {
 
 import { ErrorHandlerInvoker } from '../../../../../src/app/controllers/strategies';
 
-describe('Controller Error Handler', () => {
+describe('Controller Error Handler - Controller', () => {
   it('should return 400 if error is "InvalidEmailError"', () => {
     const error = new InvalidEmailError('any email');
     const handler = new ErrorHandlerInvoker();

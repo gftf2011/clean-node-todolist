@@ -8,6 +8,7 @@ import {
   ServiceUnavailableError,
   MissingHeaderParamsError,
   UserDoesNotExistsError,
+  ActionNotRegisteredError,
 } from '../../errors';
 import { HttpResponse } from '../../contracts/http';
 
@@ -41,7 +42,10 @@ class ApplicationErrorHandlerStrategy implements ErrorHandlerStrategy {
     if (error instanceof MissingHeaderParamsError) {
       return badRequest(error);
     }
-    if (error instanceof DatabaseError) {
+    if (
+      error instanceof DatabaseError ||
+      error instanceof ActionNotRegisteredError
+    ) {
       return serverError(error);
     }
     if (error instanceof ServiceUnavailableError) {
