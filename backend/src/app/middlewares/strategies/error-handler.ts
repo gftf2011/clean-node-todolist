@@ -74,7 +74,6 @@ export class ErrorHandlerInvoker {
     if (error instanceof ApplicationError) {
       this.context.setStrategy(new ApplicationErrorHandlerStrategy());
     }
-    return;
   }
 
   public handle(error: Error): HttpResponse {
