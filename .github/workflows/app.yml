@@ -72,7 +72,13 @@ jobs:
         run: |
           cd backend
           npm run linting
+
       - name: Testing
         run: |
           cd backend
-          npm run test
+          npm run test:coverage
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
