@@ -5,6 +5,12 @@
 <br/>
 
 <div align="center">
+	<a href='https://coveralls.io/github/gftf2011/clean-todolist'><img src='https://coveralls.io/repos/github/gftf2011/clean-todolist/badge.svg' alt='Coverage Status' /></a>
+</div>
+
+<br/>
+
+<div align="center">
   <a href="#page_facing_up-about">About</a> •
   <a href="#hammer_and_wrench-supported-os">Supported OS</a> • 
   <a href="#large_blue_diamond-design-patterns">Design Patterns</a> •
