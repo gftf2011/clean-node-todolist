@@ -1,4 +1,3 @@
-import { DecryptionProvider } from '../contracts/providers';
 import { HttpRequest, HttpResponse } from '../contracts/http';
 import { TemplateMiddleware } from './template';
 import { InvalidTokenSubjectError, UserDoesNotExistsError } from '../errors';
@@ -8,10 +7,7 @@ import { ok } from './utils';
 import { UserService } from '../contracts/services';
 
 export class AuthMiddleware extends TemplateMiddleware {
-  constructor(
-    private readonly userService: UserService,
-    private readonly decryptionProvider: DecryptionProvider,
-  ) {
+  constructor(private readonly userService: UserService) {
     super();
   }
 
@@ -37,8 +33,7 @@ export class AuthMiddleware extends TemplateMiddleware {
     const user = await this.userService.getUser(id);
     if (!user) throw new UserDoesNotExistsError();
 
-    const decryptedSubject = this.decryptionProvider.decrypt(sub);
-    if (decryptedSubject !== user.email) throw new InvalidTokenSubjectError();
+    if (sub !== user.email) throw new InvalidTokenSubjectError();
 
     return ok({ userId: id });
   }

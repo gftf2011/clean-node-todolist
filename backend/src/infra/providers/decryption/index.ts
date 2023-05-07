@@ -37,7 +37,7 @@ abstract class DecryptionProviderCreator implements DecryptionProvider {
   private product: DecryptionProvider;
 
   constructor(private readonly key: string, private readonly iv: string) {
-    this.product = this.factoryMethod(key, iv);
+    this.product = this.factoryMethod(this.key, this.iv);
   }
 
   protected abstract factoryMethod(

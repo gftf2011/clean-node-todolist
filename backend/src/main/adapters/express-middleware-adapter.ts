@@ -20,8 +20,8 @@ export class ExpressMiddlewareAdapter {
       };
       const httpResponse = await middleware.handle(httpRequest);
       if (httpResponse.statusCode === 200) {
-        req.body = {
-          ...req.body,
+        req.headers = {
+          ...req.headers,
           ...httpResponse.body,
         };
         next();
