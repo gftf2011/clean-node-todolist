@@ -76,7 +76,7 @@ jobs:
       - name: Testing
         run: |
           cd backend
-          npm run test:coverage
+          npm run test
 
       - name: Coveralls
         uses: coverallsapp/github-action@v2
