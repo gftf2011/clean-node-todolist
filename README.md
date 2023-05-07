@@ -1,5 +1,5 @@
 <div align="center">
-	<h1>Clean Node TODO LIST Backend</h1>
+	<h1>CLEAN TODOLIST • :ledger: :computer:</h1>
 </div>
 
 <br/>
