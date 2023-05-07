@@ -8,7 +8,7 @@ export default (app: Express): void => {
   const controller = makeGetNotesByUserIdController();
   const authMiddleware = makeAuthMiddleware();
   app.get(
-    '/api/V1/find-note/:userId',
+    '/api/V1/find-notes',
     ExpressMiddlewareAdapter.adaptee(authMiddleware),
     ExpressRouteAdapter.adaptee(controller),
   );
