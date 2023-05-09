@@ -2,31 +2,53 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/src/main/server/index.js",
+  "main": "dist/main/server/index.js",
   "scripts": {
     "docker:up": "docker-compose up -d --remove-orphans",
     "docker:down": "docker-compose down",
     "docker:clear": "docker-compose down && docker image prune -a -f && docker volume prune -f",
+    
     "build:docker:test": "rm -rf docker-compose.yml && cat docker/test/docker-compose.yml >> docker-compose.yml",
+    "build:docker:dev": "rm -rf docker-compose.yml && cat docker/dev/docker-compose.yml >> docker-compose.yml",
+    
     "script:exec:test": "chmod +x ./scripts/test/postgres/init.sh",
+    "script:exec:dev": "chmod +x ./scripts/dev/postgres/init.sh",
+    
     "prerun:docker:test": "npm run docker:clear || true",
     "run:docker:test": "npm run script:exec:test && npm run build:docker:test",
     "postrun:docker:test": "npm run docker:up",
+
+    "prerun:docker:dev": "npm run docker:clear || true",
+    "run:docker:dev": "npm run script:exec:dev && npm run build:docker:dev",
+    "postrun:docker:dev": "npm run docker:up",
+
     "env:test": "rm -rf .env && cat ./env/test/.env >> .env",
+    "env:dev": "rm -rf .env && cat ./env/dev/.env >> .env",
+    
     "pretest": "npm run env:test && npm run run:docker:test",
     "test": "jest --clearCache ; jest --colors --coverage --verbose --detectOpenHandles --config jest.config.js",
     "posttest": "npm run docker:clear",
+    
     "pretest:coverage": "npm run env:test && npm run run:docker:test",
     "test:coverage": "jest --clearCache ; jest --colors --coverage --verbose --detectOpenHandles --config jest.config.js && coveralls < coverage/lcov.info",
     "posttest:coverage": "npm run docker:clear",
+    
     "test:unit": "jest --clearCache ; jest --colors --coverage --verbose --detectOpenHandles --config jest-unit.config.js",
+    
     "pretest:integration": "npm run env:test && npm run run:docker:test",
     "test:integration": "jest --clearCache ; jest --colors --coverage --verbose --detectOpenHandles --config jest-integration.config.js",
     "posttest:integration": "npm run docker:clear",
+    
     "pretest:e2e": "npm run env:test && npm run run:docker:test",
     "test:e2e": "jest --clearCache ; jest --colors --coverage --verbose --detectOpenHandles --config jest-e2e.config.js",
     "posttest:e2e": "npm run docker:clear",
-    "linting": "npx eslint --fix . --ext .ts"
+    
+    "linting": "npx eslint --fix . --ext .ts",
+    
+    "build": "rm -rf dist && tsc -p tsconfig-build.json",
+    
+    "prestart:dev": "npm run env:dev && npm run build && npm run run:docker:dev",
+    "start:dev": "node dist/main/server/index.js"
   },
   "keywords": [],
   "author": "Gabriel Ferrari Tarallo Ferraz",
