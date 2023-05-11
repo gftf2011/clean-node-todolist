@@ -9,8 +9,6 @@ type Adapter = (
   res: Response,
   next: NextFunction,
 ) => Promise<void>;
-
-// It uses the adapter design pattern
 export class ExpressMiddlewareAdapter {
   static adaptee(middleware: Middleware): Adapter {
     return async (req: Request, res: Response, next: NextFunction) => {

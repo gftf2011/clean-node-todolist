@@ -23,7 +23,8 @@ import {
   UnfinishedNoteError,
   NoteNotFoundError,
 } from '../../errors';
-import { HttpResponse } from '../../contracts/http';
+
+import { Response } from '../../contracts/response';
 
 import {
   badRequest,
@@ -35,11 +36,11 @@ import {
 } from '../utils';
 
 interface ErrorHandlerStrategy {
-  handle: (error: Error) => HttpResponse;
+  handle: (error: Error) => Response;
 }
 
 class DomainErrorHandlerStrategy implements ErrorHandlerStrategy {
-  public handle(error: DomainError): HttpResponse {
+  public handle(error: DomainError): Response {
     if (
       error instanceof InvalidEmailError ||
       error instanceof InvalidIdError ||
@@ -54,7 +55,7 @@ class DomainErrorHandlerStrategy implements ErrorHandlerStrategy {
 }
 
 class ApplicationErrorHandlerStrategy implements ErrorHandlerStrategy {
-  public handle(error: ApplicationError): HttpResponse {
+  public handle(error: ApplicationError): Response {
     if (
       error instanceof MissingBodyParamsError ||
       error instanceof MissingUrlParamsError ||
@@ -94,7 +95,7 @@ class ErrorHandlerContext {
     this.strategy = strategy;
   }
 
-  public handle(error: Error): HttpResponse {
+  public handle(error: Error): Response {
     return this.strategy.handle(error);
   }
 }
@@ -114,7 +115,7 @@ export class ErrorHandlerInvoker {
     }
   }
 
-  public handle(error: Error): HttpResponse {
+  public handle(error: Error): Response {
     this.selectStrategy(error);
     return this.context.handle(error);
   }

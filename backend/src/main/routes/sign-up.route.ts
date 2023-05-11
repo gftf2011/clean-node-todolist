@@ -1,9 +1,9 @@
 import { Express } from 'express';
 
 import { ExpressRouteAdapter } from '../adapters';
-import { makeSignUpController } from '../factories/app/controllers';
+import { makeSignUpHttpController } from '../factories/app/controllers/rest';
 
 export default (app: Express): void => {
-  const controller = makeSignUpController();
+  const controller = makeSignUpHttpController();
   app.post('/api/V1/sign-up', ExpressRouteAdapter.adaptee(controller));
 };

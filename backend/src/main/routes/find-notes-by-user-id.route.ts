@@ -1,15 +1,15 @@
 import { Express } from 'express';
 
 import { ExpressRouteAdapter, ExpressMiddlewareAdapter } from '../adapters';
-import { makeGetNotesByUserIdController } from '../factories/app/controllers';
-import { makeAuthMiddleware } from '../factories/app/middlewares';
+import { makeGetNotesByUserIdHttpController } from '../factories/app/controllers/rest';
+import { makeAuthHttpMiddleware } from '../factories/app/middlewares/rest';
 
 export default (app: Express): void => {
-  const controller = makeGetNotesByUserIdController();
-  const authMiddleware = makeAuthMiddleware();
+  const controller = makeGetNotesByUserIdHttpController();
+  const AuthHttpMiddleware = makeAuthHttpMiddleware();
   app.get(
     '/api/V1/find-notes',
-    ExpressMiddlewareAdapter.adaptee(authMiddleware),
+    ExpressMiddlewareAdapter.adaptee(AuthHttpMiddleware),
     ExpressRouteAdapter.adaptee(controller),
   );
 };

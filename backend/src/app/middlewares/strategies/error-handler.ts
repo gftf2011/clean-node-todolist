@@ -10,7 +10,8 @@ import {
   UserDoesNotExistsError,
   ActionNotRegisteredError,
 } from '../../errors';
-import { HttpResponse } from '../../contracts/http';
+
+import { Response } from '../../contracts/response';
 
 import {
   serverError,
@@ -22,11 +23,11 @@ import {
 } from '../utils';
 
 interface ErrorHandlerStrategy {
-  handle: (error: Error) => HttpResponse;
+  handle: (error: Error) => Response;
 }
 
 class ApplicationErrorHandlerStrategy implements ErrorHandlerStrategy {
-  public handle(error: ApplicationError): HttpResponse {
+  public handle(error: ApplicationError): Response {
     if (
       error instanceof AccessDeniedError ||
       error instanceof InvalidTokenSubjectError
@@ -62,7 +63,7 @@ class ErrorHandlerContext {
     this.strategy = strategy;
   }
 
-  public handle(error: Error): HttpResponse {
+  public handle(error: Error): Response {
     return this.strategy.handle(error);
   }
 }
@@ -80,7 +81,7 @@ export class ErrorHandlerInvoker {
     }
   }
 
-  public handle(error: Error): HttpResponse {
+  public handle(error: Error): Response {
     this.selectStrategy(error);
     return this.context.handle(error);
   }

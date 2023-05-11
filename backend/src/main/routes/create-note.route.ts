@@ -1,15 +1,15 @@
 import { Express } from 'express';
 
 import { ExpressRouteAdapter, ExpressMiddlewareAdapter } from '../adapters';
-import { makeCreateNoteController } from '../factories/app/controllers';
-import { makeAuthMiddleware } from '../factories/app/middlewares';
+import { makeCreateNoteHttpController } from '../factories/app/controllers/rest';
+import { makeAuthHttpMiddleware } from '../factories/app/middlewares/rest';
 
 export default (app: Express): void => {
-  const controller = makeCreateNoteController();
-  const authMiddleware = makeAuthMiddleware();
+  const controller = makeCreateNoteHttpController();
+  const AuthHttpMiddleware = makeAuthHttpMiddleware();
   app.post(
     '/api/V1/create-note',
-    ExpressMiddlewareAdapter.adaptee(authMiddleware),
+    ExpressMiddlewareAdapter.adaptee(AuthHttpMiddleware),
     ExpressRouteAdapter.adaptee(controller),
   );
 };

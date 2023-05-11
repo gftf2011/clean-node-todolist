@@ -1,15 +1,15 @@
 import { Express } from 'express';
 
 import { ExpressRouteAdapter, ExpressMiddlewareAdapter } from '../adapters';
-import { makeDeleteNoteController } from '../factories/app/controllers';
-import { makeAuthMiddleware } from '../factories/app/middlewares';
+import { makeDeleteNoteHttpController } from '../factories/app/controllers/rest';
+import { makeAuthHttpMiddleware } from '../factories/app/middlewares/rest';
 
 export default (app: Express): void => {
-  const controller = makeDeleteNoteController();
-  const authMiddleware = makeAuthMiddleware();
+  const controller = makeDeleteNoteHttpController();
+  const AuthHttpMiddleware = makeAuthHttpMiddleware();
   app.delete(
     '/api/V1/delete-note',
-    ExpressMiddlewareAdapter.adaptee(authMiddleware),
+    ExpressMiddlewareAdapter.adaptee(AuthHttpMiddleware),
     ExpressRouteAdapter.adaptee(controller),
   );
 };
