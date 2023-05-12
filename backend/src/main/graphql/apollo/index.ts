@@ -43,8 +43,6 @@ const errors503 = ['ServiceUnavailableError'];
 
 const handleErrors = (response: any, errors: readonly GraphQLError[]): void => {
   errors?.forEach(error => {
-    response.data = undefined;
-
     if (errors400.some(value => value === error.extensions.name)) {
       response.http.status = 400;
     } else if (errors401.some(value => value === error.extensions.name)) {
