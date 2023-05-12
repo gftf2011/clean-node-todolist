@@ -5,7 +5,7 @@
 <br/>
 
 <div align="center">
-	<a href='https://coveralls.io/github/gftf2011/clean-todolist'><img src='https://coveralls.io/repos/github/gftf2011/clean-todolist/badge.svg' alt='Coverage Status' /></a>
+	<a href='https://coveralls.io/github/gftf2011/clean-todolist?branch=main'><img src='https://coveralls.io/repos/github/gftf2011/clean-todolist/badge.svg?branch=main' alt='Coverage Status' /></a>
 </div>
 
 <br/>
