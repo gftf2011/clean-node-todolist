@@ -19,7 +19,7 @@ import { UserServiceDummy } from '../../../../doubles/dummies/app/services/user'
 import { NoteServiceStub } from '../../../../doubles/stubs/app/services/note';
 import { UserServiceStub } from '../../../../doubles/stubs/app/services/user';
 
-describe('Create Note - Controller', () => {
+describe('Create Note - HTTP Controller', () => {
   it('should throw "MissingBodyParamsError" if title is "undefined"', async () => {
     const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
 

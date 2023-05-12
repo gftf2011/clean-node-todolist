@@ -19,7 +19,7 @@ import { UserServiceDummy } from '../../../../doubles/dummies/app/services/user'
 
 import { UserServiceStub } from '../../../../doubles/stubs/app/services/user';
 
-describe('Sign In - Controller', () => {
+describe('Sign In - HTTP Controller', () => {
   it('should throw "MissingBodyParamsError" if email is "undefined"', async () => {
     const user: Omit<{ email: string; password: string }, 'email'> = {
       password: 'password_mock',

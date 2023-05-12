@@ -17,7 +17,7 @@ import { UserServiceDummy } from '../../../../doubles/dummies/app/services/user'
 
 import { UserServiceStub } from '../../../../doubles/stubs/app/services/user';
 
-describe('Sign Up - Controller', () => {
+describe('Sign Up - HTTP Controller', () => {
   it('should throw "MissingBodyParamsError" if email is "undefined"', async () => {
     const user: Omit<UserDTO, 'email'> = {
       lastname: 'lastname_mock',

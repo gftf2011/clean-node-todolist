@@ -19,7 +19,7 @@ import { UserServiceDummy } from '../../../../doubles/dummies/app/services/user'
 import { NoteServiceStub } from '../../../../doubles/stubs/app/services/note';
 import { UserServiceStub } from '../../../../doubles/stubs/app/services/user';
 
-describe('Update Finished Note - Controller', () => {
+describe('Update Finished Note - HTTP Controller', () => {
   it('should throw "MissingHeaderParamsError" if userId is "undefined"', async () => {
     const noteID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
 

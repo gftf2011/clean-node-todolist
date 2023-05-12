@@ -20,7 +20,7 @@ import { UserServiceDummy } from '../../../../doubles/dummies/app/services/user'
 import { NoteServiceStub } from '../../../../doubles/stubs/app/services/note';
 import { UserServiceStub } from '../../../../doubles/stubs/app/services/user';
 
-describe('Delete Note - Controller', () => {
+describe('Delete Note - HTTP Controller', () => {
   it('should throw "MissingHeaderParamsError" if userId is "undefined"', async () => {
     const noteID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
 
@@ -149,7 +149,7 @@ describe('Delete Note - Controller', () => {
     );
   });
 
-  it('should throw "MissingBodyParamsError" if id do not exists', async () => {
+  it('should throw "UserDoesNotExistsError" if id do not exists', async () => {
     const noteID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
     const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
 
