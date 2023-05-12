@@ -1,9 +1,6 @@
 import { v4 } from 'uuid';
-import {
-  SequencingProvider,
-  Sequencers,
-} from '../../../app/contracts/providers';
-import { InvalidSequencingDomainError } from '../../../app/errors';
+import { SequencingProvider, Sequencers } from '../../app/contracts/providers';
+import { InvalidSequencingDomainError } from '../../app/errors';
 
 const USERS = '33704968-6209-493e-a582-65e8195bae73';
 const NOTES = 'cd4d0382-7aac-4781-84e5-ff210b12b820';

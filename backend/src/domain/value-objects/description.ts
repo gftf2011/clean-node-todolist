@@ -1,5 +1,5 @@
-import { Either, left, right } from '../../../shared';
-import { InvalidDescriptionError } from '../../errors';
+import { Either, left, right } from '../../shared';
+import { InvalidDescriptionError } from '../errors';
 
 export class Description {
   private constructor(private readonly value: string) {

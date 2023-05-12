@@ -1,6 +1,6 @@
-import { InvalidNameError } from '../../errors';
+import { InvalidNameError } from '../errors';
 
-import { Either, left, right } from '../../../shared';
+import { Either, left, right } from '../../shared';
 
 export class Name {
   private constructor(private readonly value: string) {

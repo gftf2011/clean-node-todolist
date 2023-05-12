@@ -1,5 +1,5 @@
-import { Either, left, right } from '../../../shared';
-import { InvalidIdError } from '../../errors';
+import { Either, left, right } from '../../shared';
+import { InvalidIdError } from '../errors';
 
 const VALID_ID_REGEX = /^([0-9]{17})-([0-9a-f]{32})-([0-9a-f]{32})$/;
 

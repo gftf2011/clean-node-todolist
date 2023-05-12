@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { TokenProvider, TokenPayload } from '../../../app/contracts/providers';
+import { TokenProvider, TokenPayload } from '../../app/contracts/providers';
 
 export class TokenProviderImpl implements TokenProvider {
   constructor(private readonly expiresIn: number) {}

@@ -1,4 +1,4 @@
-import { NoteDTO } from '../../../domain/dto';
+import { NoteDTO } from '../../domain/dto';
 import {
   CreateNoteAction,
   DeleteNoteAction,
@@ -6,9 +6,9 @@ import {
   FindNotesByUserIdAction,
   IsNoteFinishedAction,
   UpdateNoteAction,
-} from '../../actions';
-import { Bus } from '../../contracts/bus';
-import { NoteService } from '../../contracts/services';
+} from '../actions';
+import { Bus } from '../contracts/bus';
+import { NoteService } from '../contracts/services';
 
 export class NoteServiceImpl implements NoteService {
   constructor(private readonly bus: Bus) {}

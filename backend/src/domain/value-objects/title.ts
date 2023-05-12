@@ -1,5 +1,5 @@
-import { Either, left, right } from '../../../shared';
-import { InvalidTitleError } from '../../errors';
+import { Either, left, right } from '../../shared';
+import { InvalidTitleError } from '../errors';
 
 export class Title {
   private constructor(private readonly value: string) {

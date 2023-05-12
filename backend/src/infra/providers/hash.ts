@@ -2,7 +2,7 @@
 import crypto from 'crypto';
 import { promisify } from 'util';
 
-import { HashProvider } from '../../../app/contracts/providers';
+import { HashProvider } from '../../app/contracts/providers';
 
 abstract class HashProviderProduct implements HashProvider {
   protected abstract encoding: string;

@@ -1,6 +1,6 @@
-import { Either, left, right } from '../../../shared';
+import { Either, left, right } from '../../shared';
 
-import { Email, Password, ID, Lastname, Name } from '../../value-objects';
+import { Email, Password, ID, Lastname, Name } from '../value-objects';
 
 type Props = {
   id: string;

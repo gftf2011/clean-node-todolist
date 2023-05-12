@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
-import { UserRepository } from '../../../domain/repositories';
-import { UserModel } from '../../../domain/models';
-import { DatabaseQuery } from '../../../app/contracts/database';
+import { UserRepository } from '../../domain/repositories';
+import { UserModel } from '../../domain/models';
+import { DatabaseQuery } from '../../app/contracts/database';
 
 type DataModel = {
   id: string;

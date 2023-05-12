@@ -1,6 +1,6 @@
-import { InvalidLastnameError } from '../../errors';
+import { InvalidLastnameError } from '../errors';
 
-import { Either, left, right } from '../../../shared';
+import { Either, left, right } from '../../shared';
 
 export class Lastname {
   private constructor(private readonly value: string) {

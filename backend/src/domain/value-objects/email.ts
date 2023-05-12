@@ -1,6 +1,6 @@
-import { Either, left, right } from '../../../shared';
+import { Either, left, right } from '../../shared';
 
-import { InvalidEmailError } from '../../errors';
+import { InvalidEmailError } from '../errors';
 
 /**
  * Constants

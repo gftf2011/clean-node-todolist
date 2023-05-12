@@ -1,6 +1,6 @@
-import { Either, left, right } from '../../../shared';
+import { Either, left, right } from '../../shared';
 
-import { WeakPasswordError } from '../../errors';
+import { WeakPasswordError } from '../errors';
 
 export class Password {
   private constructor(private readonly value: string) {

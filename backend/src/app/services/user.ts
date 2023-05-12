@@ -1,4 +1,4 @@
-import { UserDTO } from '../../../domain/dto';
+import { UserDTO } from '../../domain/dto';
 import {
   CreateAccessTokenAction,
   CreateUserAction,
@@ -6,9 +6,9 @@ import {
   FindUserByEmailAction,
   PasswordMatchAction,
   VerifyTokenAction,
-} from '../../actions';
-import { Bus } from '../../contracts/bus';
-import { UserService } from '../../contracts/services';
+} from '../actions';
+import { Bus } from '../contracts/bus';
+import { UserService } from '../contracts/services';
 
 export class UserServiceImpl implements UserService {
   constructor(private readonly bus: Bus) {}

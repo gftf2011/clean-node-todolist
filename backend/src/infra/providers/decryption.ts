@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import crypto from 'crypto';
-import { DecryptionProvider } from '../../../app/contracts/providers';
+import { DecryptionProvider } from '../../app/contracts/providers';
 
 abstract class DecryptionProviderProduct implements DecryptionProvider {
   protected abstract decryption: string;

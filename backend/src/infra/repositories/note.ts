@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
-import { NoteRepository } from '../../../domain/repositories';
-import { NoteModel } from '../../../domain/models';
-import { DatabaseQuery } from '../../../app/contracts/database';
+import { NoteRepository } from '../../domain/repositories';
+import { NoteModel } from '../../domain/models';
+import { DatabaseQuery } from '../../app/contracts/database';
 
 type DataModel = {
   id: string;
