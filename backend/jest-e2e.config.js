@@ -29,6 +29,7 @@ module.exports = {
     '!<rootDir>/src/domain/repositories/**',
     '!<rootDir>/src/app/contracts/**',
     '!<rootDir>/src/app/**/index.ts',
+    '!<rootDir>/src/infra/**/index.ts',
     '!<rootDir>/src/shared/**/index.ts',
   ],
 

@@ -18,7 +18,7 @@ import { UserServiceDummy } from '../../../../doubles/dummies/app/services/user'
 
 import { UserServiceStub } from '../../../../doubles/stubs/app/services/user';
 
-describe('Auth - Middleware', () => {
+describe('Auth - HTTP Middleware', () => {
   it('should throw "MissingHeaderParamsError" if authorization is "undefined"', async () => {
     const service = new UserServiceDummy();
     const middleware = new AuthHttpMiddleware(service);
