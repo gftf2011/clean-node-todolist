@@ -31,13 +31,13 @@ jobs:
         uses: actions/cache@v3.2.3
         with:
           path: ./backend/node_modules
-          key: node-modules-app-cache-key
+          key: node-modules-app-cache-key.${{ github.ref }}.${{ github.sha }}
           
       - name: Cache package-lock.json
         uses: actions/cache@v3.2.3
         with:
           path: ./backend/package-lock.json
-          key: package-lock-app-cache-key
+          key: package-lock-app-cache-key.${{ github.ref }}.${{ github.sha }}
 
   test-and-lint:
     runs-on: ubuntu-latest
@@ -60,13 +60,13 @@ jobs:
         uses: actions/cache@v3.2.3
         with:
           path: ./backend/node_modules
-          key: node-modules-app-cache-key
+          key: node-modules-app-cache-key.${{ github.ref }}.${{ github.sha }}
           
       - name: Use Cached package-lock.json
         uses: actions/cache@v3.2.3
         with:
           path: ./backend/package-lock.json
-          key: package-lock-app-cache-key
+          key: package-lock-app-cache-key.${{ github.ref }}.${{ github.sha }}
 
       - name: Linting
         run: |
