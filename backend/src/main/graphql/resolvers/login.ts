@@ -4,7 +4,7 @@ import {
   makeSignInGraphqlController,
 } from '../../factories/app/controllers/graphql';
 
-export const loginResolver = {
+export default {
   Query: {
     signIn: ApolloServerResolverAdapter.adaptee(makeSignInGraphqlController()),
   },

@@ -1,3 +1,5 @@
-export * from './base';
-export * from './login';
-export * from './notes';
+import base from './base';
+import login from './login';
+import notes from './notes';
+
+export default [base, login, notes];

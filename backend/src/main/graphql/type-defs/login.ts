@@ -1,4 +1,4 @@
-export const loginType = `#graphql
+export default `#graphql
   input SignInInput {
     password: String
     email: String

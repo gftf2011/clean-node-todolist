@@ -1,4 +1,4 @@
-export const baseType = `#graphql
+export default `#graphql
   scalar Void
 
   directive @auth on FIELD_DEFINITION

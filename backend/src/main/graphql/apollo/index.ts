@@ -4,12 +4,9 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import { GraphQLError } from 'graphql';
 import { Server } from 'http';
 
-import { baseResolver, loginResolver, notesResolver } from '../resolvers';
-import { baseType, loginType, notesType } from '../type-defs';
+import resolvers from '../resolvers';
+import typeDefs from '../type-defs';
 import { authDirectiveTransformer } from '../directives';
-
-const resolvers = [baseResolver, loginResolver, notesResolver];
-const typeDefs = [baseType, loginType, notesType];
 
 let schema = makeExecutableSchema({ resolvers, typeDefs });
 schema = authDirectiveTransformer(schema);
@@ -52,7 +49,7 @@ const handleErrors = (response: any, errors: readonly GraphQLError[]): void => {
     } else if (errors500.some(value => value === error.extensions.name)) {
       response.http.status = 500;
     } else if (errors503.some(value => value === error.extensions.name)) {
-      response.http.status = 500;
+      response.http.status = 503;
     } else {
       response.http.status = 599;
     }

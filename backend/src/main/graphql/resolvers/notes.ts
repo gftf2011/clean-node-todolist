@@ -8,7 +8,7 @@ import {
   makeUpdateNoteGraphqlController,
 } from '../../factories/app/controllers/graphql';
 
-export const notesResolver = {
+export default {
   Query: {
     getNote: ApolloServerResolverAdapter.adaptee(
       makeGetNoteGraphqlController(),

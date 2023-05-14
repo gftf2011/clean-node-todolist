@@ -9,7 +9,7 @@ export const authDirectiveTransformer = (
 ): GraphQLSchema => {
   return mapSchema(schema, {
     [MapperKind.OBJECT_FIELD]: fieldConfig => {
-      const authDirective = getDirective(schema, fieldConfig, 'auth');
+      const authDirective = getDirective(schema, fieldConfig, 'auth')?.[0];
       if (authDirective) {
         const { resolve } = fieldConfig;
         // eslint-disable-next-line no-param-reassign
@@ -18,18 +18,24 @@ export const authDirectiveTransformer = (
             args,
             context,
           };
-          const httpResponse = await makeAuthGraphqlMiddleware().handle(
-            request,
-          );
-          if (httpResponse.statusCode === 200) {
-            Object.assign(context?.req?.headers, httpResponse.body);
-            return resolve.call(this, parent, args, context, info);
+          try {
+            const httpResponse = await makeAuthGraphqlMiddleware().handle(
+              request,
+            );
+            if (httpResponse.statusCode === 200) {
+              Object.assign(context?.req?.headers, httpResponse.body);
+              return resolve.call(this, parent, args, context, info);
+            }
+            throw httpResponse.body;
+          } catch (err) {
+            const error: Error = err as any;
+            throw new GraphQLError(error.message, {
+              extensions: {
+                name: error.name,
+                message: error.message,
+              },
+            });
           }
-          throw new GraphQLError(httpResponse.body.message, {
-            extensions: {
-              errorType: httpResponse.body.name,
-            },
-          });
         };
       }
       return fieldConfig;

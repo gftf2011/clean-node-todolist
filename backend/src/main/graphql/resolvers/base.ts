@@ -1,5 +1,5 @@
 import { GraphQLVoid } from 'graphql-scalars';
 
-export const baseResolver = {
+export default {
   Void: GraphQLVoid,
 };

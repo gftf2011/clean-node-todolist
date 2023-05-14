@@ -1,4 +1,4 @@
-export const notesType = `#graphql
+export default `#graphql
   input GetNoteInput {
     id: String
   }
