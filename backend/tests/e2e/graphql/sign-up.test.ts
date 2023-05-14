@@ -5,6 +5,13 @@ import request, { Response } from 'supertest';
 import { loader } from '../../../src/main/loaders';
 import serverApp from '../../../src/main/config/server';
 
+import {
+  InvalidEmailError,
+  InvalidLastnameError,
+  InvalidNameError,
+  WeakPasswordError,
+} from '../../../src/domain/errors';
+
 import { DatabaseTransaction } from '../../../src/app/contracts/database';
 import { UserAlreadyExistsError } from '../../../src/app/errors';
 
@@ -52,6 +59,78 @@ describe('signUp - Mutation', () => {
 
     expect(response.status).toBe(200);
     expect(response.body.data.signUp.accessToken).toBeDefined();
+  });
+
+  it('should return 400 if email is white space string', async () => {
+    const query = `mutation {
+      signUp (input: { email: " ", password: "12345678xX@", name: "test", lastname: "test" }) {
+        accessToken
+      }
+    }`;
+
+    const response = await signUpRequest(query);
+
+    const error = new InvalidEmailError(' ');
+
+    expect(response.status).toBe(400);
+    expect(response.body.data.signUp).toBeNull();
+    expect(response.body.errors[0].message).toBe(error.message);
+    expect(response.body.errors[0].extensions.message).toBe(error.message);
+    expect(response.body.errors[0].extensions.name).toBe(error.name);
+  });
+
+  it('should return 400 if password is white space string', async () => {
+    const query = `mutation {
+      signUp (input: { email: "test@mail.com", password: " ", name: "test", lastname: "test" }) {
+        accessToken
+      }
+    }`;
+
+    const response = await signUpRequest(query);
+
+    const error = new WeakPasswordError();
+
+    expect(response.status).toBe(400);
+    expect(response.body.data.signUp).toBeNull();
+    expect(response.body.errors[0].message).toBe(error.message);
+    expect(response.body.errors[0].extensions.message).toBe(error.message);
+    expect(response.body.errors[0].extensions.name).toBe(error.name);
+  });
+
+  it('should return 400 if name is white space string', async () => {
+    const query = `mutation {
+      signUp (input: { email: "test@mail.com", password: "12345678xX@", name: " ", lastname: "test" }) {
+        accessToken
+      }
+    }`;
+
+    const response = await signUpRequest(query);
+
+    const error = new InvalidNameError(' ');
+
+    expect(response.status).toBe(400);
+    expect(response.body.data.signUp).toBeNull();
+    expect(response.body.errors[0].message).toBe(error.message);
+    expect(response.body.errors[0].extensions.message).toBe(error.message);
+    expect(response.body.errors[0].extensions.name).toBe(error.name);
+  });
+
+  it('should return 400 if lastname is white space string', async () => {
+    const query = `mutation {
+      signUp (input: { email: "test@mail.com", password: "12345678xX@", name: "test", lastname: " " }) {
+        accessToken
+      }
+    }`;
+
+    const response = await signUpRequest(query);
+
+    const error = new InvalidLastnameError(' ');
+
+    expect(response.status).toBe(400);
+    expect(response.body.data.signUp).toBeNull();
+    expect(response.body.errors[0].message).toBe(error.message);
+    expect(response.body.errors[0].extensions.message).toBe(error.message);
+    expect(response.body.errors[0].extensions.name).toBe(error.name);
   });
 
   it('should return 403 id user already exists', async () => {
