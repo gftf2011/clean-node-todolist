@@ -25,7 +25,7 @@ describe('signUp - Mutation', () => {
     await postgres.close();
   };
 
-  const signUpRequest = async (query: string): Promise<Response> => {
+  const serverRequest = async (query: string): Promise<Response> => {
     const response = await request(server).post('/graphql').send({ query });
     return response;
   };
@@ -48,14 +48,14 @@ describe('signUp - Mutation', () => {
     postgres = new PostgresTransaction();
   });
 
-  it('should return 201 with a valid user', async () => {
+  it('should return 200 with a valid user', async () => {
     const query = `mutation {
       signUp (input: { email: "test@mail.com", password: "12345678xX@", name: "test", lastname: "test" }) {
         accessToken
       }
     }`;
 
-    const response = await signUpRequest(query);
+    const response = await serverRequest(query);
 
     expect(response.status).toBe(200);
     expect(response.body.data.signUp.accessToken).toBeDefined();
@@ -68,7 +68,7 @@ describe('signUp - Mutation', () => {
       }
     }`;
 
-    const response = await signUpRequest(query);
+    const response = await serverRequest(query);
 
     const error = new InvalidEmailError(' ');
 
@@ -86,7 +86,7 @@ describe('signUp - Mutation', () => {
       }
     }`;
 
-    const response = await signUpRequest(query);
+    const response = await serverRequest(query);
 
     const error = new WeakPasswordError();
 
@@ -104,7 +104,7 @@ describe('signUp - Mutation', () => {
       }
     }`;
 
-    const response = await signUpRequest(query);
+    const response = await serverRequest(query);
 
     const error = new InvalidNameError(' ');
 
@@ -122,7 +122,7 @@ describe('signUp - Mutation', () => {
       }
     }`;
 
-    const response = await signUpRequest(query);
+    const response = await serverRequest(query);
 
     const error = new InvalidLastnameError(' ');
 
@@ -133,15 +133,15 @@ describe('signUp - Mutation', () => {
     expect(response.body.errors[0].extensions.name).toBe(error.name);
   });
 
-  it('should return 403 id user already exists', async () => {
+  it('should return 403 if user already exists', async () => {
     const query = `mutation {
       signUp (input: { email: "test@mail.com", password: "12345678xX@", name: "test", lastname: "test" }) {
         accessToken
       }
     }`;
 
-    await signUpRequest(query);
-    const response = await signUpRequest(query);
+    await serverRequest(query);
+    const response = await serverRequest(query);
 
     const error = new UserAlreadyExistsError();
 

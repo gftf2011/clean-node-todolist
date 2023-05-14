@@ -226,7 +226,7 @@ describe('POST - api/V1/sign-up', () => {
     });
   });
 
-  it('should return 403 id user already exists', async () => {
+  it('should return 403 if user already exists', async () => {
     const user = {
       email: 'test@mail.com',
       password: '12345678xX@',
