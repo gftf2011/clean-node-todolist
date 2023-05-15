@@ -15,12 +15,17 @@ export default `#graphql
     getNote (input: GetNoteInput): Note @auth
   }
 
+  input GetNotesByUserIdInput {
+    page: Int
+    limit: Int
+  }
+
   type GetNotesByUserIdOutput {
     notes: [Note]
   }
 
   extend type Query {
-    getNotesByUserId: GetNotesByUserIdOutput @auth
+    getNotesByUserId (input: GetNotesByUserIdInput): GetNotesByUserIdOutput @auth
   }
 
   input UpdateNoteInput {

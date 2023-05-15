@@ -23,8 +23,8 @@ export class GetNotesByUserIdGraphqlController extends TemplateGraphqlController
     if (!user) throw new UserDoesNotExistsError();
     const notes = await this.noteService.getNotesByUserId(
       request.context.req.headers.userId,
-      request.args.input.page,
-      request.args.input.limit,
+      Number(request.args.input.page),
+      Number(request.args.input.limit),
     );
     return ok(NotesViewModel.map(notes));
   }
