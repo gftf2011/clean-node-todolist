@@ -81,10 +81,7 @@ The objective from this project is to show how to create an API with a well-defi
 <br/>
 
 ## :racing_car: Running Project
-
-Instructions
 ```sh
-  $ cd backend
   $ npm i
   $ npm run start:dev
 ```
@@ -95,7 +92,6 @@ Instructions
 
 ## :test_tube: Running Tests
 ```sh
-  $ cd backend/
   $ npm run test
 ```
 
