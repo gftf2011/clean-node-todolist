@@ -1,5 +1,5 @@
 <div align="center">
-	<h1>CLEAN TODOLIST • :ledger: :computer:</h1>
+	<h1>CLEAN Node.JS TODOLIST • :ledger: :computer:</h1>
 </div>
 
 <br/>
@@ -15,7 +15,9 @@
   <a href="#hammer_and_wrench-supported-os">Supported OS</a> • 
   <a href="#large_blue_diamond-design-patterns">Design Patterns</a> •
   <a href="#clipboard-required-tools">Required Tools</a> •
-  <a href="#test_tube-running-tests">Running Tests</a>
+  <a href="#racing_car-running-project">Running Project</a> •
+  <a href="#test_tube-running-tests">Running Tests</a> •
+  <a href="#memo-license">License</a>
 </div>
 
 <br/>
@@ -78,12 +80,31 @@ The objective from this project is to show how to create an API with a well-defi
 
 <br/>
 
+## :racing_car: Running Project
+
+Instructions
+```sh
+  $ cd backend
+  $ npm i
+  $ npm run start:dev
+```
+
+### OBS.: Ensure to install all dependencies in <a href="#clipboard-required-tools">Required Tools</a>
+
+<br/>
+
 ## :test_tube: Running Tests
 ```sh
   $ cd backend/
   $ npm run test
 ```
 
+<br/>
+
+## :memo: License
+
+This project is under MIT license. See the [LICENSE](https://github.com/gftf2011/clean-node-todolist/blob/main/LICENSE) file for more details.
+
 ---
 
-Made with lots of :heart: by [Gabriel Ferrari Tarallo Ferraz](https://www.linkedin.com/in/gabriel-ferrari-tarallo-ferraz-7a4218135/)
+Made with lots of :heart: by [Gabriel Ferrari Tarallo Ferraz](https://www.linkedin.com/in/gabriel-ferrari-tarallo-ferraz/)
