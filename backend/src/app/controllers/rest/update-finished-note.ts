@@ -1,6 +1,6 @@
 import { HttpRequest } from '../../contracts/http';
 import { NoteService, UserService } from '../../contracts/services';
-import { UserDoesNotExistsError } from '../../errors';
+import { NoteNotFoundError, UserDoesNotExistsError } from '../../errors';
 import { TemplateHttpController } from '../template';
 import { noContent } from '../utils';
 import { Response } from '../../contracts/response';
@@ -51,6 +51,8 @@ export class UpdateFinishedNoteHttpController extends TemplateHttpController {
   ): Promise<Response<void>> {
     const user = await this.userService.getUser(request.headers.userId);
     if (!user) throw new UserDoesNotExistsError();
+    const note = await this.noteService.getNote(request.body.id);
+    if (!note) throw new NoteNotFoundError(request.body.id);
     await this.noteService.updateFinishedNote(
       request.body.id,
       request.body.finished,
