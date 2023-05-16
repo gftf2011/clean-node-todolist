@@ -1,5 +1,9 @@
 import { NoteService, UserService } from '../../contracts/services';
-import { UnfinishedNoteError, UserDoesNotExistsError } from '../../errors';
+import {
+  NoteNotFoundError,
+  UnfinishedNoteError,
+  UserDoesNotExistsError,
+} from '../../errors';
 import { TemplateGraphqlController } from '../template';
 import { noContent } from '../utils';
 import { Response } from '../../contracts/response';
@@ -18,6 +22,8 @@ export class DeleteNoteGraphqlController extends TemplateGraphqlController {
       request.context.req.headers.userId,
     );
     if (!user) throw new UserDoesNotExistsError();
+    const note = await this.noteService.getNote(request.args.input.id);
+    if (!note) throw new NoteNotFoundError(request.args.input.id);
     const deleted = await this.noteService.deleteNote(request.args.input.id);
     if (!deleted) throw new UnfinishedNoteError(request.args.input.id);
     return noContent();

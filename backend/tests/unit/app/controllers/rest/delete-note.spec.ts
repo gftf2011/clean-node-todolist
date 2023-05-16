@@ -6,6 +6,7 @@ import {
   MissingHeaderParamsError,
   UserDoesNotExistsError,
   UnfinishedNoteError,
+  NoteNotFoundError,
 } from '../../../../../src/app/errors';
 import {
   badRequest,
@@ -171,6 +172,38 @@ describe('Delete Note - HTTP Controller', () => {
     expect(response).toStrictEqual(unauthorized(new UserDoesNotExistsError()));
   });
 
+  it('should throw "NoteNotFoundError" if note do not exists', async () => {
+    const noteID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
+    const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
+
+    const user: UserDTO = {
+      email: 'email_mock',
+      lastname: 'lastname_mock',
+      name: 'name_mock',
+      password: 'password_mock',
+      id: userID,
+    };
+
+    const userService = new UserServiceStub({
+      getUser: [Promise.resolve(user)],
+    });
+    const noteService = new NoteServiceStub({
+      getNote: [Promise.resolve(null)],
+    });
+    const controller = new DeleteNoteHttpController(noteService, userService);
+
+    const request: HttpRequest = {
+      headers: {
+        userId: userID,
+      },
+      body: { id: noteID },
+    };
+
+    const response = await controller.handle(request);
+
+    expect(response).toStrictEqual(badRequest(new NoteNotFoundError(noteID)));
+  });
+
   it('should throw "UnfinishedNoteError" if note is not finished', async () => {
     const noteID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
     const userID = `${'0'.repeat(17)}-${'0'.repeat(32)}-${'0'.repeat(32)}`;
@@ -196,6 +229,7 @@ describe('Delete Note - HTTP Controller', () => {
       getUser: [Promise.resolve(user)],
     });
     const noteService = new NoteServiceStub({
+      getNote: [Promise.resolve(note)],
       deleteNote: [Promise.resolve(note.finished)],
     });
     const controller = new DeleteNoteHttpController(noteService, userService);
@@ -261,6 +295,7 @@ describe('Delete Note - HTTP Controller', () => {
       getUser: [Promise.resolve(user)],
     });
     const noteService = new NoteServiceStub({
+      getNote: [Promise.resolve(note)],
       deleteNote: [Promise.resolve(note.finished)],
     });
     const controller = new DeleteNoteHttpController(noteService, userService);
