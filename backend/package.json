@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Node.Js API built with Clean Architecture and Design Patterns that runs in REST and Graphql at the same time",
   "main": "dist/main/server/index.js",
   "scripts": {
     "docker:up": "docker-compose up -d --remove-orphans",
