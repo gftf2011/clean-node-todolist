@@ -24,19 +24,18 @@ jobs:
           
       - name: Install Packages
         run: |
-          cd backend
           npm i
           
       - name: Cache Node Modules
         uses: actions/cache@v3.2.3
         with:
-          path: ./backend/node_modules
+          path: ./node_modules
           key: node-modules-app-cache-key.${{ github.ref }}.${{ github.sha }}
           
       - name: Cache package-lock.json
         uses: actions/cache@v3.2.3
         with:
-          path: ./backend/package-lock.json
+          path: ./package-lock.json
           key: package-lock-app-cache-key.${{ github.ref }}.${{ github.sha }}
 
   test-and-lint:
@@ -59,23 +58,21 @@ jobs:
       - name: Use Cached Node Modules
         uses: actions/cache@v3.2.3
         with:
-          path: ./backend/node_modules
+          path: ./node_modules
           key: node-modules-app-cache-key.${{ github.ref }}.${{ github.sha }}
           
       - name: Use Cached package-lock.json
         uses: actions/cache@v3.2.3
         with:
-          path: ./backend/package-lock.json
+          path: ./package-lock.json
           key: package-lock-app-cache-key.${{ github.ref }}.${{ github.sha }}
 
       - name: Linting
         run: |
-          cd backend
           npm run linting
 
       - name: Testing
         run: |
-          cd backend
           npm run test
 
       - name: Coveralls

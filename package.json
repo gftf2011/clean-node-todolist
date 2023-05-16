@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "clean-node-todolist",
   "version": "1.0.0",
   "description": "Node.Js API built with Clean Architecture and Design Patterns that runs in REST and Graphql at the same time",
   "main": "dist/main/server/index.js",
