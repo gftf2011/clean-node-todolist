@@ -26,7 +26,7 @@ describe('Sign Up - Graphql Controller', () => {
 
     const request: GraphqlRequest = {
       args: {
-        input: user as UserDTO,
+        input: user,
       },
       context: {},
     };
@@ -53,7 +53,7 @@ describe('Sign Up - Graphql Controller', () => {
 
     const request: GraphqlRequest = {
       args: {
-        input: user as UserDTO,
+        input: user,
       },
       context: {},
     };
@@ -82,7 +82,7 @@ describe('Sign Up - Graphql Controller', () => {
 
     const request: GraphqlRequest = {
       args: {
-        input: user as UserDTO,
+        input: user,
       },
       context: {},
     };

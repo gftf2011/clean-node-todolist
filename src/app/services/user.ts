@@ -16,7 +16,6 @@ export class UserServiceImpl implements UserService {
   public async saveUser(user: UserDTO): Promise<void> {
     const action = new CreateUserAction({ ...user });
     await this.bus.execute(action);
-    return;
   }
 
   public async createSession(id: string, email: string): Promise<string> {

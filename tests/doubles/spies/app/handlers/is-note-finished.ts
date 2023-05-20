@@ -14,8 +14,6 @@ export class IsNoteFinishedHandlerSpy implements Handler<void> {
 
   operation = 'is-note-finished';
 
-  constructor() {}
-
   public getInfo(): Info {
     return this.info;
   }

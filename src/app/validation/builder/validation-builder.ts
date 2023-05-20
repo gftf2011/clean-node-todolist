@@ -22,7 +22,7 @@ export class ValidationBuilder {
     return new ValidationBuilder();
   }
 
-  required(): ValidationBuilder {
+  required(): this {
     // eslint-disable-next-line no-restricted-syntax
     for (const field of this.fields) {
       if (typeof field.value === 'string') {
@@ -42,7 +42,7 @@ export class ValidationBuilder {
     return this;
   }
 
-  and(fields: ValidatedField): ValidationBuilder {
+  and(fields: ValidatedField): this {
     this.fields.push(fields);
     return this;
   }

@@ -1,7 +1,7 @@
 import { Either, left, right } from '../../shared';
 import { InvalidIdError } from '../errors';
 
-const VALID_ID_REGEX = /^([0-9]{17})-([0-9a-f]{32})-([0-9a-f]{32})$/;
+const VALID_ID_REGEX = /^(\d{17})-([0-9a-f]{32})-([0-9a-f]{32})$/;
 
 export class ID {
   private constructor(private readonly value: string) {

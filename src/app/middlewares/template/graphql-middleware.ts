@@ -7,8 +7,6 @@ import { GraphqlRequest } from '../../contracts/graphql';
 
 // It uses the template-method design pattern
 export abstract class TemplateGraphqlMiddleware implements Middleware {
-  constructor() {}
-
   private static handleError(error: Error): Response {
     return new ErrorHandlerInvoker().handle(error);
   }

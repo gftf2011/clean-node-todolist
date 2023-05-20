@@ -9,8 +9,6 @@ import { ValidationComposite } from '../../validation';
 
 // It uses the template-method design pattern
 export abstract class TemplateHttpMiddleware implements Middleware {
-  constructor() {}
-
   protected abstract buildHeaderValidators(_request: HttpRequest): Validator[];
 
   private static handleError(error: Error): Response {

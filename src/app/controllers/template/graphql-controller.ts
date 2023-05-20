@@ -8,8 +8,6 @@ import { Response } from '../../contracts/response';
 
 // It uses the template-method design pattern
 export abstract class TemplateGraphqlController implements Controller {
-  constructor() {}
-
   private static handleError(error: Error): Response {
     return new ErrorHandlerInvoker().handle(error);
   }

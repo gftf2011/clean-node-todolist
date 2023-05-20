@@ -9,8 +9,6 @@ import { Response } from '../../contracts/response';
 
 // It uses the template-method design pattern
 export abstract class TemplateHttpController implements Controller {
-  constructor() {}
-
   protected buildBodyValidators(_request: HttpRequest): Validator[] {
     return [];
   }

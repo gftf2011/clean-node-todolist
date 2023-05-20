@@ -14,8 +14,6 @@ export class UpdateNoteHandlerSpy implements Handler<void> {
 
   operation = 'update-note';
 
-  constructor() {}
-
   public getInfo(): Info {
     return this.info;
   }

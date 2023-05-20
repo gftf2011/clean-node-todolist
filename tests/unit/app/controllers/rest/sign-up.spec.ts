@@ -27,8 +27,8 @@ describe('Sign Up - HTTP Controller', () => {
 
     const service = new UserServiceDummy();
 
-    const request: HttpRequest<UserDTO> = {
-      body: user as UserDTO,
+    const request: HttpRequest<any> = {
+      body: user,
     };
 
     const controller = new SignUpHttpController(service);
@@ -51,7 +51,7 @@ describe('Sign Up - HTTP Controller', () => {
     const service = new UserServiceDummy();
 
     const request: HttpRequest<UserDTO> = {
-      body: user as UserDTO,
+      body: user,
     };
 
     const controller = new SignUpHttpController(service);
@@ -74,7 +74,7 @@ describe('Sign Up - HTTP Controller', () => {
     const service = new UserServiceDummy();
 
     const request: HttpRequest<UserDTO> = {
-      body: user as UserDTO,
+      body: user,
     };
 
     const controller = new SignUpHttpController(service);
@@ -95,8 +95,8 @@ describe('Sign Up - HTTP Controller', () => {
 
     const service = new UserServiceDummy();
 
-    const request: HttpRequest<UserDTO> = {
-      body: user as UserDTO,
+    const request: HttpRequest<any> = {
+      body: user,
     };
 
     const controller = new SignUpHttpController(service);
@@ -119,7 +119,7 @@ describe('Sign Up - HTTP Controller', () => {
     const service = new UserServiceDummy();
 
     const request: HttpRequest<UserDTO> = {
-      body: user as UserDTO,
+      body: user,
     };
 
     const controller = new SignUpHttpController(service);
@@ -142,7 +142,7 @@ describe('Sign Up - HTTP Controller', () => {
     const service = new UserServiceDummy();
 
     const request: HttpRequest<UserDTO> = {
-      body: user as UserDTO,
+      body: user,
     };
 
     const controller = new SignUpHttpController(service);
@@ -163,8 +163,8 @@ describe('Sign Up - HTTP Controller', () => {
 
     const service = new UserServiceDummy();
 
-    const request: HttpRequest<UserDTO> = {
-      body: user as UserDTO,
+    const request: HttpRequest<any> = {
+      body: user,
     };
 
     const controller = new SignUpHttpController(service);
@@ -187,7 +187,7 @@ describe('Sign Up - HTTP Controller', () => {
     const service = new UserServiceDummy();
 
     const request: HttpRequest<UserDTO> = {
-      body: user as UserDTO,
+      body: user,
     };
 
     const controller = new SignUpHttpController(service);
@@ -210,7 +210,7 @@ describe('Sign Up - HTTP Controller', () => {
     const service = new UserServiceDummy();
 
     const request: HttpRequest<UserDTO> = {
-      body: user as UserDTO,
+      body: user,
     };
 
     const controller = new SignUpHttpController(service);
@@ -231,8 +231,8 @@ describe('Sign Up - HTTP Controller', () => {
 
     const service = new UserServiceDummy();
 
-    const request: HttpRequest<UserDTO> = {
-      body: user as UserDTO,
+    const request: HttpRequest<any> = {
+      body: user,
     };
 
     const controller = new SignUpHttpController(service);
@@ -255,7 +255,7 @@ describe('Sign Up - HTTP Controller', () => {
     const service = new UserServiceDummy();
 
     const request: HttpRequest<UserDTO> = {
-      body: user as UserDTO,
+      body: user,
     };
 
     const controller = new SignUpHttpController(service);
@@ -278,7 +278,7 @@ describe('Sign Up - HTTP Controller', () => {
     const service = new UserServiceDummy();
 
     const request: HttpRequest<UserDTO> = {
-      body: user as UserDTO,
+      body: user,
     };
 
     const controller = new SignUpHttpController(service);
@@ -303,7 +303,7 @@ describe('Sign Up - HTTP Controller', () => {
     });
 
     const request: HttpRequest<UserDTO> = {
-      body: user as UserDTO,
+      body: user,
     };
 
     const controller = new SignUpHttpController(service);
@@ -327,7 +327,7 @@ describe('Sign Up - HTTP Controller', () => {
     });
 
     const request: HttpRequest<UserDTO> = {
-      body: user as UserDTO,
+      body: user,
     };
 
     const controller = new SignUpHttpController(service);
@@ -353,7 +353,7 @@ describe('Sign Up - HTTP Controller', () => {
     });
 
     const request: HttpRequest<UserDTO> = {
-      body: user as UserDTO,
+      body: user,
     };
 
     const controller = new SignUpHttpController(service);
