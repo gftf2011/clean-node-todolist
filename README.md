@@ -16,6 +16,7 @@
   <a href="#hammer_and_wrench-supported-os">Supported OS</a> • 
   <a href="#large_blue_diamond-design-patterns">Design Patterns</a> •
   <a href="#blue_book-principles">Principles</a> •
+  <a href="#building_construction-business-rules">Business Rules</a> •
   <a href="#clipboard-required-tools">Required Tools</a> •
   <a href="#racing_car-running-project">Running Project</a> •
   <a href="#test_tube-running-tests">Running Tests</a> •
@@ -92,6 +93,19 @@ The objective from this project is to show how to create an API with a well-defi
 
 <br/>
 
+## :building_construction: Business Rules
+
+- [Sign-Up](https://github.com/gftf2011/clean-node-todolist/tree/main/requirements/sign-up.md)
+- [Sign-In](https://github.com/gftf2011/clean-node-todolist/tree/main/requirements/sign-in.md)
+- [Find Note](https://github.com/gftf2011/clean-node-todolist/tree/main/requirements/find-note.md)
+- [Find Note By User ID](https://github.com/gftf2011/clean-node-todolist/tree/main/requirements/find-notes-by-user-id.md)
+- [Create Note](https://github.com/gftf2011/clean-node-todolist/tree/main/requirements/create-note.md)
+- [Update Note](https://github.com/gftf2011/clean-node-todolist/tree/main/requirements/update-note.md)
+- [Update Note Finishing Status](https://github.com/gftf2011/clean-node-todolist/tree/main/requirements/update-finished-note.md)
+- [Delete Note](https://github.com/gftf2011/clean-node-todolist/tree/main/requirements/delete-note.md)
+
+<br/>
+
 ## :clipboard: Required Tools
 
 - [x] Node - [https://nodejs.org/](https://nodejs.org/)
@@ -112,6 +126,23 @@ The objective from this project is to show how to create an API with a well-defi
 <br/>
 
 ## :test_tube: Running Tests
+
+> ### Unit Tests
+```sh
+  $ npm run test:unit
+```
+
+> ### Integration Tests
+```sh
+  $ npm run test:integration
+```
+
+> ### E2E Tests
+```sh
+  $ npm run test:e2e
+```
+
+> ### Full Test Coverage Report
 ```sh
   $ npm run test
 ```
