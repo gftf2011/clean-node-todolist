@@ -2,7 +2,12 @@ version: '3.7'
 
 services:
   postgres:
-    build: ./docker/dev/images/postgres
+    build:
+      context: ./docker/dev/images/postgres
+      args:
+        db: postgres_db
+        user: executor
+        password: ab23cff0679d
     container_name: postgres-dev
     environment:
       POSTGRES_USER: "postgres"

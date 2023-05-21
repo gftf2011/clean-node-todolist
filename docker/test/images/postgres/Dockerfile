@@ -1,7 +1,11 @@
 FROM postgres:14-alpine
 
-ENV DB postgres_db
-ENV USER executor
-ENV PASSWORD ab23cff0679d
+ARG db
+ARG user
+ARG password
+
+ENV DB=${db}
+ENV USER=${user}
+ENV PASSWORD=${password}
 
 ENV MAX_CONNECTIONS 1
