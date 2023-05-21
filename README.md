@@ -70,6 +70,25 @@ The objective from this project is to show how to create an API with a well-defi
 - [Strategy](https://refactoring.guru/design-patterns/strategy)
 - [Template method](https://refactoring.guru/design-patterns/template-method)
 
+### Non GOF - Gang of Four - Official
+
+- [Monad Either](https://itnext.io/either-monad-a-functional-approach-to-error-handling-in-js-ffdc2917ab2)
+
+<br/>
+
+## :blue_book: Principles
+
+- [Single Responsibility Principle (SRP)](https://en.wikipedia.org/wiki/Single-responsibility_principle)
+- [Open Closed Principle (OCP)](https://en.wikipedia.org/wiki/Open%E2%80%93closed_principle)
+- [Liskov Substitution Principle (LSP)](https://en.wikipedia.org/wiki/Liskov_substitution_principle)
+- [Interface Segregation Principle (ISP)](https://en.wikipedia.org/wiki/Interface_segregation_principle)
+- [Dependency Inversion Principle (DIP)](https://en.wikipedia.org/wiki/Dependency_inversion_principle)
+- [Separation of Concerns (SOC)](https://en.wikipedia.org/wiki/Separation_of_concerns)
+- [Don't Repeat Yourself (DRY)](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
+- [You Aren't Gonna Need It (YAGNI)](https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it)
+- [Keep It Simple, Stupid (KISS)](https://en.wikipedia.org/wiki/KISS_principle)
+- [Composition Over Inheritance](https://en.wikipedia.org/wiki/Composition_over_inheritance)
+
 <br/>
 
 ## :clipboard: Required Tools
