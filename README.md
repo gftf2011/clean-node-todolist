@@ -15,6 +15,7 @@
   <a href="#page_facing_up-about">About</a> •
   <a href="#hammer_and_wrench-supported-os">Supported OS</a> • 
   <a href="#large_blue_diamond-design-patterns">Design Patterns</a> •
+  <a href="#blue_book-principles">Principles</a> •
   <a href="#clipboard-required-tools">Required Tools</a> •
   <a href="#racing_car-running-project">Running Project</a> •
   <a href="#test_tube-running-tests">Running Tests</a> •
