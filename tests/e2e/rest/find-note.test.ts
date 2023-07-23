@@ -109,7 +109,7 @@ describe('GET - api/V1/find-note/:id', () => {
       { page: 0, limit: 10 },
       token,
     );
-    const { notes } = getNotesResponse.body;
+    const { notes } = getNotesResponse.body.paginatedNotes;
 
     const singleNoteResponse = await getSingleNoteRequest(notes[0].id, token);
 
@@ -165,7 +165,7 @@ describe('GET - api/V1/find-note/:id', () => {
       { page: 0, limit: 10 },
       token,
     );
-    const { notes } = getNotesResponse.body;
+    const { notes } = getNotesResponse.body.paginatedNotes;
 
     await sleep(5000);
 

@@ -70,12 +70,16 @@ describe('Mutation - updateFinishedNote', () => {
 
     const getNotesQuery = `query {
       getNotesByUserId (input: { page: ${0}, limit: ${10} }) {
-        notes {
-          id
-          title
-          description
-          timestamp
-          finished
+        paginatedNotes {
+          notes {
+            id
+            title
+            description
+            timestamp
+            finished
+          }
+          previous
+          next
         }
       }
     }`;
@@ -86,7 +90,8 @@ describe('Mutation - updateFinishedNote', () => {
     await serverRequest(createNoteQuery, token);
 
     const getNotesResponse = await serverRequest(getNotesQuery, token);
-    const { notes } = getNotesResponse.body.data.getNotesByUserId;
+    const { notes } =
+      getNotesResponse.body.data.getNotesByUserId.paginatedNotes;
 
     const updateFinishedNotesQuery = `mutation {
       updateFinishedNote (input: { id: "${notes[0].id}", finished: true })
@@ -153,12 +158,16 @@ describe('Mutation - updateFinishedNote', () => {
 
     const getNotesQuery = `query {
       getNotesByUserId (input: { page: ${0}, limit: ${10} }) {
-        notes {
-          id
-          title
-          description
-          timestamp
-          finished
+        paginatedNotes {
+          notes {
+            id
+            title
+            description
+            timestamp
+            finished
+          }
+          previous
+          next
         }
       }
     }`;
@@ -169,7 +178,8 @@ describe('Mutation - updateFinishedNote', () => {
     await serverRequest(createNoteQuery, token);
 
     const getNotesResponse = await serverRequest(getNotesQuery, token);
-    const { notes } = getNotesResponse.body.data.getNotesByUserId;
+    const { notes } =
+      getNotesResponse.body.data.getNotesByUserId.paginatedNotes;
 
     const updateFinishedNotesQuery = `mutation {
       updateFinishedNote (input: { id: "${notes[0].id}", finished: true })

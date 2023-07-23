@@ -11,6 +11,12 @@ export default `#graphql
     finished: Boolean
   }
 
+  type PaginatedNotes {
+    notes: [Note]
+    previous: Boolean
+    next: Boolean
+  }
+
   extend type Query {
     getNote (input: GetNoteInput): Note @auth
   }
@@ -21,7 +27,7 @@ export default `#graphql
   }
 
   type GetNotesByUserIdOutput {
-    notes: [Note]
+    paginatedNotes: PaginatedNotes
   }
 
   extend type Query {

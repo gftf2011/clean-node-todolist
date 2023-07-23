@@ -18,7 +18,7 @@ const sleep = (timeout: number): Promise<void> => {
   });
 };
 
-describe('updateNote - Mutation', () => {
+describe('Mutation - updateNote', () => {
   let postgres: DatabaseTransaction;
   let server: any;
 
@@ -70,12 +70,16 @@ describe('updateNote - Mutation', () => {
 
     const getNotesQuery = `query {
       getNotesByUserId (input: { page: ${0}, limit: ${10} }) {
-        notes {
-          id
-          title
-          description
-          timestamp
-          finished
+        paginatedNotes {
+          notes {
+            id
+            title
+            description
+            timestamp
+            finished
+          }
+          previous
+          next
         }
       }
     }`;
@@ -86,7 +90,8 @@ describe('updateNote - Mutation', () => {
     await serverRequest(createNoteQuery, token);
 
     const getNotesResponse = await serverRequest(getNotesQuery, token);
-    const { notes } = getNotesResponse.body.data.getNotesByUserId;
+    const { notes } =
+      getNotesResponse.body.data.getNotesByUserId.paginatedNotes;
 
     const updateNoteQuery = `mutation {
       updateNote (input: { id: "${notes[0].id}", title: "any title 2", description: "any description 2" })
@@ -153,12 +158,16 @@ describe('updateNote - Mutation', () => {
 
     const getNotesQuery = `query {
       getNotesByUserId (input: { page: ${0}, limit: ${10} }) {
-        notes {
-          id
-          title
-          description
-          timestamp
-          finished
+        paginatedNotes {
+          notes {
+            id
+            title
+            description
+            timestamp
+            finished
+          }
+          previous
+          next
         }
       }
     }`;
@@ -169,7 +178,8 @@ describe('updateNote - Mutation', () => {
     await serverRequest(createNoteQuery, token);
 
     const getNotesResponse = await serverRequest(getNotesQuery, token);
-    const { notes } = getNotesResponse.body.data.getNotesByUserId;
+    const { notes } =
+      getNotesResponse.body.data.getNotesByUserId.paginatedNotes;
 
     const updateNoteQuery = `mutation {
       updateNote (input: { id: "${notes[0].id}", title: "any title", description: "any description" })

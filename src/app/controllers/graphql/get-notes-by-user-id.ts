@@ -21,11 +21,24 @@ export class GetNotesByUserIdGraphqlController extends TemplateGraphqlController
       request.context.req.headers.userId,
     );
     if (!user) throw new UserDoesNotExistsError();
-    const notes = await this.noteService.getNotesByUserId(
-      request.context.req.headers.userId,
-      Number(request.args.input.page),
-      Number(request.args.input.limit),
+    const [notes1, notes2] = await Promise.all([
+      this.noteService.getNotesByUserId(
+        request.context.req.headers.userId,
+        Number(request.args.input.page),
+        Number(request.args.input.limit),
+      ),
+      this.noteService.getNotesByUserId(
+        request.context.req.headers.userId,
+        Number(request.args.input.page) + 1,
+        Number(request.args.input.limit),
+      ),
+    ]);
+    return ok(
+      NotesViewModel.map(
+        notes1,
+        Number(request.args.input.page) !== 0,
+        notes2.length !== 0,
+      ),
     );
-    return ok(NotesViewModel.map(notes));
   }
 }

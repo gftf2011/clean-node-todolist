@@ -123,7 +123,7 @@ describe('DELETE - api/V1/delete-note', () => {
       { page: 0, limit: 10 },
       token,
     );
-    const { notes } = getNotesResponse.body;
+    const { notes } = getNotesResponse.body.paginatedNotes;
 
     await updateFinishedNoteRequest({ id: notes[0].id, finished: true }, token);
 
@@ -140,7 +140,7 @@ describe('DELETE - api/V1/delete-note', () => {
     );
 
     expect(deleteNoteResponse.status).toBe(204);
-    expect(getNotesResponse2.body.notes.length).toBe(0);
+    expect(getNotesResponse2.body.paginatedNotes.notes.length).toBe(0);
   });
 
   it('should return 400 if note is not found', async () => {
@@ -192,7 +192,7 @@ describe('DELETE - api/V1/delete-note', () => {
       { page: 0, limit: 10 },
       token,
     );
-    const { notes } = getNotesResponse.body;
+    const { notes } = getNotesResponse.body.paginatedNotes;
 
     const response = await deleteNoteRequest(
       {
@@ -232,7 +232,7 @@ describe('DELETE - api/V1/delete-note', () => {
       { page: 0, limit: 10 },
       token,
     );
-    const { notes } = getNotesResponse.body;
+    const { notes } = getNotesResponse.body.paginatedNotes;
 
     await sleep(5000);
 

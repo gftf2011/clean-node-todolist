@@ -119,7 +119,7 @@ describe('PUT - api/V1/update-note', () => {
       { page: 0, limit: 10 },
       token,
     );
-    const { notes } = getNotesResponse.body;
+    const { notes } = getNotesResponse.body.paginatedNotes;
 
     const updateFinishedNoteResponse = await updateNoteRequest(
       {
@@ -188,7 +188,7 @@ describe('PUT - api/V1/update-note', () => {
       { page: 0, limit: 10 },
       token,
     );
-    const { notes } = getNotesResponse.body;
+    const { notes } = getNotesResponse.body.paginatedNotes;
 
     await sleep(5000);
 

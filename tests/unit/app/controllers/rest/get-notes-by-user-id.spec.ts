@@ -253,7 +253,7 @@ describe('Get Notes By User Id - HTTP Controller', () => {
       getUser: [Promise.resolve(user)],
     });
     const noteService = new NoteServiceStub({
-      getNotesByUserId: [Promise.resolve(notes)],
+      getNotesByUserId: [Promise.resolve(notes), Promise.resolve([])],
     });
     const controller = new GetNotesByUserIdHttpController(
       noteService,
@@ -270,7 +270,7 @@ describe('Get Notes By User Id - HTTP Controller', () => {
 
     const response = await controller.handle(request);
 
-    expect(response).toStrictEqual(ok(NotesViewModel.map(notes)));
+    expect(response).toStrictEqual(ok(NotesViewModel.map(notes, false, false)));
   });
 
   it('should return notes', async () => {
@@ -307,7 +307,7 @@ describe('Get Notes By User Id - HTTP Controller', () => {
       getUser: [Promise.resolve(user)],
     });
     const noteService = new NoteServiceStub({
-      getNotesByUserId: [Promise.resolve(notes)],
+      getNotesByUserId: [Promise.resolve(notes), Promise.resolve([])],
     });
     const controller = new GetNotesByUserIdHttpController(
       noteService,
@@ -324,6 +324,6 @@ describe('Get Notes By User Id - HTTP Controller', () => {
 
     const response = await controller.handle(request);
 
-    expect(response).toStrictEqual(ok(NotesViewModel.map(notes)));
+    expect(response).toStrictEqual(ok(NotesViewModel.map(notes, false, false)));
   });
 });

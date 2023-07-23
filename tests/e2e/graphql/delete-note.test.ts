@@ -22,7 +22,7 @@ const sleep = (timeout: number): Promise<void> => {
   });
 };
 
-describe('deleteNote - Mutation', () => {
+describe('Mutation - deleteNote', () => {
   let postgres: DatabaseTransaction;
   let server: any;
 
@@ -74,12 +74,16 @@ describe('deleteNote - Mutation', () => {
 
     const getNotesQuery = `query {
       getNotesByUserId (input: { page: ${0}, limit: ${10} }) {
-        notes {
-          id
-          title
-          description
-          timestamp
-          finished
+        paginatedNotes {
+          notes {
+            id
+            title
+            description
+            timestamp
+            finished
+          }
+          previous
+          next
         }
       }
     }`;
@@ -90,7 +94,8 @@ describe('deleteNote - Mutation', () => {
     await serverRequest(createNoteQuery, token);
 
     const getNotesResponse = await serverRequest(getNotesQuery, token);
-    const { notes } = getNotesResponse.body.data.getNotesByUserId;
+    const { notes } =
+      getNotesResponse.body.data.getNotesByUserId.paginatedNotes;
 
     const updateFinishedNoteQuery = `mutation {
       updateFinishedNote (input: { id: "${notes[0].id}", finished: true })
@@ -107,7 +112,9 @@ describe('deleteNote - Mutation', () => {
     const getNotesResponse2 = await serverRequest(getNotesQuery, token);
 
     expect(deleteNoteResponse.status).toBe(200);
-    expect(getNotesResponse2.body.data.getNotesByUserId.notes.length).toBe(0);
+    expect(
+      getNotesResponse2.body.data.getNotesByUserId.paginatedNotes.notes.length,
+    ).toBe(0);
   });
 
   it('should return 400 if note is not found', async () => {
@@ -150,12 +157,16 @@ describe('deleteNote - Mutation', () => {
 
     const getNotesQuery = `query {
       getNotesByUserId (input: { page: ${0}, limit: ${10} }) {
-        notes {
-          id
-          title
-          description
-          timestamp
-          finished
+        paginatedNotes {
+          notes {
+            id
+            title
+            description
+            timestamp
+            finished
+          }
+          previous
+          next
         }
       }
     }`;
@@ -166,7 +177,8 @@ describe('deleteNote - Mutation', () => {
     await serverRequest(createNoteQuery, token);
 
     const getNotesResponse = await serverRequest(getNotesQuery, token);
-    const { notes } = getNotesResponse.body.data.getNotesByUserId;
+    const { notes } =
+      getNotesResponse.body.data.getNotesByUserId.paginatedNotes;
 
     const deleteNoteQuery = `mutation {
       deleteNote (input: { id: "${notes[0].id}" })
@@ -198,12 +210,16 @@ describe('deleteNote - Mutation', () => {
 
     const getNotesQuery = `query {
       getNotesByUserId (input: { page: ${0}, limit: ${10} }) {
-        notes {
-          id
-          title
-          description
-          timestamp
-          finished
+        paginatedNotes {
+          notes {
+            id
+            title
+            description
+            timestamp
+            finished
+          }
+          previous
+          next
         }
       }
     }`;
@@ -214,7 +230,8 @@ describe('deleteNote - Mutation', () => {
     await serverRequest(createNoteQuery, token);
 
     const getNotesResponse = await serverRequest(getNotesQuery, token);
-    const { notes } = getNotesResponse.body.data.getNotesByUserId;
+    const { notes } =
+      getNotesResponse.body.data.getNotesByUserId.paginatedNotes;
 
     const updateFinishedNoteQuery = `mutation {
       updateFinishedNote (input: { id: "${notes[0].id}", finished: true })

@@ -8,18 +8,30 @@ type Note = {
   timestamp: string;
 };
 
-export class NotesViewModel {
-  private constructor(public readonly notes: Note[]) {}
+type PaginatedNotes = {
+  notes: Note[];
+  previous: boolean;
+  next: boolean;
+};
 
-  public static map(notes: NoteDTO[]): NotesViewModel {
-    return new NotesViewModel(
-      notes.map(note => ({
+export class NotesViewModel {
+  private constructor(public readonly paginatedNotes: PaginatedNotes) {}
+
+  public static map(
+    notes: NoteDTO[],
+    previous: boolean,
+    next: boolean,
+  ): NotesViewModel {
+    return new NotesViewModel({
+      notes: notes.map(note => ({
         id: note.id,
         finished: note.finished,
         title: note.title,
         description: note.description,
         timestamp: note.updatedAt,
       })),
-    );
+      previous,
+      next,
+    });
   }
 }

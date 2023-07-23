@@ -76,7 +76,7 @@ describe('GET - api/V1/find-notes', () => {
     postgres = new PostgresTransaction();
   });
 
-  it('should return 200 when notes are found', async () => {
+  it('should return 200 when notes are found and pagination has no previous OR next page', async () => {
     const user: UserDTO = {
       email: 'test@mail.com',
       password: '12345678xX@',
@@ -94,10 +94,94 @@ describe('GET - api/V1/find-notes', () => {
 
     await createNoteRequest(note, token);
 
-    const response = await getNotesRequest({ page: 0, limit: 10 }, token);
+    const response = await getNotesRequest({ page: 0, limit: 1 }, token);
 
     expect(response.status).toBe(200);
-    expect(response.body.notes.length).toBeGreaterThanOrEqual(1);
+    expect(response.body.paginatedNotes.notes.length).toBe(1);
+    expect(response.body.paginatedNotes.previous).toBeFalsy();
+    expect(response.body.paginatedNotes.next).toBeFalsy();
+  });
+
+  it('should return 200 when notes are found and pagination has no previous but has next page', async () => {
+    const user: UserDTO = {
+      email: 'test@mail.com',
+      password: '12345678xX@',
+      name: 'test',
+      lastname: 'test',
+    };
+
+    const note: NoteDTO = {
+      title: 'any title',
+      description: 'any description',
+    };
+
+    const { body } = await signUpRequest(user);
+    const token = body.accessToken;
+
+    await createNoteRequest(note, token);
+    await createNoteRequest(note, token);
+
+    const response = await getNotesRequest({ page: 0, limit: 1 }, token);
+
+    expect(response.status).toBe(200);
+    expect(response.body.paginatedNotes.notes.length).toBe(1);
+    expect(response.body.paginatedNotes.previous).toBeFalsy();
+    expect(response.body.paginatedNotes.next).toBeTruthy();
+  });
+
+  it('should return 200 when notes are found and pagination has previous but has no next page', async () => {
+    const user: UserDTO = {
+      email: 'test@mail.com',
+      password: '12345678xX@',
+      name: 'test',
+      lastname: 'test',
+    };
+
+    const note: NoteDTO = {
+      title: 'any title',
+      description: 'any description',
+    };
+
+    const { body } = await signUpRequest(user);
+    const token = body.accessToken;
+
+    await createNoteRequest(note, token);
+    await createNoteRequest(note, token);
+
+    const response = await getNotesRequest({ page: 1, limit: 1 }, token);
+
+    expect(response.status).toBe(200);
+    expect(response.body.paginatedNotes.notes.length).toBe(1);
+    expect(response.body.paginatedNotes.previous).toBeTruthy();
+    expect(response.body.paginatedNotes.next).toBeFalsy();
+  });
+
+  it('should return 200 when notes are found and pagination has previous and has next page', async () => {
+    const user: UserDTO = {
+      email: 'test@mail.com',
+      password: '12345678xX@',
+      name: 'test',
+      lastname: 'test',
+    };
+
+    const note: NoteDTO = {
+      title: 'any title',
+      description: 'any description',
+    };
+
+    const { body } = await signUpRequest(user);
+    const token = body.accessToken;
+
+    await createNoteRequest(note, token);
+    await createNoteRequest(note, token);
+    await createNoteRequest(note, token);
+
+    const response = await getNotesRequest({ page: 1, limit: 1 }, token);
+
+    expect(response.status).toBe(200);
+    expect(response.body.paginatedNotes.notes.length).toBe(1);
+    expect(response.body.paginatedNotes.previous).toBeTruthy();
+    expect(response.body.paginatedNotes.next).toBeTruthy();
   });
 
   it('should return 200 when notes are not found', async () => {
@@ -114,7 +198,9 @@ describe('GET - api/V1/find-notes', () => {
     const response = await getNotesRequest({ page: 0, limit: 10 }, token);
 
     expect(response.status).toBe(200);
-    expect(response.body.notes.length).toBe(0);
+    expect(response.body.paginatedNotes.notes.length).toBe(0);
+    expect(response.body.paginatedNotes.previous).toBeFalsy();
+    expect(response.body.paginatedNotes.next).toBeFalsy();
   });
 
   it('should return 401 if token expires', async () => {

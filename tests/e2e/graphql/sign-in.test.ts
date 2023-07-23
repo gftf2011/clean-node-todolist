@@ -13,7 +13,7 @@ import {
 
 import { PostgresTransaction } from '../../../src/infra/database/postgres';
 
-describe('signIn - Query', () => {
+describe('Query - signIn', () => {
   let postgres: DatabaseTransaction;
   let server: any;
 

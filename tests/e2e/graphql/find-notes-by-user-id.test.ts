@@ -19,7 +19,7 @@ const sleep = (timeout: number): Promise<void> => {
   });
 };
 
-describe('getNotesByUserId - Query', () => {
+describe('Query - getNotesByUserId', () => {
   let postgres: DatabaseTransaction;
   let server: any;
 
@@ -56,7 +56,7 @@ describe('getNotesByUserId - Query', () => {
     postgres = new PostgresTransaction();
   });
 
-  it('should return 200 when notes are found', async () => {
+  it('should return 200 when notes are found and pagination has no previous OR next page', async () => {
     const signUpQuery = `mutation {
       signUp (input: { email: "test@mail.com", password: "12345678xX@", name: "test", lastname: "test" }) {
         accessToken
@@ -70,13 +70,17 @@ describe('getNotesByUserId - Query', () => {
     }`;
 
     const getNotesQuery = `query {
-      getNotesByUserId (input: { page: ${0}, limit: ${10} }) {
-        notes {
-          id
-          title
-          description
-          timestamp
-          finished
+      getNotesByUserId (input: { page: ${0}, limit: ${1} }) {
+        paginatedNotes {
+          notes {
+            id
+            title
+            description
+            timestamp
+            finished
+          }
+          previous
+          next
         }
       }
     }`;
@@ -90,8 +94,158 @@ describe('getNotesByUserId - Query', () => {
 
     expect(response.status).toBe(200);
     expect(
-      response.body.data.getNotesByUserId.notes.length,
-    ).toBeGreaterThanOrEqual(1);
+      response.body.data.getNotesByUserId.paginatedNotes.notes.length,
+    ).toBe(1);
+    expect(
+      response.body.data.getNotesByUserId.paginatedNotes.previous,
+    ).toBeFalsy();
+    expect(response.body.data.getNotesByUserId.paginatedNotes.next).toBeFalsy();
+  });
+
+  it('should return 200 when notes are found and pagination has no previous but has next page', async () => {
+    const signUpQuery = `mutation {
+      signUp (input: { email: "test@mail.com", password: "12345678xX@", name: "test", lastname: "test" }) {
+        accessToken
+      }
+    }`;
+
+    const createNoteQuery = `mutation {
+      createNote (input: { title: "any title", description: "any description" }) {
+        created
+      }
+    }`;
+
+    const getNotesQuery = `query {
+      getNotesByUserId (input: { page: ${0}, limit: ${1} }) {
+        paginatedNotes {
+          notes {
+            id
+            title
+            description
+            timestamp
+            finished
+          }
+          previous
+          next
+        }
+      }
+    }`;
+
+    const { body } = await serverRequest(signUpQuery);
+    const token = body.data.signUp.accessToken;
+
+    await serverRequest(createNoteQuery, token);
+    await serverRequest(createNoteQuery, token);
+
+    const response = await serverRequest(getNotesQuery, token);
+
+    expect(response.status).toBe(200);
+    expect(
+      response.body.data.getNotesByUserId.paginatedNotes.notes.length,
+    ).toBe(1);
+    expect(
+      response.body.data.getNotesByUserId.paginatedNotes.previous,
+    ).toBeFalsy();
+    expect(
+      response.body.data.getNotesByUserId.paginatedNotes.next,
+    ).toBeTruthy();
+  });
+
+  it('should return 200 when notes are found and pagination has previous but has no next page', async () => {
+    const signUpQuery = `mutation {
+      signUp (input: { email: "test@mail.com", password: "12345678xX@", name: "test", lastname: "test" }) {
+        accessToken
+      }
+    }`;
+
+    const createNoteQuery = `mutation {
+      createNote (input: { title: "any title", description: "any description" }) {
+        created
+      }
+    }`;
+
+    const getNotesQuery = `query {
+      getNotesByUserId (input: { page: ${1}, limit: ${1} }) {
+        paginatedNotes {
+          notes {
+            id
+            title
+            description
+            timestamp
+            finished
+          }
+          previous
+          next
+        }
+      }
+    }`;
+
+    const { body } = await serverRequest(signUpQuery);
+    const token = body.data.signUp.accessToken;
+
+    await serverRequest(createNoteQuery, token);
+    await serverRequest(createNoteQuery, token);
+
+    const response = await serverRequest(getNotesQuery, token);
+
+    expect(response.status).toBe(200);
+    expect(
+      response.body.data.getNotesByUserId.paginatedNotes.notes.length,
+    ).toBe(1);
+    expect(
+      response.body.data.getNotesByUserId.paginatedNotes.previous,
+    ).toBeTruthy();
+    expect(response.body.data.getNotesByUserId.paginatedNotes.next).toBeFalsy();
+  });
+
+  it('should return 200 when notes are found and pagination has previous and has next page', async () => {
+    const signUpQuery = `mutation {
+      signUp (input: { email: "test@mail.com", password: "12345678xX@", name: "test", lastname: "test" }) {
+        accessToken
+      }
+    }`;
+
+    const createNoteQuery = `mutation {
+      createNote (input: { title: "any title", description: "any description" }) {
+        created
+      }
+    }`;
+
+    const getNotesQuery = `query {
+      getNotesByUserId (input: { page: ${1}, limit: ${1} }) {
+        paginatedNotes {
+          notes {
+            id
+            title
+            description
+            timestamp
+            finished
+          }
+          previous
+          next
+        }
+      }
+    }`;
+
+    const { body } = await serverRequest(signUpQuery);
+    const token = body.data.signUp.accessToken;
+
+    await serverRequest(createNoteQuery, token);
+    await serverRequest(createNoteQuery, token);
+    await serverRequest(createNoteQuery, token);
+
+    const response = await serverRequest(getNotesQuery, token);
+
+    expect(response.status).toBe(200);
+    expect(
+      response.body.data.getNotesByUserId.paginatedNotes.notes.length,
+    ).toBe(1);
+    expect(
+      response.body.data.getNotesByUserId.paginatedNotes.previous,
+    ).toBeTruthy();
+    expect(
+      response.body.data.getNotesByUserId.paginatedNotes.next,
+    ).toBeTruthy();
   });
 
   it('should return 200 when notes are not found', async () => {
@@ -103,12 +257,16 @@ describe('getNotesByUserId - Query', () => {
 
     const getNotesQuery = `query {
       getNotesByUserId (input: { page: ${0}, limit: ${10} }) {
-        notes {
-          id
-          title
-          description
-          timestamp
-          finished
+        paginatedNotes {
+          notes {
+            id
+            title
+            description
+            timestamp
+            finished
+          }
+          previous
+          next
         }
       }
     }`;
@@ -120,8 +278,12 @@ describe('getNotesByUserId - Query', () => {
 
     expect(response.status).toBe(200);
     expect(
-      response.body.data.getNotesByUserId.notes.length,
-    ).toBeGreaterThanOrEqual(0);
+      response.body.data.getNotesByUserId.paginatedNotes.notes.length,
+    ).toBe(0);
+    expect(
+      response.body.data.getNotesByUserId.paginatedNotes.previous,
+    ).toBeFalsy();
+    expect(response.body.data.getNotesByUserId.paginatedNotes.next).toBeFalsy();
   });
 
   it('should return 401 if token expires', async () => {
@@ -139,12 +301,16 @@ describe('getNotesByUserId - Query', () => {
 
     const getNotesQuery = `query {
       getNotesByUserId (input: { page: ${0}, limit: ${10} }) {
-        notes {
-          id
-          title
-          description
-          timestamp
-          finished
+        paginatedNotes {
+          notes {
+            id
+            title
+            description
+            timestamp
+            finished
+          }
+          previous
+          next
         }
       }
     }`;

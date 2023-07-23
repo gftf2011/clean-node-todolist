@@ -17,7 +17,7 @@ import { UserAlreadyExistsError } from '../../../src/app/errors';
 
 import { PostgresTransaction } from '../../../src/infra/database/postgres';
 
-describe('signUp - Mutation', () => {
+describe('Mutation - signUp', () => {
   let postgres: DatabaseTransaction;
   let server: any;
 

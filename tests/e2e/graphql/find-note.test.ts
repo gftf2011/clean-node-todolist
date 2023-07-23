@@ -19,7 +19,7 @@ const sleep = (timeout: number): Promise<void> => {
   });
 };
 
-describe('getNote - Query', () => {
+describe('Query - getNote', () => {
   let postgres: DatabaseTransaction;
   let server: any;
 
@@ -71,12 +71,16 @@ describe('getNote - Query', () => {
 
     const getNotesQuery = `query {
       getNotesByUserId (input: { page: ${0}, limit: ${10} }) {
-        notes {
-          id
-          title
-          description
-          timestamp
-          finished
+        paginatedNotes {
+          notes {
+            id
+            title
+            description
+            timestamp
+            finished
+          }
+          previous
+          next
         }
       }
     }`;
@@ -87,7 +91,8 @@ describe('getNote - Query', () => {
     await serverRequest(createNoteQuery, token);
 
     const getNotesResponse = await serverRequest(getNotesQuery, token);
-    const { notes } = getNotesResponse.body.data.getNotesByUserId;
+    const { notes } =
+      getNotesResponse.body.data.getNotesByUserId.paginatedNotes;
 
     const getNoteQuery = `query {
       getNote (input: { id: "${notes[0].id}" }) {
@@ -157,12 +162,16 @@ describe('getNote - Query', () => {
 
     const getNotesQuery = `query {
       getNotesByUserId (input: { page: ${0}, limit: ${10} }) {
-        notes {
-          id
-          title
-          description
-          timestamp
-          finished
+        paginatedNotes {
+          notes {
+            id
+            title
+            description
+            timestamp
+            finished
+          }
+          previous
+          next
         }
       }
     }`;
@@ -173,7 +182,8 @@ describe('getNote - Query', () => {
     await serverRequest(createNoteQuery, token);
 
     const getNotesResponse = await serverRequest(getNotesQuery, token);
-    const { notes } = getNotesResponse.body.data.getNotesByUserId;
+    const { notes } =
+      getNotesResponse.body.data.getNotesByUserId.paginatedNotes;
 
     const getNoteQuery = `query {
       getNote (input: { id: "${notes[0].id}" }) {

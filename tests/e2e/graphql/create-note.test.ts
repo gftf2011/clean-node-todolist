@@ -18,7 +18,7 @@ const sleep = (timeout: number): Promise<void> => {
   });
 };
 
-describe('createNote - Mutation', () => {
+describe('Mutation - createNote', () => {
   let postgres: DatabaseTransaction;
   let server: any;
 
