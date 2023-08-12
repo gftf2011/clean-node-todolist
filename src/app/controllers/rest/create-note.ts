@@ -3,6 +3,7 @@ import { HttpRequest } from '../../contracts/http';
 import { NoteService, UserService } from '../../contracts/services';
 import { UserDoesNotExistsError } from '../../errors';
 import { TemplateHttpController } from '../template';
+import { NoteViewModel } from '../view-models';
 import { created } from '../utils';
 import { Response } from '../../contracts/response';
 import { Validator } from '../../contracts/validation';
@@ -49,14 +50,15 @@ export class CreateNoteHttpController extends TemplateHttpController {
 
   protected async perform(
     request: HttpRequest<NoteDTO>,
-  ): Promise<Response<{ created: boolean }>> {
+  ): Promise<Response<NoteViewModel>> {
     const user = await this.userService.getUser(request.headers.userId);
     if (!user) throw new UserDoesNotExistsError();
-    await this.noteService.saveNote(
+    const noteId = await this.noteService.saveNote(
       request.body.title,
       request.body.description,
       request.headers.userId,
     );
-    return created({ created: true });
+    const note = await this.noteService.getNote(noteId);
+    return created(NoteViewModel.map(note));
   }
 }

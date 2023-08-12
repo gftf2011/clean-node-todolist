@@ -2,7 +2,7 @@ import { NoteService } from '../../../../../../src/app/contracts/services';
 import { NoteDTO } from '../../../../../../src/domain/dto';
 
 type Props = {
-  saveNote?: Promise<void>[];
+  saveNote?: Promise<string>[];
   getNote?: Promise<NoteDTO>[];
   getNotesByUserId?: Promise<NoteDTO[]>[];
   updateNote?: Promise<void>[];
@@ -29,7 +29,7 @@ export class NoteServiceStub implements NoteService {
     _title: string,
     _description: string,
     _userId: string,
-  ): Promise<void> {
+  ): Promise<string> {
     const response = this.props.saveNote[this.counter1];
     this.counter1++;
     return response;

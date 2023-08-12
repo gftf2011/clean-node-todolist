@@ -64,7 +64,11 @@ describe('Mutation - updateFinishedNote', () => {
 
     const createNoteQuery = `mutation {
       createNote (input: { title: "any title", description: "any description" }) {
-        created
+        id
+        title
+        description
+        timestamp
+        finished
       }
     }`;
 
@@ -152,7 +156,11 @@ describe('Mutation - updateFinishedNote', () => {
 
     const createNoteQuery = `mutation {
       createNote (input: { title: "any title", description: "any description" }) {
-        created
+        id
+        title
+        description
+        timestamp
+        finished
       }
     }`;
 

@@ -64,7 +64,11 @@ describe('Mutation - createNote', () => {
 
     const createNoteQuery = `mutation {
       createNote (input: { title: "any title", description: "any description" }) {
-        created
+        id
+        title
+        description
+        timestamp
+        finished
       }
     }`;
 
@@ -74,7 +78,11 @@ describe('Mutation - createNote', () => {
     const response = await serverRequest(createNoteQuery, token);
 
     expect(response.status).toBe(200);
-    expect(response.body.data.createNote).toStrictEqual({ created: true });
+    expect(response.body.data.createNote).toHaveProperty('id');
+    expect(response.body.data.createNote).toHaveProperty('finished');
+    expect(response.body.data.createNote).toHaveProperty('timestamp');
+    expect(response.body.data.createNote.title).toBe('any title');
+    expect(response.body.data.createNote.description).toBe('any description');
   });
 
   it('should return 401 if token expires', async () => {
@@ -86,7 +94,11 @@ describe('Mutation - createNote', () => {
 
     const createNoteQuery = `mutation {
       createNote (input: { title: "any title", description: "any description" }) {
-        created
+        id
+        title
+        description
+        timestamp
+        finished
       }
     }`;
 

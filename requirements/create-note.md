@@ -11,7 +11,7 @@
 7.  ✅ Note title is **encrypted** for security reasons
 8.  ✅ Note description is **encrypted** for security reasons
 9.  ✅ **Creates** note with encrypted values
-10. ✅ Returns **201** status code
+10. ✅ Returns **201** status code with **decripted** note information
 
 > ## Success Case - GraphQL
 
@@ -24,7 +24,7 @@
 7.  ✅ Note title is **encrypted** for security reasons
 8.  ✅ Note description is **encrypted** for security reasons
 9.  ✅ **Creates** note with encrypted values
-10. ✅ Returns **201** status code
+10. ✅ Returns **201** status code with **decripted** note information
 
 > ## Error Case
 

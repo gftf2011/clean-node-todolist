@@ -65,7 +65,11 @@ describe('Query - getNotesByUserId', () => {
 
     const createNoteQuery = `mutation {
       createNote (input: { title: "any title", description: "any description" }) {
-        created
+        id
+        title
+        description
+        timestamp
+        finished
       }
     }`;
 
@@ -111,7 +115,11 @@ describe('Query - getNotesByUserId', () => {
 
     const createNoteQuery = `mutation {
       createNote (input: { title: "any title", description: "any description" }) {
-        created
+        id
+        title
+        description
+        timestamp
+        finished
       }
     }`;
 
@@ -160,7 +168,11 @@ describe('Query - getNotesByUserId', () => {
 
     const createNoteQuery = `mutation {
       createNote (input: { title: "any title", description: "any description" }) {
-        created
+        id
+        title
+        description
+        timestamp
+        finished
       }
     }`;
 
@@ -207,7 +219,11 @@ describe('Query - getNotesByUserId', () => {
 
     const createNoteQuery = `mutation {
       createNote (input: { title: "any title", description: "any description" }) {
-        created
+        id
+        title
+        description
+        timestamp
+        finished
       }
     }`;
 
@@ -295,7 +311,11 @@ describe('Query - getNotesByUserId', () => {
 
     const createNoteQuery = `mutation {
       createNote (input: { title: "any title", description: "any description" }) {
-        created
+        id
+        title
+        description
+        timestamp
+        finished
       }
     }`;
 

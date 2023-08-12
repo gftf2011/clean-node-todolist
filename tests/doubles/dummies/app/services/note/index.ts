@@ -6,7 +6,7 @@ export class NoteServiceDummy implements NoteService {
     title: string,
     description: string,
     userId: string,
-  ) => Promise<void>;
+  ) => Promise<string>;
 
   getNote: (id: string) => Promise<NoteDTO>;
 

@@ -1,4 +1,5 @@
 import { NoteDTO, UserDTO } from '../../../../../src/domain/dto';
+import { NoteViewModel } from '../../../../../src/app/controllers/view-models';
 import { HttpRequest } from '../../../../../src/app/contracts/http';
 import { CreateNoteHttpController } from '../../../../../src/app/controllers/rest';
 import {
@@ -289,18 +290,23 @@ describe('Create Note - HTTP Controller', () => {
       id: 'id_mock',
     };
 
+    const note: NoteDTO = {
+      description: 'description_mock',
+      title: 'title_mock',
+      createdAt: new Date().toISOString(),
+      finished: false,
+      id: 'note_id_mock',
+      updatedAt: new Date().toISOString(),
+    };
+
     const userService = new UserServiceStub({
       getUser: [Promise.resolve(user)],
     });
     const noteService = new NoteServiceStub({
-      saveNote: [Promise.resolve()],
+      saveNote: [Promise.resolve(note.id)],
+      getNote: [Promise.resolve(note)],
     });
     const controller = new CreateNoteHttpController(noteService, userService);
-
-    const note: NoteDTO = {
-      title: 'title_mock',
-      description: 'description_mock',
-    };
 
     const request: HttpRequest<NoteDTO> = {
       body: note,
@@ -311,6 +317,6 @@ describe('Create Note - HTTP Controller', () => {
 
     const response = await controller.handle(request);
 
-    expect(response).toStrictEqual(created({ created: true }));
+    expect(response).toStrictEqual(created(NoteViewModel.map(note)));
   });
 });

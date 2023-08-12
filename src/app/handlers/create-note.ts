@@ -9,7 +9,7 @@ import { NoteRepository } from '../../domain/repositories';
 import { Note } from '../../domain/entity';
 import { NoteModel } from '../../domain/models';
 
-export class CreateNoteHandler implements Handler<void> {
+export class CreateNoteHandler implements Handler<string> {
   readonly operation: string = 'create-note';
 
   constructor(
@@ -18,7 +18,7 @@ export class CreateNoteHandler implements Handler<void> {
     private readonly noteRepository: NoteRepository,
   ) {}
 
-  public async handle(action: CreateNoteAction): Promise<void> {
+  public async handle(action: CreateNoteAction): Promise<string> {
     const { description, title, userId } = action.data;
     const id = this.sequencing.generateId(Sequencers.NOTES);
 
@@ -38,5 +38,7 @@ export class CreateNoteHandler implements Handler<void> {
     };
 
     await this.noteRepository.save(encryptedNote);
+
+    return id;
   }
 }

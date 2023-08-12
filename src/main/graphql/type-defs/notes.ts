@@ -58,12 +58,8 @@ export default `#graphql
     description: String
   }
 
-  type CreateNoteOutput {
-    created: Boolean
-  }
-
   extend type Mutation {
-    createNote (input: CreateNoteInput): CreateNoteOutput @auth
+    createNote (input: CreateNoteInput): Note @auth
   }
 
   input DeleteNoteInput {

@@ -113,9 +113,11 @@ describe('Create Note - Handler', () => {
       userId: 'user_id_mock',
     });
 
-    const promise = handler.handle(action);
+    const response = await handler.handle(action);
 
-    await expect(promise).resolves.toBeUndefined();
+    expect(response).toBe(
+      '00000000000000000-00000000000000000000000000000000-00000000000000000000000000000000',
+    );
   });
 
   afterEach(async () => {

@@ -1,4 +1,5 @@
 import { NoteDTO, UserDTO } from '../../../../../src/domain/dto';
+import { NoteViewModel } from '../../../../../src/app/controllers/view-models';
 import { GraphqlRequest } from '../../../../../src/app/contracts/graphql';
 import { CreateNoteGraphqlController } from '../../../../../src/app/controllers/graphql';
 import { UserDoesNotExistsError } from '../../../../../src/app/errors';
@@ -89,21 +90,26 @@ describe('Create Note - Graphql Controller', () => {
       id: 'id_mock',
     };
 
+    const note: NoteDTO = {
+      description: 'description_mock',
+      title: 'title_mock',
+      createdAt: new Date().toISOString(),
+      finished: false,
+      id: 'note_id_mock',
+      updatedAt: new Date().toISOString(),
+    };
+
     const userService = new UserServiceStub({
       getUser: [Promise.resolve(user)],
     });
     const noteService = new NoteServiceStub({
-      saveNote: [Promise.resolve()],
+      saveNote: [Promise.resolve(note.id)],
+      getNote: [Promise.resolve(note)],
     });
     const controller = new CreateNoteGraphqlController(
       noteService,
       userService,
     );
-
-    const note: NoteDTO = {
-      title: 'title_mock',
-      description: 'description_mock',
-    };
 
     const request: GraphqlRequest = {
       args: {
@@ -120,6 +126,6 @@ describe('Create Note - Graphql Controller', () => {
 
     const response = await controller.handle(request);
 
-    expect(response).toStrictEqual(created({ created: true }));
+    expect(response).toStrictEqual(created(NoteViewModel.map(note)));
   });
 });

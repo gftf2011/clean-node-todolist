@@ -81,7 +81,11 @@ describe('POST - api/V1/create-note', () => {
     const response = await createNoteRequest(note, token);
 
     expect(response.status).toBe(201);
-    expect(response.body).toStrictEqual({ created: true });
+    expect(response.body).toHaveProperty('id');
+    expect(response.body).toHaveProperty('finished');
+    expect(response.body).toHaveProperty('timestamp');
+    expect(response.body.title).toBe(note.title);
+    expect(response.body.description).toBe(note.description);
   });
 
   it('should return 401 if token expires', async () => {
