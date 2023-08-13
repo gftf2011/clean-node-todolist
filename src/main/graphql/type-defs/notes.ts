@@ -50,7 +50,7 @@ export default `#graphql
   }
 
   extend type Mutation {
-    updateFinishedNote (input: UpdateFinishedNoteInput): Void @auth
+    updateFinishedNote (input: UpdateFinishedNoteInput): Note @auth
   }
 
   input CreateNoteInput {

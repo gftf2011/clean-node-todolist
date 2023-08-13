@@ -98,11 +98,7 @@ describe('Mutation - updateFinishedNote', () => {
       getNotesResponse.body.data.getNotesByUserId.paginatedNotes;
 
     const updateFinishedNotesQuery = `mutation {
-      updateFinishedNote (input: { id: "${notes[0].id}", finished: true })
-    }`;
-
-    const getNoteQuery = `query {
-      getNote (input: { id: "${notes[0].id}" }) {
+      updateFinishedNote (input: { id: "${notes[0].id}", finished: true }) {
         id
         title
         description
@@ -116,10 +112,22 @@ describe('Mutation - updateFinishedNote', () => {
       token,
     );
 
-    const singleNoteResponse = await serverRequest(getNoteQuery, token);
-
     expect(updateFinishedNoteResponse.status).toBe(200);
-    expect(singleNoteResponse.body.data.getNote.finished).toBe(true);
+    expect(
+      updateFinishedNoteResponse.body.data.updateFinishedNote,
+    ).toHaveProperty('id');
+    expect(
+      updateFinishedNoteResponse.body.data.updateFinishedNote,
+    ).toHaveProperty('finished');
+    expect(
+      updateFinishedNoteResponse.body.data.updateFinishedNote,
+    ).toHaveProperty('timestamp');
+    expect(updateFinishedNoteResponse.body.data.updateFinishedNote.title).toBe(
+      'any title',
+    );
+    expect(
+      updateFinishedNoteResponse.body.data.updateFinishedNote.description,
+    ).toBe('any description');
   });
 
   it('should return 400 if note is not found', async () => {
@@ -133,7 +141,13 @@ describe('Mutation - updateFinishedNote', () => {
     const token = body.data.signUp.accessToken;
 
     const updateFinishedNotesQuery = `mutation {
-      updateFinishedNote (input: { id: "any-id", finished: true })
+      updateFinishedNote (input: { id: "any-id", finished: true }) {
+        id
+        title
+        description
+        timestamp
+        finished
+      }
     }`;
 
     const response = await serverRequest(updateFinishedNotesQuery, token);
@@ -190,7 +204,13 @@ describe('Mutation - updateFinishedNote', () => {
       getNotesResponse.body.data.getNotesByUserId.paginatedNotes;
 
     const updateFinishedNotesQuery = `mutation {
-      updateFinishedNote (input: { id: "${notes[0].id}", finished: true })
+      updateFinishedNote (input: { id: "${notes[0].id}", finished: true }) {
+        id
+        title
+        description
+        timestamp
+        finished
+      }
     }`;
 
     await sleep(5000);

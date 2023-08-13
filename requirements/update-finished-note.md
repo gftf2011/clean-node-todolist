@@ -8,7 +8,7 @@
 4.  ✅ Checks if user with given email already exists
 5.  ✅ Note is **finished** status is updated
 6.  ✅ **Updates** note **finished** status and updates field **updatedAt**
-7.  ✅ Returns **204** status code
+7.  ✅ Returns **200** status code with **decripted** note information
 
 > ## Success Case - GraphQL
 
@@ -18,7 +18,7 @@
 4.  ✅ Checks if user with given email already exists
 5.  ✅ Note is **finished** status is updated
 6.  ✅ **Updates** note **finished** status and updates field **updatedAt**
-7.  ✅ Returns **200** status code
+7.  ✅ Returns **200** status code with **decripted** note information
 
 > ## Error Case
 

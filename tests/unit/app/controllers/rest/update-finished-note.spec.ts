@@ -1,5 +1,6 @@
 import { UserDTO, NoteDTO } from '../../../../../src/domain/dto';
 import { HttpRequest } from '../../../../../src/app/contracts/http';
+import { NoteViewModel } from '../../../../../src/app/controllers/view-models';
 import { UpdateFinishedNoteHttpController } from '../../../../../src/app/controllers/rest';
 import {
   MissingBodyParamsError,
@@ -9,7 +10,7 @@ import {
 } from '../../../../../src/app/errors';
 import {
   badRequest,
-  noContent,
+  ok,
   unknown,
   unauthorized,
 } from '../../../../../src/app/controllers/utils';
@@ -303,7 +304,10 @@ describe('Update Finished Note - HTTP Controller', () => {
       getUser: [Promise.resolve(user)],
     });
     const noteService = new NoteServiceStub({
-      getNote: [Promise.resolve(note)],
+      getNote: [
+        Promise.resolve(note),
+        Promise.resolve({ ...note, finished: true }),
+      ],
       updateFinishedNote: [Promise.resolve()],
     });
     const controller = new UpdateFinishedNoteHttpController(
@@ -318,6 +322,8 @@ describe('Update Finished Note - HTTP Controller', () => {
 
     const response = await controller.handle(request);
 
-    expect(response).toStrictEqual(noContent());
+    expect(response).toStrictEqual(
+      ok(NoteViewModel.map({ ...note, finished: true })),
+    );
   });
 });

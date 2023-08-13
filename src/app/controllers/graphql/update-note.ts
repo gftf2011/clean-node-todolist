@@ -15,7 +15,9 @@ export class UpdateNoteGraphqlController extends TemplateGraphqlController {
     super();
   }
 
-  protected async perform(request: GraphqlRequest): Promise<Response<void>> {
+  protected async perform(
+    request: GraphqlRequest,
+  ): Promise<Response<NoteViewModel>> {
     const user = await this.userService.getUser(
       request.context.req.headers.userId,
     );

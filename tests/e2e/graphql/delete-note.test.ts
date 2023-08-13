@@ -102,7 +102,13 @@ describe('Mutation - deleteNote', () => {
       getNotesResponse.body.data.getNotesByUserId.paginatedNotes;
 
     const updateFinishedNoteQuery = `mutation {
-      updateFinishedNote (input: { id: "${notes[0].id}", finished: true })
+      updateFinishedNote (input: { id: "${notes[0].id}", finished: true }) {
+        id
+        title
+        description
+        timestamp
+        finished
+      }
     }`;
 
     const deleteNoteQuery = `mutation {

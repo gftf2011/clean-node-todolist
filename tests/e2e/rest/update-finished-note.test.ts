@@ -44,17 +44,6 @@ describe('PATCH - api/V1/update-finished-note', () => {
     return response;
   };
 
-  const getSingleNoteRequest = async (
-    id: string,
-    token: string,
-  ): Promise<Response> => {
-    const response = await request(server)
-      .get(`/api/V1/find-note/${id}`)
-      .set('Authorization', `${token}`)
-      .send();
-    return response;
-  };
-
   const getNotesRequest = async (
     data: { page: number; limit: number },
     token: string,
@@ -97,7 +86,7 @@ describe('PATCH - api/V1/update-finished-note', () => {
     postgres = new PostgresTransaction();
   });
 
-  it('should return 204 when note is updated', async () => {
+  it('should return 200 when note is updated', async () => {
     const user: UserDTO = {
       email: 'test@mail.com',
       password: '12345678xX@',
@@ -126,10 +115,12 @@ describe('PATCH - api/V1/update-finished-note', () => {
       token,
     );
 
-    const singleNoteResponse = await getSingleNoteRequest(notes[0].id, token);
-
-    expect(updateFinishedNoteResponse.status).toBe(204);
-    expect(singleNoteResponse.body.finished).toBe(true);
+    expect(updateFinishedNoteResponse.status).toBe(200);
+    expect(updateFinishedNoteResponse.body).toHaveProperty('id');
+    expect(updateFinishedNoteResponse.body).toHaveProperty('timestamp');
+    expect(updateFinishedNoteResponse.body.title).toBe('any title');
+    expect(updateFinishedNoteResponse.body.description).toBe('any description');
+    expect(updateFinishedNoteResponse.body.finished).toBe(true);
   });
 
   it('should return 400 if note is not found', async () => {
