@@ -41,7 +41,7 @@ export default `#graphql
   }
 
   extend type Mutation {
-    updateNote (input: UpdateNoteInput): Void @auth
+    updateNote (input: UpdateNoteInput): Note @auth
   }
 
   input UpdateFinishedNoteInput {

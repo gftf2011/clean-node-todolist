@@ -2,7 +2,8 @@ import { NoteDTO } from '../../../domain/dto';
 import { NoteService, UserService } from '../../contracts/services';
 import { NoteNotFoundError, UserDoesNotExistsError } from '../../errors';
 import { TemplateGraphqlController } from '../template';
-import { noContent } from '../utils';
+import { NoteViewModel } from '../view-models';
+import { ok } from '../utils';
 import { Response } from '../../contracts/response';
 import { GraphqlRequest } from '../../contracts/graphql';
 
@@ -19,9 +20,13 @@ export class UpdateNoteGraphqlController extends TemplateGraphqlController {
       request.context.req.headers.userId,
     );
     if (!user) throw new UserDoesNotExistsError();
-    const note = await this.noteService.getNote(request.args.input.id);
+
+    let note = await this.noteService.getNote(request.args.input.id);
     if (!note) throw new NoteNotFoundError(request.args.input.id);
+
     await this.noteService.updateNote(request.args.input as NoteDTO);
-    return noContent();
+
+    note = await this.noteService.getNote(request.args.input.id);
+    return ok(NoteViewModel.map(note));
   }
 }

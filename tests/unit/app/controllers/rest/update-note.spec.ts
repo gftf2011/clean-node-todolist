@@ -1,4 +1,5 @@
 import { UserDTO, NoteDTO } from '../../../../../src/domain/dto';
+import { NoteViewModel } from '../../../../../src/app/controllers/view-models';
 import { HttpRequest } from '../../../../../src/app/contracts/http';
 import { UpdateNoteHttpController } from '../../../../../src/app/controllers/rest';
 import {
@@ -9,7 +10,7 @@ import {
 } from '../../../../../src/app/errors';
 import {
   badRequest,
-  noContent,
+  ok,
   unknown,
   unauthorized,
 } from '../../../../../src/app/controllers/utils';
@@ -407,7 +408,7 @@ describe('Update Note - HTTP Controller', () => {
       getUser: [Promise.resolve(user)],
     });
     const noteService = new NoteServiceStub({
-      getNote: [Promise.resolve(note)],
+      getNote: [Promise.resolve(note), Promise.resolve(note)],
       updateNote: [Promise.resolve()],
     });
     const controller = new UpdateNoteHttpController(noteService, userService);
@@ -423,6 +424,6 @@ describe('Update Note - HTTP Controller', () => {
 
     const response = await controller.handle(request);
 
-    expect(response).toStrictEqual(noContent());
+    expect(response).toStrictEqual(ok(NoteViewModel.map(note)));
   });
 });

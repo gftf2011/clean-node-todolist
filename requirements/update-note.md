@@ -11,7 +11,7 @@
 7.  ✅ Note title is **encrypted** for security reasons
 8.  ✅ Note description is **encrypted** for security reasons
 9.  ✅ **Updates** note with encrypted values and updates field **updatedAt**
-10. ✅ Returns **204** status code
+10. ✅ Returns **200** status code with **decripted** note information
 
 > ## Success Case - GraphQL
 
@@ -24,7 +24,7 @@
 7.  ✅ Note title is **encrypted** for security reasons
 8.  ✅ Note description is **encrypted** for security reasons
 9.  ✅ **Updates** note with encrypted values and updates field **updatedAt**
-10. ✅ Returns **200** status code with no body
+10. ✅ Returns **200** status code with **decripted** note information
 
 > ## Error Case
 

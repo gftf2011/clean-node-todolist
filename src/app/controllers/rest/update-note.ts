@@ -3,7 +3,8 @@ import { HttpRequest } from '../../contracts/http';
 import { NoteService, UserService } from '../../contracts/services';
 import { NoteNotFoundError, UserDoesNotExistsError } from '../../errors';
 import { TemplateHttpController } from '../template';
-import { noContent } from '../utils';
+import { NoteViewModel } from '../view-models';
+import { ok } from '../utils';
 import { Response } from '../../contracts/response';
 import { Validator } from '../../contracts/validation';
 import { ValidationBuilder, FieldOrigin } from '../../validation';
@@ -54,12 +55,16 @@ export class UpdateNoteHttpController extends TemplateHttpController {
 
   protected async perform(
     request: HttpRequest<NoteDTO>,
-  ): Promise<Response<void>> {
+  ): Promise<Response<NoteViewModel>> {
     const user = await this.userService.getUser(request.headers.userId);
     if (!user) throw new UserDoesNotExistsError();
-    const note = await this.noteService.getNote(request.body.id);
+
+    let note = await this.noteService.getNote(request.body.id);
     if (!note) throw new NoteNotFoundError(request.body.id);
+
     await this.noteService.updateNote(request.body);
-    return noContent();
+
+    note = await this.noteService.getNote(request.body.id);
+    return ok(NoteViewModel.map(note));
   }
 }

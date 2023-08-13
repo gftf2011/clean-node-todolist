@@ -1,4 +1,5 @@
 import { UserDTO, NoteDTO } from '../../../../../src/domain/dto';
+import { NoteViewModel } from '../../../../../src/app/controllers/view-models';
 import { GraphqlRequest } from '../../../../../src/app/contracts/graphql';
 import { UpdateNoteGraphqlController } from '../../../../../src/app/controllers/graphql';
 import {
@@ -6,7 +7,7 @@ import {
   UserDoesNotExistsError,
 } from '../../../../../src/app/errors';
 import {
-  noContent,
+  ok,
   unknown,
   unauthorized,
   badRequest,
@@ -153,7 +154,7 @@ describe('Update Note - Graphql Controller', () => {
     });
     const noteService = new NoteServiceStub({
       updateNote: [Promise.resolve()],
-      getNote: [Promise.resolve(note)],
+      getNote: [Promise.resolve(note), Promise.resolve(note)],
     });
     const controller = new UpdateNoteGraphqlController(
       noteService,
@@ -177,6 +178,6 @@ describe('Update Note - Graphql Controller', () => {
 
     const response = await controller.handle(request);
 
-    expect(response).toStrictEqual(noContent());
+    expect(response).toStrictEqual(ok(NoteViewModel.map(note)));
   });
 });

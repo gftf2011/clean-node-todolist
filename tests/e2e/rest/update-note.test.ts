@@ -44,17 +44,6 @@ describe('PUT - api/V1/update-note', () => {
     return response;
   };
 
-  const getSingleNoteRequest = async (
-    id: string,
-    token: string,
-  ): Promise<Response> => {
-    const response = await request(server)
-      .get(`/api/V1/find-note/${id}`)
-      .set('Authorization', `${token}`)
-      .send();
-    return response;
-  };
-
   const getNotesRequest = async (
     data: { page: number; limit: number },
     token: string,
@@ -97,7 +86,7 @@ describe('PUT - api/V1/update-note', () => {
     postgres = new PostgresTransaction();
   });
 
-  it('should return 204 when note is updated', async () => {
+  it('should return 200 when note is updated', async () => {
     const user: UserDTO = {
       email: 'test@mail.com',
       password: '12345678xX@',
@@ -121,7 +110,7 @@ describe('PUT - api/V1/update-note', () => {
     );
     const { notes } = getNotesResponse.body.paginatedNotes;
 
-    const updateFinishedNoteResponse = await updateNoteRequest(
+    const updateNoteResponse = await updateNoteRequest(
       {
         id: notes[0].id,
         title: 'any title 2',
@@ -130,11 +119,12 @@ describe('PUT - api/V1/update-note', () => {
       token,
     );
 
-    const singleNoteResponse = await getSingleNoteRequest(notes[0].id, token);
-
-    expect(updateFinishedNoteResponse.status).toBe(204);
-    expect(singleNoteResponse.body.title).toBe('any title 2');
-    expect(singleNoteResponse.body.description).toBe('any description 2');
+    expect(updateNoteResponse.status).toBe(200);
+    expect(updateNoteResponse.body).toHaveProperty('id');
+    expect(updateNoteResponse.body).toHaveProperty('finished');
+    expect(updateNoteResponse.body).toHaveProperty('timestamp');
+    expect(updateNoteResponse.body.title).toBe('any title 2');
+    expect(updateNoteResponse.body.description).toBe('any description 2');
   });
 
   it('should return 400 if note is not found', async () => {
