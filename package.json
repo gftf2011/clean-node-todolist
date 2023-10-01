@@ -37,7 +37,7 @@
     "prestart:dev": "npm run env:dev && npm run build && npm run run:docker:dev",
     "start:dev": "node dist/main/server/index.js"
   },
-  "keywords": [],
+  "keywords": ["nodejs", "javascript", "graphql", "docker", "dockerfile", "coveralls", "typescript", "rest", "docker-compose", "test", "rest-api", "clean-code", "postgresql", "design-patterns", "clean-architecture", "sonar", "sonarcloud", "cqs", "github-actions"],
   "author": "Gabriel Ferrari Tarallo Ferraz",
   "devDependencies": {
     "@types/cors": "^2.8.12",
