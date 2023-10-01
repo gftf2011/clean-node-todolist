@@ -26,7 +26,7 @@
 <br/>
 
 <div align="center">
-  <img src="https://github.com/gftf2011/clean-todolist/blob/main/.github/images/background.png" />
+  <img src="https://github.com/gftf2011/clean-node-todolist/blob/main/.github/images/background.png" />
 </div>
 
 <br/>
