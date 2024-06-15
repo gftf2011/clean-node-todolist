@@ -18,8 +18,14 @@ psql $DB -c "CREATE TABLE IF NOT EXISTS users_schema.users(
   lastname TEXT NOT NULL,
   email TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL,
-  PRIMARY KEY (id)
+  CONSTRAINT pk_user_id PRIMARY KEY (id)
 )"
+
+# Create Indexes
+psql $DB -c "CREATE UNIQUE INDEX idx_users_id ON users_schema.users (id)"
+psql $DB -c "CREATE UNIQUE INDEX idx_users_email ON users_schema.users (email)"
+
+psql $DB -c "CLUSTER users_schema.users USING idx_users_id"
 
 psql $DB -c "CREATE TABLE IF NOT EXISTS notes_schema.notes(
   id TEXT UNIQUE NOT NULL,
