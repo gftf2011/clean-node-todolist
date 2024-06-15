@@ -43,7 +43,7 @@ class RemoteUserRepositoryProduct implements UserRepository {
   }
 
   async findByEmail(email: string): Promise<UserModel> {
-    const queryText = 'SELECT * FROM users_schema.users WHERE email LIKE $1';
+    const queryText = 'SELECT * FROM users_schema.users WHERE email = $1';
 
     const values: any[] = [email];
 
