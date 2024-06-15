@@ -236,7 +236,7 @@ describe('User - Repository', () => {
       expect(response).toStrictEqual(user);
 
       expect(spy.getQueryInputs()[0].queryText).toBe(
-        'SELECT * FROM users_schema.users WHERE email LIKE $1',
+        'SELECT * FROM users_schema.users WHERE email = $1',
       );
       expect(spy.getQueryInputs()[0].values).toStrictEqual([user.email]);
     });
@@ -262,7 +262,7 @@ describe('User - Repository', () => {
       expect(response).toBeUndefined();
 
       expect(spy.getQueryInputs()[0].queryText).toBe(
-        'SELECT * FROM users_schema.users WHERE email LIKE $1',
+        'SELECT * FROM users_schema.users WHERE email = $1',
       );
       expect(spy.getQueryInputs()[0].values).toStrictEqual([user.email]);
     });
