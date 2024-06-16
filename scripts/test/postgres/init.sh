@@ -21,12 +21,6 @@ psql $DB -c "CREATE TABLE IF NOT EXISTS users_schema.users(
   CONSTRAINT pk_user_id PRIMARY KEY (id)
 )"
 
-# Create Indexes
-psql $DB -c "CREATE UNIQUE INDEX idx_users_id ON users_schema.users (id)"
-psql $DB -c "CREATE UNIQUE INDEX idx_users_email ON users_schema.users (email)"
-
-psql $DB -c "CLUSTER users_schema.users USING idx_users_id"
-
 psql $DB -c "CREATE TABLE IF NOT EXISTS notes_schema.notes(
   id TEXT UNIQUE NOT NULL,
   title TEXT NOT NULL,
@@ -35,9 +29,20 @@ psql $DB -c "CREATE TABLE IF NOT EXISTS notes_schema.notes(
   user_id TEXT NOT NULL,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL,
-  PRIMARY KEY (id),
+  CONSTRAINT pk_note_id PRIMARY KEY (id),
   CONSTRAINT fk_user_id FOREIGN KEY(user_id) REFERENCES users_schema.users(id) ON UPDATE CASCADE ON DELETE CASCADE
 )"
+
+# Create Indexes
+psql $DB -c "CREATE UNIQUE INDEX idx_users_id ON users_schema.users (id)"
+psql $DB -c "CREATE UNIQUE INDEX idx_users_email ON users_schema.users (email)"
+
+psql $DB -c "CLUSTER users_schema.users USING idx_users_id"
+
+psql $DB -c "CREATE UNIQUE INDEX idx_notes_user_id_id ON notes_schema.notes (user_id, id)"
+psql $DB -c "CREATE UNIQUE INDEX idx_notes_id ON notes_schema.notes (id)"
+
+psql $DB -c "CLUSTER notes_schema.notes USING idx_notes_user_id_id"
 
 # Grant Privileges
 psql $POSTGRES_DB -c "GRANT CONNECT ON DATABASE $DB TO $USER"
