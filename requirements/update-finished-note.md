@@ -4,21 +4,19 @@
 
 1.  ✅ Receives **PATCH** request at route **/api/V1/update-finished-note**
 2.  ✅ Validates if **authorization** header is valid
-3.  ✅ Validates required fields **title**, **description**
-4.  ✅ Checks if user with given email already exists
-5.  ✅ Note is **finished** status is updated
-6.  ✅ **Updates** note **finished** status and updates field **updatedAt**
-7.  ✅ Returns **200** status code with **decripted** note information
+3.  ✅ Checks if user with given email already exists
+4.  ✅ Note is **finished** status is updated
+5.  ✅ **Updates** note **finished** status and updates field **updatedAt**
+6.  ✅ Returns **200** status code with **decripted** note information
 
 > ## Success Case - GraphQL
 
 1.  ✅ Receives **POST** request at route **/graphql** with mutation **updateFinishedNote**
 2.  ✅ Validates if **authorization** header is valid
-3.  ✅ Validates required fields **title**, **description**
-4.  ✅ Checks if user with given email already exists
-5.  ✅ Note is **finished** status is updated
-6.  ✅ **Updates** note **finished** status and updates field **updatedAt**
-7.  ✅ Returns **200** status code with **decripted** note information
+3.  ✅ Checks if user with given email already exists
+4.  ✅ Note is **finished** status is updated
+5.  ✅ **Updates** note **finished** status and updates field **updatedAt**
+6.  ✅ Returns **200** status code with **decripted** note information
 
 > ## Error Case
 
