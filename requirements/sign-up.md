@@ -11,7 +11,7 @@
     1. 8 numbers
     2. 1 lowercase letter
     3. 1 uppercase letter
-    4. 1 specail character - (^!@#$%&?)
+    4. 1 special character - (^!@#$%&?)
     5. length is less than 24
 7.  ✅ Checks if user with given email does not exists
 8.  ✅ User email is **encrypted** for security reasons
