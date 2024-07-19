@@ -5,7 +5,7 @@
 <br/>
 
 <div align="center">
-  <img src='https://coveralls.io/repos/github/gftf2011/clean-todolist/badge.svg?branch=main' alt='Coverage Status' />
+  <img src='https://coveralls.io/repos/github/gftf2011/clean-node-todolist/badge.svg?branch=main' alt='Coverage Status' />
   <img src='https://sonarcloud.io/api/project_badges/measure?project=gftf2011_clean-node-todolist&metric=alert_status' alt='Quality Gate Status' />
 </div>
 
